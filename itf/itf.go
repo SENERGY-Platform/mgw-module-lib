@@ -18,8 +18,6 @@ package itf
 
 import "github.com/SENERGY-Platform/mgw-module-lib/model"
 
-type Validator func(params map[string]any) error
-
 type ConfigValidationHandler interface {
 	ValidateBase(cType string, cTypeOpt model.ConfigTypeOptions, dataType model.DataType) error
 	ValidateOptions(cType string, cTypeOpt model.ConfigTypeOptions) error
