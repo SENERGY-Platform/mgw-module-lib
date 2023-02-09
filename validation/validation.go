@@ -37,7 +37,7 @@ func Validate(m model.Module) error {
 	if !isValidDeploymentType(m.DeploymentType) {
 		return fmt.Errorf("invlaid deployment type '%s'", m.DeploymentType)
 	}
-	if err := validateNotEmpty(m.Volumes, "invalid volume name"); err != nil {
+	if err := validateKeyNotEmptyString(m.Volumes, "invalid volume name"); err != nil {
 		return err
 	}
 	if m.Dependencies != nil {
@@ -51,30 +51,22 @@ func Validate(m model.Module) error {
 			if dependency.RequiredServices == nil {
 				return fmt.Errorf("missing services for dependency '%s'", mid)
 			}
-			if err := validateNotEmpty(dependency.RequiredServices, fmt.Sprintf("invalid service for dependency '%s'", mid)); err != nil {
+			if err := validateKeyNotEmptyString(dependency.RequiredServices, fmt.Sprintf("invalid service for dependency '%s'", mid)); err != nil {
 				return err
 			}
 		}
 	}
-	if m.Resources != nil {
-		if err := validateNotEmpty(m.Resources, "invalid resource reference"); err != nil {
-			return err
-		}
+	if err := validateKeyNotEmptyString(m.Resources, "invalid resource reference"); err != nil {
+		return err
 	}
-	if m.Secrets != nil {
-		if err := validateNotEmpty(m.Secrets, "invalid secret reference"); err != nil {
-			return err
-		}
+	if err := validateKeyNotEmptyString(m.Secrets, "invalid secret reference"); err != nil {
+		return err
 	}
-	if m.Configs != nil {
-		if err := validateNotEmpty(m.Configs, "invalid config reference"); err != nil {
-			return err
-		}
+	if err := validateKeyNotEmptyString(m.Configs, "invalid config reference"); err != nil {
+		return err
 	}
-	if m.Inputs.Groups != nil {
-		if err := validateNotEmpty(m.Inputs.Groups, "invalid input group reference"); err != nil {
-			return err
-		}
+	if err := validateKeyNotEmptyString(m.Inputs.Groups, "invalid input group reference"); err != nil {
+		return err
 	}
 	if m.Inputs.Resources != nil {
 		if err := validateInputs(m.Inputs.Resources, m.Resources, "resource", m.Inputs.Groups); err != nil {
@@ -324,10 +316,12 @@ func validateInputs[T any](inputs map[string]model.Input, refs map[string]T, ref
 	return nil
 }
 
-func validateNotEmpty[T any](refs map[string]T, msg string) error {
-	for ref := range refs {
-		if ref == "" {
-			return errors.New(msg)
+func validateKeyNotEmptyString[T any](m map[string]T, msg string) error {
+	if m != nil {
+		for ref := range m {
+			if ref == "" {
+				return errors.New(msg)
+			}
 		}
 	}
 	return nil
