@@ -40,7 +40,7 @@ func Validate(m model.Module) error {
 	if err := validateKeyNotEmptyString(m.Volumes, "invalid volume name"); err != nil {
 		return err
 	}
-	if err := validateDependencies(m.Dependencies); err != nil {
+	if err := validateModuleDependencies(m.Dependencies); err != nil {
 		return err
 	}
 	if err := validateKeyNotEmptyString(m.Resources, "invalid resource reference"); err != nil {
@@ -162,7 +162,7 @@ func Validate(m model.Module) error {
 	return nil
 }
 
-func validateDependencies(dependencies map[string]model.ModuleDependency) error {
+func validateModuleDependencies(dependencies map[string]model.ModuleDependency) error {
 	if dependencies != nil {
 		for mid, dependency := range dependencies {
 			if !isValidModuleID(mid) {
