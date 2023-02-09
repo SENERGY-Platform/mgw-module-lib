@@ -68,20 +68,14 @@ func Validate(m model.Module) error {
 	if err := validateKeyNotEmptyString(m.Inputs.Groups, "invalid input group reference"); err != nil {
 		return err
 	}
-	if m.Inputs.Resources != nil {
-		if err := validateInputs(m.Inputs.Resources, m.Resources, "resource", m.Inputs.Groups); err != nil {
-			return err
-		}
+	if err := validateInputs(m.Inputs.Resources, m.Resources, "resource", m.Inputs.Groups); err != nil {
+		return err
 	}
-	if m.Inputs.Secrets != nil {
-		if err := validateInputs(m.Inputs.Secrets, m.Secrets, "secret", m.Inputs.Groups); err != nil {
-			return err
-		}
+	if err := validateInputs(m.Inputs.Secrets, m.Secrets, "secret", m.Inputs.Groups); err != nil {
+		return err
 	}
-	if m.Inputs.Configs != nil {
-		if err := validateInputs(m.Inputs.Configs, m.Configs, "config", m.Inputs.Groups); err != nil {
-			return err
-		}
+	if err := validateInputs(m.Inputs.Configs, m.Configs, "config", m.Inputs.Groups); err != nil {
+		return err
 	}
 	if m.Services == nil || len(m.Services) == 0 {
 		return errors.New("missing services")
@@ -294,22 +288,24 @@ func isValidPath(s string) bool {
 }
 
 func validateInputs[T any](inputs map[string]model.Input, refs map[string]T, refName string, groups map[string]model.InputGroup) error {
-	if refs == nil {
-		return fmt.Errorf("missing %ss for user inputs", refName)
-	}
-	for ref, input := range inputs {
-		if ref == "" {
-			return errors.New("invalid input reference")
+	if inputs != nil {
+		if refs == nil {
+			return fmt.Errorf("missing %ss for user inputs", refName)
 		}
-		if _, ok := refs[ref]; !ok {
-			return fmt.Errorf("missing %s for input '%s'", refName, ref)
-		}
-		if input.Group != nil {
-			if groups == nil {
-				return errors.New("missing groups for inputs")
+		for ref, input := range inputs {
+			if ref == "" {
+				return errors.New("invalid input reference")
 			}
-			if _, ok := groups[*input.Group]; !ok {
-				return fmt.Errorf("missing group for input '%s'", ref)
+			if _, ok := refs[ref]; !ok {
+				return fmt.Errorf("missing %s for input '%s'", refName, ref)
+			}
+			if input.Group != nil {
+				if groups == nil {
+					return errors.New("missing groups for inputs")
+				}
+				if _, ok := groups[*input.Group]; !ok {
+					return fmt.Errorf("missing group for input '%s'", ref)
+				}
 			}
 		}
 	}
