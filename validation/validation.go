@@ -19,13 +19,12 @@ package validation
 import (
 	"errors"
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-module-lib/itf"
 	"github.com/SENERGY-Platform/mgw-module-lib/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/validation/sem_ver"
 	"regexp"
 )
 
-func Validate(m model.Module, cValHandler itf.ConfigValidationHandler) error {
+func Validate(m model.Module) error {
 	if !isValidModuleID(m.ID) {
 		return fmt.Errorf("invalid module ID format '%s'", m.ID)
 	}
@@ -68,18 +67,8 @@ func Validate(m model.Module, cValHandler itf.ConfigValidationHandler) error {
 		}
 	}
 	if m.Configs != nil {
-		for _, cv := range m.Configs {
-			if err := cValHandler.ValidateBase(cv.Type, cv.TypeOpt, cv.DataType); err != nil {
-				return err
-			}
-			if err := cValHandler.ValidateOptions(cv.Type, cv.TypeOpt); err != nil {
-				return err
-			}
-			if cv.Default != nil {
-				if err := cValHandler.ValidateValue(cv.Type, cv.TypeOpt, cv.Default); err != nil {
-					return err
-				}
-			}
+		if err := validateNotEmpty(m.Configs, "invalid config reference"); err != nil {
+			return err
 		}
 	}
 	if m.Inputs.Groups != nil {
