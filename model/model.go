@@ -1,0 +1,161 @@
+/*
+ * Copyright 2022 InfAI (CC SES)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package model
+
+import (
+	"io/fs"
+	"time"
+)
+
+type Set[T comparable] map[T]struct{}
+
+type ModuleType = string
+
+type DeploymentType = string
+
+type Module struct {
+	ID             string                      `json:"id"`
+	Name           string                      `json:"name"`
+	Description    string                      `json:"description"`
+	Tags           Set[string]                 `json:"tags"`
+	License        string                      `json:"license"`
+	Author         string                      `json:"author"`
+	Version        string                      `json:"version"`
+	Type           ModuleType                  `json:"type"`
+	DeploymentType DeploymentType              `json:"deployment_type"`
+	Services       map[string]*Service         `json:"services"`     // {ref:Service}
+	Volumes        Set[string]                 `json:"volumes"`      // {volName}
+	Dependencies   map[string]ModuleDependency `json:"dependencies"` // {moduleID:ModuleDependency}
+	Resources      map[string]Set[string]      `json:"resources"`    // {ref:{tag}}
+	Secrets        map[string]Secret           `json:"secrets"`      // {ref:Secret}
+	Configs        Configs                     `json:"configs"`      // {ref:ConfigValue}
+	Inputs         Inputs                      `json:"inputs"`
+}
+
+type Service struct {
+	Name                 string                              `json:"name"`
+	Image                string                              `json:"image"`
+	RunConfig            RunConfig                           `json:"run_config"`
+	Include              map[string]BindMount                `json:"include"`               // {mntPoint:BindMount}
+	Tmpfs                map[string]TmpfsMount               `json:"tmpfs"`                 // {mntPoint:TmpfsMount}
+	Volumes              map[string]string                   `json:"volumes"`               // {mntPoint:volName}
+	Resources            map[string]ResourceTarget           `json:"resources"`             // {mntPoint:ResourceTarget}
+	Secrets              map[string]string                   `json:"secrets"`               // {mntPoint:ref}
+	Configs              map[string]string                   `json:"configs"`               // {refVar:ref}
+	SrvReferences        map[string]string                   `json:"srv_references"`        // {refVar:ref}
+	HttpEndpoints        map[string]HttpEndpoint             `json:"http_endpoints"`        // {externalPath:HttpEndpoint}
+	Dependencies         Set[string]                         `json:"dependencies"`          // {ref}
+	ExternalDependencies map[string]ExternalDependencyTarget `json:"external_dependencies"` // {refVar:ExternalDependencyTarget}
+	PortMappings         PortMappings                        `json:"port_mappings"`
+}
+
+type RunConfig struct {
+	MaxRetries     *int           `json:"max_retries"`
+	RemoveAfterRun bool           `json:"remove_after_run"`
+	StopTimeout    *time.Duration `json:"stop_timeout"`
+	StopSignal     *string        `json:"stop_signal"`
+	PseudoTTY      bool           `json:"pseudo_tty"`
+}
+
+type BindMount struct {
+	Source   string `json:"source"`
+	ReadOnly bool   `json:"read_only"`
+}
+
+type TmpfsMount struct {
+	Size uint64       `json:"size"`
+	Mode *fs.FileMode `json:"mode"`
+}
+
+type HttpEndpoint struct {
+	Name string `json:"name"`
+	Port *int   `json:"port"`
+	Path string `json:"path"` // internal path
+}
+
+type PortMappings map[string]portMapping
+
+type PortProtocol = string
+
+type portMapping struct {
+	Name     *string       `json:"name"`
+	Port     []uint        `json:"port"`      // {n} || {s, e}
+	HostPort []uint        `json:"host_port"` // {n} || {s, e}
+	Protocol *PortProtocol `json:"protocol"`
+}
+
+type ExternalDependencyTarget struct {
+	ID      string `json:"id"`
+	Service string `json:"service"`
+}
+
+type ModuleDependency struct {
+	Version          string      `json:"version"`
+	RequiredServices Set[string] `json:"required_services"`
+}
+
+type ResourceTarget struct {
+	Ref      string `json:"ref"`
+	ReadOnly bool   `json:"read_only"`
+}
+
+type Secret struct {
+	Type string      `json:"type"`
+	Tags Set[string] `json:"tags"`
+}
+
+type Configs map[string]configValue
+
+type configValue struct {
+	Default   any               `json:"default"`
+	Options   any               `json:"options"`
+	OptExt    bool              `json:"opt_ext"`
+	Type      string            `json:"type"`
+	TypeOpt   ConfigTypeOptions `json:"type_opt"`
+	DataType  DataType          `json:"data_type"`
+	IsSlice   bool              `json:"is_slice"`
+	Delimiter *string           `json:"delimiter"`
+}
+
+type ConfigTypeOptions map[string]configTypeOption
+
+type DataType uint
+
+type configTypeOption struct {
+	Value    any      `json:"value"`
+	DataType DataType `json:"data_type"`
+}
+
+type Input struct {
+	Name        string  `json:"name"`
+	Description *string `json:"description"`
+	Required    bool    `json:"required"`
+	Group       *string `json:"group"`
+}
+
+type InputGroup struct {
+	Name        string  `json:"name"`
+	Description *string `json:"description"`
+	Group       *string `json:"group"`
+}
+
+type Inputs struct {
+	Resources map[string]Input      `json:"resources"` // {ref:Input}
+	Secrets   map[string]Input      `json:"secrets"`   // {ref:Input}
+	Configs   map[string]Input      `json:"configs"`   // {ref:Input}
+	Groups    map[string]InputGroup `json:"groups"`    // {ref:InputGroup}
+}
