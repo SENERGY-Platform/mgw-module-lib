@@ -40,21 +40,8 @@ func Validate(m model.Module) error {
 	if err := validateKeyNotEmptyString(m.Volumes, "invalid volume name"); err != nil {
 		return err
 	}
-	if m.Dependencies != nil {
-		for mid, dependency := range m.Dependencies {
-			if !isValidModuleID(mid) {
-				return fmt.Errorf("invalid dependency module ID format '%s'", mid)
-			}
-			if err := sem_ver.ValidateSemVerRange(dependency.Version); err != nil {
-				return fmt.Errorf("dependency '%s': %s", mid, err)
-			}
-			if dependency.RequiredServices == nil {
-				return fmt.Errorf("missing services for dependency '%s'", mid)
-			}
-			if err := validateKeyNotEmptyString(dependency.RequiredServices, fmt.Sprintf("invalid service for dependency '%s'", mid)); err != nil {
-				return err
-			}
-		}
+	if err := validateDependencies(m.Dependencies); err != nil {
+		return err
 	}
 	if err := validateKeyNotEmptyString(m.Resources, "invalid resource reference"); err != nil {
 		return err
@@ -169,6 +156,26 @@ func Validate(m model.Module) error {
 						hostPorts[pm.HostPort[0]] = struct{}{}
 					}
 				}
+			}
+		}
+	}
+	return nil
+}
+
+func validateDependencies(dependencies map[string]model.ModuleDependency) error {
+	if dependencies != nil {
+		for mid, dependency := range dependencies {
+			if !isValidModuleID(mid) {
+				return fmt.Errorf("invalid dependency module ID format '%s'", mid)
+			}
+			if err := sem_ver.ValidateSemVerRange(dependency.Version); err != nil {
+				return fmt.Errorf("dependency '%s': %s", mid, err)
+			}
+			if dependency.RequiredServices == nil {
+				return fmt.Errorf("missing services for dependency '%s'", mid)
+			}
+			if err := validateKeyNotEmptyString(dependency.RequiredServices, fmt.Sprintf("invalid service for dependency '%s'", mid)); err != nil {
+				return err
 			}
 		}
 	}
