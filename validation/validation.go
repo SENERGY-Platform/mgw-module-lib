@@ -78,19 +78,11 @@ func Validate(m model.Module) error {
 		if err := validateServiceRefVars(service); err != nil {
 			return fmt.Errorf("invalid service reference variable: '%s' -> %s", ref, err)
 		}
-		if service.Volumes != nil {
-			for _, volume := range service.Volumes {
-				if _, ok := m.Volumes[volume]; !ok {
-					return fmt.Errorf("invalid service volume: '%s' -> '%s'", ref, volume)
-				}
-			}
+		if err := validateServiceVolumes(service.Volumes, m.Volumes); err != nil {
+			return fmt.Errorf("service '%s' invalid volume configuration: %s", ref, err)
 		}
-		if service.Resources != nil {
-			for _, target := range service.Resources {
-				if _, ok := m.Resources[target.Ref]; !ok {
-					return fmt.Errorf("invalid service resource: '%s' -> '%s'", ref, target.Ref)
-				}
-			}
+		if err := validateServiceResources(service.Resources, m.Resources); err != nil {
+			return fmt.Errorf("service '%s' invalid resource configuration: %s", ref, err)
 		}
 		if service.Secrets != nil {
 			for _, secretRef := range service.Secrets {
@@ -156,6 +148,34 @@ func Validate(m model.Module) error {
 						hostPorts[pm.HostPort[0]] = struct{}{}
 					}
 				}
+			}
+		}
+	}
+	return nil
+}
+
+func validateServiceVolumes(sVolumes map[string]string, mVolumes model.Set[string]) error {
+	if sVolumes != nil {
+		if mVolumes == nil {
+			return errors.New("no volumes defined")
+		}
+		for _, volume := range sVolumes {
+			if _, ok := mVolumes[volume]; !ok {
+				return fmt.Errorf("volume '%s' not defined", volume)
+			}
+		}
+	}
+	return nil
+}
+
+func validateServiceResources(sResources map[string]model.ResourceTarget, mResources map[string]model.Set[string]) error {
+	if sResources != nil {
+		if mResources == nil {
+			return errors.New("no resources defined")
+		}
+		for _, target := range sResources {
+			if _, ok := mResources[target.Ref]; !ok {
+				return fmt.Errorf("resource '%s' not defined", target.Ref)
 			}
 		}
 	}
