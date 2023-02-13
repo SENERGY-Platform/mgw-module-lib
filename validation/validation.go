@@ -55,23 +55,23 @@ func Validate(m model.Module) error {
 	if err := validateInputGroups(m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
 	}
-	if err := validateInputsResources(m.Inputs.Resources, m.Resources); err != nil {
-		return fmt.Errorf("invalid input configuration: %s", err)
-	}
 	if err := validateInputsAndGroups(m.Inputs.Resources, m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
-	}
-	if err := validateInputsSecrets(m.Inputs.Secrets, m.Secrets); err != nil {
-		return fmt.Errorf("invalid input configuration: %s", err)
 	}
 	if err := validateInputsAndGroups(m.Inputs.Secrets, m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
 	}
-	if err := validateInputsConfigs(m.Inputs.Configs, m.Configs); err != nil {
-		return fmt.Errorf("invalid input configuration: %s", err)
-	}
 	if err := validateInputsAndGroups(m.Inputs.Configs, m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
+	}
+	if err := validateInputsResources(m.Inputs.Resources, m.Resources); err != nil {
+		return fmt.Errorf("invalid input configuration: %s", err)
+	}
+	if err := validateInputsSecrets(m.Inputs.Secrets, m.Secrets); err != nil {
+		return fmt.Errorf("invalid input configuration: %s", err)
+	}
+	if err := validateInputsConfigs(m.Inputs.Configs, m.Configs); err != nil {
+		return fmt.Errorf("invalid input configuration: %s", err)
 	}
 	if m.Services != nil {
 		hostPorts := make(map[uint]struct{})
