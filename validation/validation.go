@@ -84,13 +84,13 @@ func Validate(m model.Module) error {
 				return fmt.Errorf("invalid service mount point: '%s' -> %s", ref, err)
 			}
 			if err := validateServiceRefVars(service.Configs, refVars); err != nil {
-				return fmt.Errorf("service '%s' invalid reference variable configuration: %s", ref, err)
+				return fmt.Errorf("service '%s' invalid config reference variable configuration: %s", ref, err)
 			}
 			if err := validateServiceRefVars(service.SrvReferences, refVars); err != nil {
-				return fmt.Errorf("service '%s' invalid reference variable configuration: %s", ref, err)
+				return fmt.Errorf("service '%s' invalid service reference variable configuration: %s", ref, err)
 			}
 			if err := validateServiceExtDependencyRefVars(service.ExternalDependencies, refVars); err != nil {
-				return fmt.Errorf("service '%s' invalid reference variable configuration: %s", ref, err)
+				return fmt.Errorf("service '%s' invalid external dependency reference variable configuration: %s", ref, err)
 			}
 			if err := validateServiceVolumes(service.Volumes, m.Volumes); err != nil {
 				return fmt.Errorf("service '%s' invalid volume configuration: %s", ref, err)
