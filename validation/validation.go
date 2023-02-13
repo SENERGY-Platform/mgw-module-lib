@@ -102,31 +102,8 @@ func Validate(m model.Module) error {
 		if err := validateServiceExternalDependencies(service.ExternalDependencies, m.Dependencies); err != nil {
 			return fmt.Errorf("service '%s' invalid external dependency configuration: %s", ref, err)
 		}
-		if service.ExternalDependencies != nil {
-			for _, target := range service.ExternalDependencies {
-				if !isValidModuleID(target.ID) {
-					return fmt.Errorf("invalid service external dependency: '%s' -> '%s'", ref, target.ID)
-				}
-			}
-		}
-		if service.PortMappings != nil {
-			for _, pm := range service.PortMappings {
-				if pm.HostPort != nil && len(pm.HostPort) > 0 {
-					if len(pm.HostPort) > 1 {
-						for i := pm.HostPort[0]; i <= pm.HostPort[1]; i++ {
-							if _, ok := hostPorts[i]; ok {
-								return fmt.Errorf("duplicate host port '%d'", i)
-							}
-							hostPorts[i] = struct{}{}
-						}
-					} else {
-						if _, ok := hostPorts[pm.HostPort[0]]; ok {
-							return fmt.Errorf("duplicate host port '%d'", pm.HostPort[0])
-						}
-						hostPorts[pm.HostPort[0]] = struct{}{}
-					}
-				}
-			}
+		if err := validateServicePortMappings(service.PortMappings, hostPorts); err != nil {
+			return fmt.Errorf("service '%s' invalid port mapping configuration: %s", ref, err)
 		}
 	}
 	return nil
@@ -264,6 +241,29 @@ func validateServiceReferences(sReferences map[string]string, mServices map[stri
 		for _, srvRef := range sReferences {
 			if _, ok := mServices[srvRef]; !ok {
 				return fmt.Errorf("service '%s' not defined", srvRef)
+			}
+		}
+	}
+	return nil
+}
+
+func validateServicePortMappings(sPortMappings model.PortMappings, hostPorts map[uint]struct{}) error {
+	if sPortMappings != nil {
+		for _, pm := range sPortMappings {
+			if pm.HostPort != nil && len(pm.HostPort) > 0 {
+				if len(pm.HostPort) > 1 {
+					for i := pm.HostPort[0]; i <= pm.HostPort[1]; i++ {
+						if _, ok := hostPorts[i]; ok {
+							return fmt.Errorf("duplicate port mapping '%d'", i)
+						}
+						hostPorts[i] = struct{}{}
+					}
+				} else {
+					if _, ok := hostPorts[pm.HostPort[0]]; ok {
+						return fmt.Errorf("duplicate port mapping '%d'", pm.HostPort[0])
+					}
+					hostPorts[pm.HostPort[0]] = struct{}{}
+				}
 			}
 		}
 	}
