@@ -84,12 +84,8 @@ func Validate(m model.Module) error {
 		if err := validateServiceResources(service.Resources, m.Resources); err != nil {
 			return fmt.Errorf("service '%s' invalid resource configuration: %s", ref, err)
 		}
-		if service.Secrets != nil {
-			for _, secretRef := range service.Secrets {
-				if _, ok := m.Secrets[secretRef]; !ok {
-					return fmt.Errorf("invalid service secret: '%s' -> '%s'", ref, secretRef)
-				}
-			}
+		if err := validateServiceSecrets(service.Secrets, m.Secrets); err != nil {
+			return fmt.Errorf("service '%s' invalid secret configuration: %s", ref, err)
 		}
 		if service.Configs != nil {
 			for _, confRef := range service.Configs {
@@ -196,6 +192,20 @@ func validateModuleDependencies(dependencies map[string]model.ModuleDependency) 
 			}
 			if err := validateKeyNotEmptyString(dependency.RequiredServices, fmt.Sprintf("invalid service for dependency '%s'", mid)); err != nil {
 				return err
+			}
+		}
+	}
+	return nil
+}
+
+func validateServiceSecrets(sSecrets map[string]string, mSecrets map[string]model.Secret) error {
+	if sSecrets != nil {
+		if mSecrets == nil {
+			return errors.New("no secrets defined")
+		}
+		for _, secretRef := range sSecrets {
+			if _, ok := mSecrets[secretRef]; !ok {
+				return fmt.Errorf("secret '%s' not defined", secretRef)
 			}
 		}
 	}
