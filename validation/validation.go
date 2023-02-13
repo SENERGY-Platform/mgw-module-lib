@@ -41,7 +41,7 @@ func Validate(m model.Module) error {
 		return errors.New("invalid volume name")
 	}
 	if err := validateModuleDependencies(m.Dependencies); err != nil {
-		return err
+		return fmt.Errorf("invalid dependency configuration: %s", err)
 	}
 	if !validateKeyNotEmptyString(m.Resources) {
 		return errors.New("invalid resource reference")
@@ -140,16 +140,16 @@ func validateModuleDependencies(dependencies map[string]model.ModuleDependency) 
 	if dependencies != nil {
 		for mid, dependency := range dependencies {
 			if !isValidModuleID(mid) {
-				return fmt.Errorf("invalid dependency module ID format '%s'", mid)
+				return fmt.Errorf("invalid module ID format '%s'", mid)
 			}
 			if err := sem_ver.ValidateSemVerRange(dependency.Version); err != nil {
-				return fmt.Errorf("dependency '%s': %s", mid, err)
+				return fmt.Errorf("version %s", err)
 			}
 			if dependency.RequiredServices == nil {
 				return fmt.Errorf("missing services for dependency '%s'", mid)
 			}
 			if !validateKeyNotEmptyString(dependency.RequiredServices) {
-				return fmt.Errorf("invalid service for dependency '%s'", mid)
+				return fmt.Errorf("invalid service reference")
 			}
 		}
 	}
