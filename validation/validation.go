@@ -246,6 +246,24 @@ func validateServiceDependencies(sDependencies model.Set[string], mServices map[
 	return nil
 }
 
+func validateServiceExternalDependencies(sExtDependencies map[string]model.ExternalDependencyTarget, mDependencies map[string]model.ModuleDependency) error {
+	if sExtDependencies != nil {
+		if mDependencies == nil {
+			return errors.New("no module dependencies defined")
+		}
+		for _, target := range sExtDependencies {
+			mDep, ok := mDependencies[target.ID]
+			if !ok {
+				return fmt.Errorf("module dependency '%s' not defined", target.ID)
+			}
+			if _, k := mDep.RequiredServices[target.Service]; !k {
+				return fmt.Errorf("module dependency '%s' service '%s' not defined", target.ID, target.Service)
+			}
+		}
+	}
+	return nil
+}
+
 func validateServiceReferences(sReferences map[string]string, mServices map[string]*model.Service) error {
 	if sReferences != nil {
 		if mServices == nil {
