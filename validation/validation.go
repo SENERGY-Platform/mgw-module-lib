@@ -44,16 +44,16 @@ func Validate(m model.Module) error {
 		return err
 	}
 	if !validateKeyNotEmptyString(m.Resources) {
-		return errors.New("empty resource reference")
+		return errors.New("invalid resource reference")
 	}
 	if !validateKeyNotEmptyString(m.Secrets) {
-		return errors.New("empty secret reference")
+		return errors.New("invalid secret reference")
 	}
 	if !validateKeyNotEmptyString(m.Configs) {
-		return errors.New("empty config reference")
+		return errors.New("invalid config reference")
 	}
 	if !validateKeyNotEmptyString(m.Inputs.Groups) {
-		return errors.New("empty input group reference")
+		return errors.New("invalid input group reference")
 	}
 	if err := validateInputs(m.Inputs.Resources, m.Resources, "resource", m.Inputs.Groups); err != nil {
 		return err
