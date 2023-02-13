@@ -215,6 +215,22 @@ func validateInputsAndGroups(inputs map[string]model.Input, groups map[string]mo
 	return nil
 }
 
+func validateInputGroups(groups map[string]model.InputGroup) error {
+	if groups != nil {
+		for ref, group := range groups {
+			if ref == "" {
+				return errors.New("invalid input group reference")
+			}
+			if group.Group != nil {
+				if _, ok := groups[*group.Group]; !ok {
+					return fmt.Errorf("input group '%s' not defined", *group.Group)
+				}
+			}
+		}
+	}
+	return nil
+}
+
 func validateServiceSecrets(sSecrets map[string]string, mSecrets map[string]model.Secret) error {
 	if sSecrets != nil {
 		if mSecrets == nil {
