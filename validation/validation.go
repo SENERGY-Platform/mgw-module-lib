@@ -368,10 +368,10 @@ func validateServiceExtDependencyRefVars(sExtDependencies map[string]model.Exter
 	if sExtDependencies != nil {
 		for refVar := range sExtDependencies {
 			if refVar == "" {
-				return errors.New("empty external dependency reference variable")
+				return errors.New("empty reference variable")
 			}
 			if _, ok := refVars[refVar]; ok {
-				return fmt.Errorf("ducpliate external dependency reference variable '%s'", refVar)
+				return fmt.Errorf("ducpliate reference variable '%s'", refVar)
 			}
 			refVars[refVar] = struct{}{}
 		}
