@@ -414,6 +414,21 @@ func validateServiceSrvReferenceRefVars(sReferences map[string]string, refVars m
 	return nil
 }
 
+func validateServiceExtDependencyRefVars(sExtDependencies map[string]model.ExternalDependencyTarget, refVars map[string]struct{}) error {
+	if sExtDependencies != nil {
+		for refVar := range sExtDependencies {
+			if refVar == "" {
+				return errors.New("empty external dependency reference variable")
+			}
+			if _, ok := refVars[refVar]; ok {
+				return fmt.Errorf("ducpliate external dependency reference variable '%s'", refVar)
+			}
+			refVars[refVar] = struct{}{}
+		}
+	}
+	return nil
+}
+
 func validateServiceMountPoints(service *model.Service) error {
 	mountPoints := make(map[string]string)
 	if service.Include != nil {
