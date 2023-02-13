@@ -136,20 +136,14 @@ func validateServiceResources(sResources map[string]model.ResourceTarget, mResou
 	return nil
 }
 
-func validateModuleDependencies(dependencies map[string]model.ModuleDependency) error {
+func validateModuleDependencies(dependencies map[string]string) error {
 	if dependencies != nil {
-		for mid, dependency := range dependencies {
+		for mid, ver := range dependencies {
 			if !isValidModuleID(mid) {
 				return fmt.Errorf("invalid module ID format '%s'", mid)
 			}
-			if err := sem_ver.ValidateSemVerRange(dependency.Version); err != nil {
+			if err := sem_ver.ValidateSemVerRange(ver); err != nil {
 				return fmt.Errorf("version %s", err)
-			}
-			if dependency.RequiredServices == nil {
-				return fmt.Errorf("missing services for dependency '%s'", mid)
-			}
-			if !validateKeyNotEmptyString(dependency.RequiredServices) {
-				return fmt.Errorf("invalid service reference")
 			}
 		}
 	}
@@ -214,18 +208,14 @@ func validateServiceDependencies(sDependencies model.Set[string], mServices map[
 	return nil
 }
 
-func validateServiceExternalDependencies(sExtDependencies map[string]model.ExternalDependencyTarget, mDependencies map[string]model.ModuleDependency) error {
+func validateServiceExternalDependencies(sExtDependencies map[string]model.ExternalDependencyTarget, mDependencies map[string]string) error {
 	if sExtDependencies != nil {
 		if mDependencies == nil {
 			return errors.New("no module dependencies defined")
 		}
 		for _, target := range sExtDependencies {
-			mDep, ok := mDependencies[target.ID]
-			if !ok {
+			if _, ok := mDependencies[target.ID]; !ok {
 				return fmt.Errorf("module dependency '%s' not defined", target.ID)
-			}
-			if _, k := mDep.RequiredServices[target.Service]; !k {
-				return fmt.Errorf("module dependency '%s' service '%s' not defined", target.ID, target.Service)
 			}
 		}
 	}

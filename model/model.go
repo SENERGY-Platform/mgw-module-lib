@@ -28,22 +28,22 @@ type ModuleType = string
 type DeploymentType = string
 
 type Module struct {
-	ID             string                      `json:"id"`
-	Name           string                      `json:"name"`
-	Description    string                      `json:"description"`
-	Tags           Set[string]                 `json:"tags"`
-	License        string                      `json:"license"`
-	Author         string                      `json:"author"`
-	Version        string                      `json:"version"`
-	Type           ModuleType                  `json:"type"`
-	DeploymentType DeploymentType              `json:"deployment_type"`
-	Services       map[string]*Service         `json:"services"`     // {ref:Service}
-	Volumes        Set[string]                 `json:"volumes"`      // {volName}
-	Dependencies   map[string]ModuleDependency `json:"dependencies"` // {moduleID:ModuleDependency}
-	Resources      map[string]Set[string]      `json:"resources"`    // {ref:{tag}}
-	Secrets        map[string]Secret           `json:"secrets"`      // {ref:Secret}
-	Configs        Configs                     `json:"configs"`      // {ref:ConfigValue}
-	Inputs         Inputs                      `json:"inputs"`
+	ID             string                 `json:"id"`
+	Name           string                 `json:"name"`
+	Description    string                 `json:"description"`
+	Tags           Set[string]            `json:"tags"`
+	License        string                 `json:"license"`
+	Author         string                 `json:"author"`
+	Version        string                 `json:"version"`
+	Type           ModuleType             `json:"type"`
+	DeploymentType DeploymentType         `json:"deployment_type"`
+	Services       map[string]*Service    `json:"services"`     // {ref:Service}
+	Volumes        Set[string]            `json:"volumes"`      // {volName}
+	Dependencies   map[string]string      `json:"dependencies"` // {moduleID:moduleVersion}
+	Resources      map[string]Set[string] `json:"resources"`    // {ref:{tag}}
+	Secrets        map[string]Secret      `json:"secrets"`      // {ref:Secret}
+	Configs        Configs                `json:"configs"`      // {ref:ConfigValue}
+	Inputs         Inputs                 `json:"inputs"`
 }
 
 type Service struct {
@@ -101,11 +101,6 @@ type portMapping struct {
 type ExternalDependencyTarget struct {
 	ID      string `json:"id"`
 	Service string `json:"service"`
-}
-
-type ModuleDependency struct {
-	Version          string      `json:"version"`
-	RequiredServices Set[string] `json:"required_services"`
 }
 
 type ResourceTarget struct {
