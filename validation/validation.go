@@ -184,6 +184,23 @@ func validateInputsSecrets(inputs map[string]model.Input, mSecrets map[string]mo
 	return nil
 }
 
+func validateInputsConfigs(inputs map[string]model.Input, mConfigs model.Configs) error {
+	if inputs != nil {
+		if mConfigs == nil {
+			return errors.New("no configs defined")
+		}
+		for ref := range inputs {
+			if ref == "" {
+				return errors.New("invalid input reference")
+			}
+			if _, ok := mConfigs[ref]; !ok {
+				return fmt.Errorf("config '%s' not defined", ref)
+			}
+		}
+	}
+	return nil
+}
+
 func validateServiceSecrets(sSecrets map[string]string, mSecrets map[string]model.Secret) error {
 	if sSecrets != nil {
 		if mSecrets == nil {
