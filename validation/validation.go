@@ -212,6 +212,20 @@ func validateServiceSecrets(sSecrets map[string]string, mSecrets map[string]mode
 	return nil
 }
 
+func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) error {
+	if sConfigs != nil {
+		if mConfigs == nil {
+			return errors.New("no configs defined")
+		}
+		for _, confRef := range sConfigs {
+			if _, ok := mConfigs[confRef]; !ok {
+				return fmt.Errorf("config '%s' not defined", confRef)
+			}
+		}
+	}
+	return nil
+}
+
 func validateServiceRefVars(service *model.Service) error {
 	refVars := make(map[string]string)
 	if service.Configs != nil {
