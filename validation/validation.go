@@ -38,19 +38,19 @@ func Validate(m model.Module) error {
 		return fmt.Errorf("invlaid deployment type '%s'", m.DeploymentType)
 	}
 	if !validateKeyNotEmptyString(m.Volumes) {
-		return errors.New("invalid volume name")
+		return errors.New("empty volume name")
 	}
 	if err := validateModuleDependencies(m.Dependencies); err != nil {
 		return fmt.Errorf("invalid dependency configuration: %s", err)
 	}
 	if !validateKeyNotEmptyString(m.Resources) {
-		return errors.New("invalid resource reference")
+		return errors.New("empty resource reference")
 	}
 	if !validateKeyNotEmptyString(m.Secrets) {
-		return errors.New("invalid secret reference")
+		return errors.New("empty secret reference")
 	}
 	if !validateKeyNotEmptyString(m.Configs) {
-		return errors.New("invalid config reference")
+		return errors.New("empty config reference")
 	}
 	if err := validateInputGroups(m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
@@ -77,7 +77,7 @@ func Validate(m model.Module) error {
 		hostPorts := make(map[uint]struct{})
 		for ref, service := range m.Services {
 			if ref == "" {
-				return errors.New("invalid service reference")
+				return errors.New("empty service reference")
 			}
 			if err := validateServiceMountPoints(service); err != nil {
 				return fmt.Errorf("invalid service mount point: '%s' -> %s", ref, err)
