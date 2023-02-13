@@ -75,6 +75,7 @@ func Validate(m model.Module) error {
 	}
 	if m.Services != nil {
 		hostPorts := make(map[uint]struct{})
+		refVars := make(map[string]struct{})
 		for ref, service := range m.Services {
 			if ref == "" {
 				return errors.New("empty service reference")
@@ -82,8 +83,14 @@ func Validate(m model.Module) error {
 			if err := validateServiceMountPoints(service); err != nil {
 				return fmt.Errorf("invalid service mount point: '%s' -> %s", ref, err)
 			}
-			if err := validateServiceRefVars(service); err != nil {
-				return fmt.Errorf("invalid service reference variable: '%s' -> %s", ref, err)
+			if err := validateServiceRefVars(service.Configs, refVars); err != nil {
+				return fmt.Errorf("service '%s' invalid reference variable configuration: %s", ref, err)
+			}
+			if err := validateServiceRefVars(service.SrvReferences, refVars); err != nil {
+				return fmt.Errorf("service '%s' invalid reference variable configuration: %s", ref, err)
+			}
+			if err := validateServiceExtDependencyRefVars(service.ExternalDependencies, refVars); err != nil {
+				return fmt.Errorf("service '%s' invalid reference variable configuration: %s", ref, err)
 			}
 			if err := validateServiceVolumes(service.Volumes, m.Volumes); err != nil {
 				return fmt.Errorf("service '%s' invalid volume configuration: %s", ref, err)
