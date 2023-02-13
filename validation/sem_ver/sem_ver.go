@@ -70,21 +70,21 @@ func semVerRangeCheck(o string, w, v string) bool {
 func semVerRangeParsePart(s string) (string, string, error) {
 	pos := strings.Index(s, "v")
 	if pos < 1 || pos > 2 {
-		return "", "", fmt.Errorf("invalid format '%s'", s)
+		return "", "", fmt.Errorf("format '%s' invalid", s)
 	}
 	if IsValidOperator(s[:pos]) {
 		if !semver.IsValid(s[pos:]) {
-			return "", "", fmt.Errorf("invalid version format '%s'", s[pos:])
+			return "", "", fmt.Errorf("format '%s' invalid", s[pos:])
 		}
 		return s[:pos], s[pos:], nil
 	}
-	return "", "", fmt.Errorf("invalid operator format '%s'", s[:pos])
+	return "", "", fmt.Errorf("operator format '%s' invalid", s[:pos])
 }
 
 func semVerRangeParse(s string) (opr []string, ver []string, err error) {
 	partsStr := strings.Split(s, ";")
 	if len(partsStr) > 2 {
-		err = fmt.Errorf("invalid format '%s'", s)
+		err = fmt.Errorf("format '%s' invalid", s)
 		return
 	}
 	for _, p := range partsStr {
@@ -98,15 +98,15 @@ func semVerRangeParse(s string) (opr []string, ver []string, err error) {
 	}
 	if len(opr) > 1 && len(ver) > 1 {
 		if opr[0] == Less || opr[0] == LessEqual || opr[0] == Equal {
-			err = fmt.Errorf("invalid operator order '%s' + '%s'", opr[0], opr[1])
+			err = fmt.Errorf("operator order '%s' + '%s' invalid", opr[0], opr[1])
 			return
 		}
 		if opr[1] == Greater || opr[1] == GreaterEqual || opr[1] == Equal {
-			err = fmt.Errorf("invalid operator order '%s' - '%s'", opr[0], opr[1])
+			err = fmt.Errorf("operator order '%s' - '%s' invalid", opr[0], opr[1])
 			return
 		}
 		if semver.Compare(ver[0], ver[1]) > -1 {
-			err = fmt.Errorf("invalid version order '%s' - '%s'", ver[0], ver[1])
+			err = fmt.Errorf("version order '%s' - '%s' invalid", ver[0], ver[1])
 			return
 		}
 	}
