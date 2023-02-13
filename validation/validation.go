@@ -56,7 +56,7 @@ func Validate(m model.Module) error {
 		return fmt.Errorf("invalid input group configuration: %s", err)
 	}
 	if err := validateInputsResources(m.Inputs.Resources, m.Resources); err != nil {
-		return fmt.Errorf("invalid resource input configuration: %s", err)
+		return fmt.Errorf("invalid input configuration: %s", err)
 	}
 	if err := validateInputsAndGroups(m.Inputs.Resources, m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
