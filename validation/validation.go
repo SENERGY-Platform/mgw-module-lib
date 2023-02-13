@@ -349,29 +349,14 @@ func validateServicePortMappings(sPortMappings model.PortMappings, hostPorts map
 	return nil
 }
 
-func validateServiceConfigRefVars(sConfigs map[string]string, refVars map[string]struct{}) error {
-	if sConfigs != nil {
-		for refVar := range sConfigs {
-			if refVar == "" {
-				return errors.New("empty config reference variable")
-			}
-			if _, ok := refVars[refVar]; ok {
-				return fmt.Errorf("ducpliate config reference variable '%s'", refVar)
-			}
-			refVars[refVar] = struct{}{}
-		}
-	}
-	return nil
-}
-
-func validateServiceSrvReferenceRefVars(sReferences map[string]string, refVars map[string]struct{}) error {
+func validateServiceRefVars(sReferences map[string]string, refVars map[string]struct{}) error {
 	if sReferences != nil {
 		for refVar := range sReferences {
 			if refVar == "" {
-				return errors.New("empty service reference variable")
+				return errors.New("empty reference variable")
 			}
 			if _, ok := refVars[refVar]; ok {
-				return fmt.Errorf("ducpliate service reference variable '%s'", refVar)
+				return fmt.Errorf("ducpliate reference variable '%s'", refVar)
 			}
 			refVars[refVar] = struct{}{}
 		}
