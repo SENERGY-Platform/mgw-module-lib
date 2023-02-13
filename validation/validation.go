@@ -150,6 +150,23 @@ func validateModuleDependencies(dependencies map[string]string) error {
 	return nil
 }
 
+func validateInputsResources(inputs map[string]model.Input, mResources map[string]model.Set[string]) error {
+	if inputs != nil {
+		if mResources == nil {
+			return errors.New("no resources defined")
+		}
+		for ref := range inputs {
+			if ref == "" {
+				return errors.New("invalid input reference")
+			}
+			if _, ok := mResources[ref]; !ok {
+				return fmt.Errorf("resource '%s' not defined", ref)
+			}
+		}
+	}
+	return nil
+}
+
 func validateServiceSecrets(sSecrets map[string]string, mSecrets map[string]model.Secret) error {
 	if sSecrets != nil {
 		if mSecrets == nil {
