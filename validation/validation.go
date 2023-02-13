@@ -52,8 +52,8 @@ func Validate(m model.Module) error {
 	if !validateKeyNotEmptyString(m.Configs) {
 		return errors.New("invalid config reference")
 	}
-	if !validateKeyNotEmptyString(m.Inputs.Groups) {
-		return errors.New("invalid input group reference")
+	if err := validateInputGroups(m.Inputs.Groups); err != nil {
+		return fmt.Errorf("invalid input group configuration: %s", err)
 	}
 	if err := validateInputs(m.Inputs.Resources, m.Resources, "resource", m.Inputs.Groups); err != nil {
 		return err
