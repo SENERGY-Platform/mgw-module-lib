@@ -399,6 +399,21 @@ func validateServiceConfigRefVars(sConfigs map[string]string, refVars map[string
 	return nil
 }
 
+func validateServiceSrvReferenceRefVars(sReferences map[string]string, refVars map[string]struct{}) error {
+	if sReferences != nil {
+		for refVar := range sReferences {
+			if refVar == "" {
+				return errors.New("empty service reference variable")
+			}
+			if _, ok := refVars[refVar]; ok {
+				return fmt.Errorf("ducpliate service reference variable '%s'", refVar)
+			}
+			refVars[refVar] = struct{}{}
+		}
+	}
+	return nil
+}
+
 func validateServiceMountPoints(service *model.Service) error {
 	mountPoints := make(map[string]string)
 	if service.Include != nil {
