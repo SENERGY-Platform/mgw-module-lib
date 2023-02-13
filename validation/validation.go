@@ -93,17 +93,8 @@ func Validate(m model.Module) error {
 		if err := validateServiceHttpEndpoints(service.HttpEndpoints); err != nil {
 			return fmt.Errorf("service '%s' invalid http endpoint configuration: %s", ref, err)
 		}
-		if service.HttpEndpoints != nil {
-			extPaths := make(map[string]string)
-			for extPath, edpt := range service.HttpEndpoints {
-				if !isValidPath(extPath) {
-					return fmt.Errorf("invalid external path '%s'", extPath)
-				}
-				if v, ok := extPaths[extPath]; ok {
-					return fmt.Errorf("invalid service http endpoint: '%s' -> '%s' -> '%s' & '%s'", ref, extPath, v, edpt.Path)
-				}
-				extPaths[extPath] = edpt.Path
-			}
+		if err := validateServiceReferences(service.SrvReferences, m.Services); err != nil {
+			return fmt.Errorf("service '%s' invalid reference configuration: %s", ref, err)
 		}
 		if service.SrvReferences != nil {
 			for refVar, s := range service.SrvReferences {
@@ -236,6 +227,20 @@ func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint) 
 				return fmt.Errorf("duplicate path '%s'", extPath)
 			}
 			extPaths[extPath] = struct{}{}
+		}
+	}
+	return nil
+}
+
+func validateServiceReferences(sReferences map[string]string, mServices map[string]*model.Service) error {
+	if sReferences != nil {
+		if mServices == nil {
+			return errors.New("no services defined")
+		}
+		for _, srvRef := range sReferences {
+			if _, ok := mServices[srvRef]; !ok {
+				return fmt.Errorf("service '%s' not defined", srvRef)
+			}
 		}
 	}
 	return nil
