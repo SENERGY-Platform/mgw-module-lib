@@ -87,12 +87,11 @@ func Validate(m model.Module) error {
 		if err := validateServiceSecrets(service.Secrets, m.Secrets); err != nil {
 			return fmt.Errorf("service '%s' invalid secret configuration: %s", ref, err)
 		}
-		if service.Configs != nil {
-			for _, confRef := range service.Configs {
-				if _, ok := m.Configs[confRef]; !ok {
-					return fmt.Errorf("invalid service secret: '%s' -> '%s'", ref, confRef)
-				}
-			}
+		if err := validateServiceConfigs(service.Configs, m.Configs); err != nil {
+			return fmt.Errorf("service '%s' invalid config configuration: %s", ref, err)
+		}
+		if err := validateServiceHttpEndpoints(service.HttpEndpoints); err != nil {
+			return fmt.Errorf("service '%s' invalid http endpoint configuration: %s", ref, err)
 		}
 		if service.HttpEndpoints != nil {
 			extPaths := make(map[string]string)
