@@ -201,7 +201,7 @@ func validateInputsConfigs(inputs map[string]model.Input, mConfigs model.Configs
 	return nil
 }
 
-func validateInputGroups(inputs map[string]model.Input, groups map[string]model.InputGroup) error {
+func validateInputsAndGroups(inputs map[string]model.Input, groups map[string]model.InputGroup) error {
 	for _, input := range inputs {
 		if input.Group != nil {
 			if groups == nil {
