@@ -349,41 +349,6 @@ func validateServicePortMappings(sPortMappings model.PortMappings, hostPorts map
 	return nil
 }
 
-func validateServiceRefVars(service *model.Service) error {
-	refVars := make(map[string]string)
-	if service.Configs != nil {
-		for rv := range service.Configs {
-			if rv == "" {
-				return errors.New("invalid ref var")
-			}
-			refVars[rv] = "configs"
-		}
-	}
-	if service.SrvReferences != nil {
-		for rv := range service.SrvReferences {
-			if rv == "" {
-				return errors.New("invalid ref var")
-			}
-			if v, ok := refVars[rv]; ok {
-				return fmt.Errorf("'%s' -> '%s' & '%s'", rv, v, "dependencies")
-			}
-			refVars[rv] = "dependencies"
-		}
-	}
-	if service.ExternalDependencies != nil {
-		for rv := range service.ExternalDependencies {
-			if rv == "" {
-				return errors.New("invalid ref var")
-			}
-			if v, ok := refVars[rv]; ok {
-				return fmt.Errorf("'%s' -> '%s' & '%s'", rv, v, "external dependencies")
-			}
-			refVars[rv] = "external dependencies"
-		}
-	}
-	return nil
-}
-
 func validateServiceConfigRefVars(sConfigs map[string]string, refVars map[string]struct{}) error {
 	if sConfigs != nil {
 		for refVar := range sConfigs {
