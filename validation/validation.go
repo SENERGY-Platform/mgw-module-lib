@@ -96,19 +96,11 @@ func Validate(m model.Module) error {
 		if err := validateServiceReferences(service.SrvReferences, m.Services); err != nil {
 			return fmt.Errorf("service '%s' invalid reference configuration: %s", ref, err)
 		}
-		if service.SrvReferences != nil {
-			for refVar, s := range service.SrvReferences {
-				if _, ok := m.Services[s]; !ok {
-					return fmt.Errorf("invalid service reference: '%s' -> '%s' -> '%s'", ref, refVar, s)
-				}
-			}
+		if err := validateServiceDependencies(service.Dependencies, m.Services); err != nil {
+			return fmt.Errorf("service '%s' invalid dependency configuration: %s", ref, err)
 		}
-		if service.Dependencies != nil {
-			for s := range service.Dependencies {
-				if _, ok := m.Services[s]; !ok {
-					return fmt.Errorf("invalid service dependency: '%s' -> '%s'", ref, s)
-				}
-			}
+		if err := validateServiceExternalDependencies(service.ExternalDependencies, m.Dependencies); err != nil {
+			return fmt.Errorf("service '%s' invalid external dependency configuration: %s", ref, err)
 		}
 		if service.ExternalDependencies != nil {
 			for _, target := range service.ExternalDependencies {
