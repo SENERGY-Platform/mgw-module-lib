@@ -67,8 +67,11 @@ func Validate(m model.Module) error {
 	if err := validateInputsAndGroups(m.Inputs.Secrets, m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
 	}
-	if err := validateInputs(m.Inputs.Configs, m.Configs, "config", m.Inputs.Groups); err != nil {
-		return err
+	if err := validateInputsConfigs(m.Inputs.Configs, m.Configs); err != nil {
+		return fmt.Errorf("invalid input configuration: %s", err)
+	}
+	if err := validateInputsAndGroups(m.Inputs.Configs, m.Inputs.Groups); err != nil {
+		return fmt.Errorf("invalid input group configuration: %s", err)
 	}
 	if m.Services != nil {
 		hostPorts := make(map[uint]struct{})
