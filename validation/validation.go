@@ -461,31 +461,6 @@ func isValidPath(s string) bool {
 	return re.MatchString(s)
 }
 
-func validateInputs[T any](inputs map[string]model.Input, refs map[string]T, refName string, groups map[string]model.InputGroup) error {
-	if inputs != nil {
-		if refs == nil {
-			return fmt.Errorf("missing %ss for user inputs", refName)
-		}
-		for ref, input := range inputs {
-			if ref == "" {
-				return errors.New("invalid input reference")
-			}
-			if _, ok := refs[ref]; !ok {
-				return fmt.Errorf("missing %s for input '%s'", refName, ref)
-			}
-			if input.Group != nil {
-				if groups == nil {
-					return errors.New("missing groups for inputs")
-				}
-				if _, ok := groups[*input.Group]; !ok {
-					return fmt.Errorf("missing group for input '%s'", ref)
-				}
-			}
-		}
-	}
-	return nil
-}
-
 func validateKeyNotEmptyString[T any](m map[string]T) bool {
 	if m != nil {
 		for ref := range m {
