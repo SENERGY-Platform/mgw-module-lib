@@ -226,6 +226,22 @@ func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) 
 	return nil
 }
 
+func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint) error {
+	if sHttpEndpoints != nil {
+		extPaths := make(map[string]struct{})
+		for extPath := range sHttpEndpoints {
+			if !isValidPath(extPath) {
+				return fmt.Errorf("invalid path '%s'", extPath)
+			}
+			if _, ok := extPaths[extPath]; ok {
+				return fmt.Errorf("duplicate path '%s'", extPath)
+			}
+			extPaths[extPath] = struct{}{}
+		}
+	}
+	return nil
+}
+
 func validateServiceRefVars(service *model.Service) error {
 	refVars := make(map[string]string)
 	if service.Configs != nil {
