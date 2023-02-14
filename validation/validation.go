@@ -83,13 +83,13 @@ func Validate(m model.Module) error {
 			if err := validateServiceMountPoints(service); err != nil {
 				return fmt.Errorf("invalid service mount point: '%s' -> %s", ref, err)
 			}
-			if err := validateServiceRefVars(service.Configs, refVars); err != nil {
+			if err := validateMapKeys(service.Configs, refVars); err != nil {
 				return fmt.Errorf("service '%s' invalid config reference variable configuration: %s", ref, err)
 			}
-			if err := validateServiceRefVars(service.SrvReferences, refVars); err != nil {
+			if err := validateMapKeys(service.SrvReferences, refVars); err != nil {
 				return fmt.Errorf("service '%s' invalid service reference variable configuration: %s", ref, err)
 			}
-			if err := validateServiceExtDependencyRefVars(service.ExternalDependencies, refVars); err != nil {
+			if err := validateMapKeys(service.ExternalDependencies, refVars); err != nil {
 				return fmt.Errorf("service '%s' invalid external dependency reference variable configuration: %s", ref, err)
 			}
 			if err := validateServiceVolumes(service.Volumes, m.Volumes); err != nil {
@@ -356,36 +356,6 @@ func validateServicePortMappings(sPortMappings model.PortMappings, hostPorts map
 	return nil
 }
 
-func validateServiceRefVars(sReferences map[string]string, refVars map[string]struct{}) error {
-	if sReferences != nil {
-		for refVar := range sReferences {
-			if refVar == "" {
-				return errors.New("empty reference variable")
-			}
-			if _, ok := refVars[refVar]; ok {
-				return fmt.Errorf("ducpliate reference variable '%s'", refVar)
-			}
-			refVars[refVar] = struct{}{}
-		}
-	}
-	return nil
-}
-
-func validateServiceExtDependencyRefVars(sExtDependencies map[string]model.ExternalDependencyTarget, refVars map[string]struct{}) error {
-	if sExtDependencies != nil {
-		for refVar := range sExtDependencies {
-			if refVar == "" {
-				return errors.New("empty reference variable")
-			}
-			if _, ok := refVars[refVar]; ok {
-				return fmt.Errorf("ducpliate reference variable '%s'", refVar)
-			}
-			refVars[refVar] = struct{}{}
-		}
-	}
-	return nil
-}
-
 func validateServiceMountPoints(service *model.Service) error {
 	mountPoints := make(map[string]string)
 	if service.Include != nil {
@@ -472,4 +442,19 @@ func validateKeyNotEmptyString[T any](m map[string]T) bool {
 		}
 	}
 	return true
+}
+
+func validateMapKeys[T any](m map[string]T, keys map[string]struct{}) error {
+	if m != nil {
+		for k := range m {
+			if k == "" {
+				return errors.New("empty")
+			}
+			if _, ok := keys[k]; ok {
+				return fmt.Errorf("duplicate '%s'", k)
+			}
+			keys[k] = struct{}{}
+		}
+	}
+	return nil
 }
