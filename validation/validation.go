@@ -76,12 +76,25 @@ func Validate(m model.Module) error {
 	if m.Services != nil {
 		hostPorts := make(map[uint]struct{})
 		refVars := make(map[string]struct{})
+		mntPts := make(map[string]struct{})
 		for ref, service := range m.Services {
 			if ref == "" {
 				return errors.New("empty service reference")
 			}
-			if err := validateServiceMountPoints(service); err != nil {
-				return fmt.Errorf("invalid service mount point: '%s' -> %s", ref, err)
+			if err := validateMapKeys(service.Include, mntPts); err != nil {
+				return fmt.Errorf("service '%s' invalid include mount point configuration: %s", ref, err)
+			}
+			if err := validateMapKeys(service.Tmpfs, mntPts); err != nil {
+				return fmt.Errorf("service '%s' invalid tmpfs mount point configuration: %s", ref, err)
+			}
+			if err := validateMapKeys(service.Volumes, mntPts); err != nil {
+				return fmt.Errorf("service '%s' invalid volume mount point configuration: %s", ref, err)
+			}
+			if err := validateMapKeys(service.Resources, mntPts); err != nil {
+				return fmt.Errorf("service '%s' invalid resource mount point configuration: %s", ref, err)
+			}
+			if err := validateMapKeys(service.Secrets, mntPts); err != nil {
+				return fmt.Errorf("service '%s' invalid secret mount point configuration: %s", ref, err)
 			}
 			if err := validateMapKeys(service.Configs, refVars); err != nil {
 				return fmt.Errorf("service '%s' invalid config reference variable configuration: %s", ref, err)
