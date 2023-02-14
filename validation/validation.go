@@ -73,6 +73,10 @@ func Validate(m model.Module) error {
 	if err := validateInputsConfigs(m.Inputs.Configs, m.Configs); err != nil {
 		return fmt.Errorf("invalid input configuration: %s", err)
 	}
+	return validateServices(m)
+}
+
+func validateServices(m model.Module) error {
 	if m.Services != nil {
 		hostPorts := make(map[uint]struct{})
 		refVars := make(map[string]struct{})
