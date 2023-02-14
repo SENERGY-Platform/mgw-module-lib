@@ -15,3 +15,24 @@
  */
 
 package validation
+
+import "testing"
+
+func TestValidateKeyNotEmptyString(t *testing.T) {
+	var m map[string]struct{}
+	if validateKeyNotEmptyString(m) != true {
+		t.Error("validateKeyNotEmptyString(m) != true")
+	}
+	m = make(map[string]struct{})
+	if validateKeyNotEmptyString(m) != true {
+		t.Error("validateKeyNotEmptyString(m) != true")
+	}
+	m["a"] = struct{}{}
+	if validateKeyNotEmptyString(m) != true {
+		t.Error("validateKeyNotEmptyString(m) != true")
+	}
+	m[""] = struct{}{}
+	if validateKeyNotEmptyString(m) != false {
+		t.Error("validateKeyNotEmptyString(m) != false")
+	}
+}
