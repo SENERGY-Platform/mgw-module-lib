@@ -92,10 +92,10 @@ type PortMappings map[string]portMapping
 type PortProtocol = string
 
 type portMapping struct {
-	Name     *string       `json:"name"`
-	Port     []uint        `json:"port"`      // {n} || {s, e}
-	HostPort []uint        `json:"host_port"` // {n} || {s, e}
-	Protocol *PortProtocol `json:"protocol"`
+	Name     *string      `json:"name"`
+	Port     []uint       `json:"port"`      // {n} || {s, e}
+	HostPort []uint       `json:"host_port"` // {n} || {s, e}
+	Protocol PortProtocol `json:"protocol"`
 }
 
 type ExternalDependencyTarget struct {
