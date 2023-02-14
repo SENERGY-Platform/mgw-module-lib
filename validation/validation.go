@@ -369,63 +369,6 @@ func validateServicePortMappings(sPortMappings model.PortMappings, hostPorts map
 	return nil
 }
 
-func validateServiceMountPoints(service *model.Service) error {
-	mountPoints := make(map[string]string)
-	if service.Include != nil {
-		for mp := range service.Include {
-			if mp == "" {
-				return errors.New("invalid mount point")
-			}
-			mountPoints[mp] = "include"
-		}
-	}
-	if service.Tmpfs != nil {
-		for mp := range service.Tmpfs {
-			if mp == "" {
-				return errors.New("invalid mount point")
-			}
-			if v, ok := mountPoints[mp]; ok {
-				return fmt.Errorf("'%s' -> '%s' & '%s'", mp, v, "tmpfs")
-			}
-			mountPoints[mp] = "tmpfs"
-		}
-	}
-	if service.Volumes != nil {
-		for mp := range service.Volumes {
-			if mp == "" {
-				return errors.New("invalid mount point")
-			}
-			if v, ok := mountPoints[mp]; ok {
-				return fmt.Errorf("'%s' -> '%s' & '%s'", mp, v, "volumes")
-			}
-			mountPoints[mp] = "volumes"
-		}
-	}
-	if service.Resources != nil {
-		for mp := range service.Resources {
-			if mp == "" {
-				return errors.New("invalid mount point")
-			}
-			if v, ok := mountPoints[mp]; ok {
-				return fmt.Errorf("'%s' -> '%s' & '%s'", mp, v, "resources")
-			}
-			mountPoints[mp] = "resources"
-		}
-	}
-	if service.Secrets != nil {
-		for mp := range service.Secrets {
-			if mp == "" {
-				return errors.New("invalid mount point")
-			}
-			if v, ok := mountPoints[mp]; ok {
-				return fmt.Errorf("'%s' -> '%s' & '%s'", mp, v, "secrets")
-			}
-			mountPoints[mp] = "secrets"
-		}
-	}
-	return nil
-}
-
 func isValidModuleType(s string) bool {
 	_, ok := model.ModuleTypeMap[s]
 	return ok
