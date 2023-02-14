@@ -163,3 +163,27 @@ func TestNewConfigValueSlice(t *testing.T) {
 		t.Error("*cvs3.Delimiter != str")
 	}
 }
+
+func TestIsValidPort(t *testing.T) {
+	if isValidPort(nil) == true {
+		t.Error("isValidPort(nil)  == true")
+	}
+	if isValidPort([]uint{}) == true {
+		t.Error("isValidPort([]uint{})  == true")
+	}
+	if isValidPort([]uint{1, 1}) == true {
+		t.Error("isValidPort([]uint{1, 1})  == true")
+	}
+	if isValidPort([]uint{2, 1}) == true {
+		t.Error("isValidPort([]uint{2, 1})  == true")
+	}
+	if isValidPort([]uint{1, 2, 3}) == true {
+		t.Error("isValidPort([]uint{1, 2, 3})  == true")
+	}
+	if isValidPort([]uint{1}) == false {
+		t.Error("isValidPort([]uint{1}) == false")
+	}
+	if isValidPort([]uint{1, 2}) == false {
+		t.Error("isValidPort([]uint{1}) == false")
+	}
+}
