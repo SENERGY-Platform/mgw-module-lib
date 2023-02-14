@@ -84,3 +84,82 @@ func TestNewConfigValue(t *testing.T) {
 		t.Error("cv3.TypeOpt == nil")
 	}
 }
+
+func TestNewConfigValueSlice(t *testing.T) {
+	str := "test"
+	cvs1 := newConfigValueSlice[string](nil, nil, StringType, false, str, nil, nil)
+	if cvs1.IsSlice != true {
+		t.Error("cvs1.IsSlice != true")
+	}
+	if cvs1.Default != nil {
+		t.Error("cvs1.Default != nil")
+	}
+	if cvs1.Options != nil {
+		t.Error("cvs1.Options != nil")
+	}
+	if cvs1.OptionsLen() != 0 {
+		t.Error("cvs1.OptionsLen() != 0")
+	}
+	if cvs1.DataType != StringType {
+		t.Error("cvs1.DataType !=", StringType)
+	}
+	if cvs1.OptExt != false {
+		t.Error("cvs1.OptExt != false")
+	}
+	if cvs1.Type != str {
+		t.Error("cvs1.Type !=", str)
+	}
+	if cvs1.TypeOpt != nil {
+		t.Error("cvs1.TypeOpt != nil")
+	}
+	if cvs1.Delimiter != nil {
+		t.Error("cvs1.Delimiter != nil")
+	}
+	var def []string
+	var opt []string
+	cto := make(ConfigTypeOptions)
+	cvs2 := newConfigValueSlice(def, opt, StringType, false, str, cto, nil)
+	if cvs2.Default != nil {
+		t.Error("cvs2.Default != nil")
+	}
+	if cvs2.Options != nil {
+		t.Error("cvs2.Options != nil")
+	}
+	if cvs2.OptionsLen() != 0 {
+		t.Error("cvs2.OptionsLen() != 0")
+	}
+	if cvs2.TypeOpt != nil {
+		t.Error("cvs2.TypeOpt != nil")
+	}
+	def = append(def, str)
+	opt = append(opt, str)
+	cto.SetString(str, str)
+	cvs3 := newConfigValueSlice(def, opt, StringType, true, str, cto, &str)
+	if cvs3.Default == nil {
+		t.Error("cvs3.Default == nil")
+	}
+	if cvs3.Default.([]string)[0] != str {
+		t.Error("cvs3.Default.([]string)[0] !=", str)
+	}
+	if cvs3.Options == nil {
+		t.Error("cvs3.Options == nil")
+	}
+	if cvs3.OptionsLen() != 1 {
+		t.Error("cvs3.OptionsLen() != 1")
+	}
+	if cvs3.Options.([]string)[0] != str {
+		t.Error("cvs3.Options.([]string)[0] !=", str)
+	}
+	if cvs3.OptExt != true {
+		t.Error("cvs3.OptExt != true")
+	}
+	if cvs3.TypeOpt == nil {
+		t.Error("cvs3.TypeOpt == nil")
+	}
+	if cvs3.Delimiter == nil {
+		t.Error("cvs3.Delimiter == nil")
+	}
+	if *cvs3.Delimiter != str {
+		t.Error("*cvs3.Delimiter != str")
+	}
+}
