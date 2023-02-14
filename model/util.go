@@ -179,9 +179,6 @@ func (p PortMappings) Add(name *string, port []uint, hostPort []uint, protocol P
 				return errors.New("range mismatch: ports < host ports")
 			}
 		}
-		for _, n := range hostPort {
-			s = append(s, strconv.FormatInt(int64(n), 10))
-		}
 	}
 	if !isValidPortType(protocol) {
 		return fmt.Errorf("invalid protocol '%s'", protocol)
