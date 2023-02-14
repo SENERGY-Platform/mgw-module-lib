@@ -147,7 +147,7 @@ func isValidPortType(s string) bool {
 	return ok
 }
 
-func (p PortMappings) Add(name *string, port []uint, hostPort []uint, protocol *string) error {
+func (p PortMappings) Add(name *string, port []uint, hostPort []uint, protocol PortProtocol) error {
 	var s []string
 	if port == nil || !isValidPort(port) {
 		return fmt.Errorf("invalid port '%v'", port)
@@ -183,12 +183,10 @@ func (p PortMappings) Add(name *string, port []uint, hostPort []uint, protocol *
 			s = append(s, strconv.FormatInt(int64(n), 10))
 		}
 	}
-	if protocol != nil {
-		if !isValidPortType(*protocol) {
-			return fmt.Errorf("invalid protocol '%s'", *protocol)
-		}
-		s = append(s, *protocol)
+	if !isValidPortType(protocol) {
+		return fmt.Errorf("invalid protocol '%s'", protocol)
 	}
+	s = append(s, protocol)
 	key, err := hashStrings(s)
 	if err != nil {
 		return err
