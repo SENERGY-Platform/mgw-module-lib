@@ -16,7 +16,30 @@
 
 package validation
 
-import "testing"
+import (
+	"testing"
+)
+
+func TestValidateModuleDependencies(t *testing.T) {
+	var d map[string]string
+	if err := validateModuleDependencies(d); err != nil {
+		t.Error("err != nil")
+	}
+	d = make(map[string]string)
+	d["test.test/test"] = "=v1.0.0"
+	if err := validateModuleDependencies(d); err != nil {
+		t.Error("err != nil")
+	}
+	d["test.test/test"] = "v1.0.0"
+	if err := validateModuleDependencies(d); err == nil {
+		t.Error("err == nil")
+	}
+	delete(d, "test.test/test")
+	d["test"] = "=v1.0.0"
+	if err := validateModuleDependencies(d); err == nil {
+		t.Error("err == nil")
+	}
+}
 
 func TestIsValidModuleID(t *testing.T) {
 	ok := []string{
