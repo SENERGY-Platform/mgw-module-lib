@@ -16,7 +16,9 @@
 
 package validation
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestValidateKeyNotEmptyString(t *testing.T) {
 	var m map[string]struct{}
@@ -34,5 +36,35 @@ func TestValidateKeyNotEmptyString(t *testing.T) {
 	m[""] = struct{}{}
 	if validateKeyNotEmptyString(m) != false {
 		t.Error("validateKeyNotEmptyString(m) != false")
+	}
+}
+
+func TestValidateMapKeys(t *testing.T) {
+	var m map[string]struct{}
+	k := make(map[string]struct{})
+	if err := validateMapKeys(m, k); err != nil {
+		t.Error("err != nil")
+	}
+	if len(k) != 0 {
+		t.Error("len(k) != 0")
+	}
+	m = make(map[string]struct{})
+	m["test"] = struct{}{}
+	if err := validateMapKeys(m, k); err != nil {
+		t.Error("err != nil")
+	}
+	if len(k) != 1 {
+		t.Error("len(k) != 1")
+	}
+	m[""] = struct{}{}
+	if err := validateMapKeys(m, k); err == nil {
+		t.Error("err == nil")
+	}
+	if len(k) != 1 {
+		t.Error("len(k) != 1")
+	}
+	delete(m, "")
+	if err := validateMapKeys(m, k); err == nil {
+		t.Error("err == nil")
 	}
 }
