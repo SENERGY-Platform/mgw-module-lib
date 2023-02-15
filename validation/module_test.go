@@ -15,3 +15,34 @@
  */
 
 package validation
+
+import "testing"
+
+func TestValidateModuleDependencies(t *testing.T) {
+	ok := []string{
+		"test.test/test",
+		"test.test/test/test",
+		"test-123_test.test/123-test_456",
+	}
+	notOk := []string{
+		"/",
+		"test123",
+		"test.test",
+		"test.test/test/",
+		"/test.test/test",
+		"test.test.test/test",
+		"http://test.test/test",
+		"test.!§$%&/()=?123/test",
+		"test!§$%&/()=?.test/test",
+	}
+	for _, s := range ok {
+		if isValidModuleID(s) != true {
+			t.Errorf("isValidModuleID(\"%s\") != true", s)
+		}
+	}
+	for _, s := range notOk {
+		if isValidModuleID(s) != false {
+			t.Errorf("isValidModuleID(\"%s\") != false", s)
+		}
+	}
+}
