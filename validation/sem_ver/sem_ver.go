@@ -27,6 +27,9 @@ func InSemVerRange(r string, v string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+	if !semver.IsValid(v) {
+		return false, fmt.Errorf("format '%s' invalid", v)
+	}
 	ok := semVerRangeCheck(opr[0], ver[0], v)
 	if ok && len(opr) > 1 && len(ver) > 1 {
 		ok = semVerRangeCheck(opr[1], ver[1], v)
