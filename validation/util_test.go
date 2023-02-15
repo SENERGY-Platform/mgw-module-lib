@@ -29,7 +29,7 @@ func TestValidateKeyNotEmptyString(t *testing.T) {
 	if validateKeyNotEmptyString(m) != true {
 		t.Error("validateKeyNotEmptyString(m) != true")
 	}
-	m["a"] = struct{}{}
+	m["test"] = struct{}{}
 	if validateKeyNotEmptyString(m) != true {
 		t.Error("validateKeyNotEmptyString(m) != true")
 	}
