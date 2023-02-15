@@ -59,7 +59,7 @@ func TestInSemVerRange(t *testing.T) {
 		{"<=v2.0.0", "v2.1.0"},
 		{"=v1.0.0", "v2.0.0"},
 	}
-	er := [][2]string{
+	notOkErr := [][2]string{
 		{">v1.0.0;<v2.0.0", "1.1.0"},
 		{">1.0.0;<v2.0.0", "v1.1.0"},
 		{">v1.0.0;<2.0.0", "v1.1.0"},
@@ -108,7 +108,7 @@ func TestInSemVerRange(t *testing.T) {
 			t.Errorf("InSemVerRange(\"%s\", \"%s\"); err != nil", v[0], v[1])
 		}
 	}
-	for _, v := range er {
+	for _, v := range notOkErr {
 		k, err := InSemVerRange(v[0], v[1])
 		if k != false {
 			t.Errorf("InSemVerRange(\"%s\", \"%s\") != false", v[0], v[1])
