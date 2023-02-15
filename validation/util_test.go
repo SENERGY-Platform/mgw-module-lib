@@ -56,15 +56,20 @@ func TestValidateMapKeys(t *testing.T) {
 	if len(k) != 1 {
 		t.Error("len(k) != 1")
 	}
-	m[""] = struct{}{}
+	if _, ok := k["test"]; !ok {
+		t.Error("_, ok := k[\"test\"]; !ok")
+	}
 	if err := validateMapKeys(m, k); err == nil {
 		t.Error("err == nil")
 	}
 	if len(k) != 1 {
 		t.Error("len(k) != 1")
 	}
-	delete(m, "")
+	m[""] = struct{}{}
 	if err := validateMapKeys(m, k); err == nil {
 		t.Error("err == nil")
+	}
+	if len(k) != 1 {
+		t.Error("len(k) != 1")
 	}
 }
