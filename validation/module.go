@@ -162,6 +162,6 @@ func isValidDeploymentType(s string) bool {
 }
 
 func isValidModuleID(s string) bool {
-	re := regexp.MustCompile(`^([a-z0-9A-Z-_.]+)(:\d+)?([\/a-zA-Z0-9-\.]+)?$`)
+	re := regexp.MustCompile(`^(?:[a-zA-Z0-9-_]+)\.(?:[a-zA-Z]+)(?:\/[a-zA-Z0-9-_]+)+$`)
 	return re.MatchString(s)
 }
