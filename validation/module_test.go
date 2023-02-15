@@ -18,7 +18,7 @@ package validation
 
 import "testing"
 
-func TestValidateModuleDependencies(t *testing.T) {
+func TestIsValidModuleID(t *testing.T) {
 	ok := []string{
 		"test.test/test",
 		"test.test/test/test",
