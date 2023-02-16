@@ -24,15 +24,16 @@ import (
 
 func validateInputsResources(inputs map[string]model.Input, mResources map[string]model.Set[string]) error {
 	if inputs != nil {
-		if mResources == nil {
-			return errors.New("no resources defined")
-		}
 		for ref := range inputs {
 			if ref == "" {
 				return errors.New("invalid input reference")
 			}
-			if _, ok := mResources[ref]; !ok {
-				return fmt.Errorf("resource '%s' not defined", ref)
+			if mResources != nil {
+				if _, ok := mResources[ref]; !ok {
+					return fmt.Errorf("resource '%s' not defined", ref)
+				}
+			} else {
+				return errors.New("no resources defined")
 			}
 		}
 	}
