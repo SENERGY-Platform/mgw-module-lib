@@ -90,8 +90,12 @@ func validateInputGroups(groups map[string]model.InputGroup) error {
 			return errors.New("invalid input group reference")
 		}
 		if group.Group != nil {
-			if _, ok := groups[*group.Group]; !ok {
+			if g, ok := groups[*group.Group]; !ok {
 				return fmt.Errorf("input group '%s' not defined", *group.Group)
+			} else {
+				if g.Group != nil && *g.Group == *group.Group {
+					return fmt.Errorf("input group '%s' reference cycle", *group.Group)
+				}
 			}
 		}
 	}
