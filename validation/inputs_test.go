@@ -124,3 +124,32 @@ func TestValidateInputsAndGroups(t *testing.T) {
 		t.Errorf("validateInputsAndGroups(%v, %v); err != nil", inputs, groups)
 	}
 }
+
+func TestValidateInputGroups(t *testing.T) {
+	str1 := "a"
+	str2 := "test"
+	var groups map[string]model.InputGroup
+	if err := validateInputGroups(groups); err != nil {
+		t.Errorf("validateInputGroups(%v); err != nil", groups)
+	}
+	groups = make(map[string]model.InputGroup)
+	if err := validateInputGroups(groups); err != nil {
+		t.Errorf("validateInputGroups(%v); err != nil", groups)
+	}
+	groups[str1] = model.InputGroup{}
+	if err := validateInputGroups(groups); err != nil {
+		t.Errorf("validateInputGroups(%v); err != nil", groups)
+	}
+	groups["b"] = model.InputGroup{Group: &str1}
+	if err := validateInputGroups(groups); err != nil {
+		t.Errorf("validateInputGroups(%v); err != nil", groups)
+	}
+	groups["c"] = model.InputGroup{Group: &str2}
+	if err := validateInputGroups(groups); err == nil {
+		t.Errorf("validateInputGroups(%v); err == nil", groups)
+	}
+	groups[str2] = model.InputGroup{Group: &str2}
+	if err := validateInputGroups(groups); err == nil {
+		t.Errorf("validateInputGroups(%v); err == nil", groups)
+	}
+}
