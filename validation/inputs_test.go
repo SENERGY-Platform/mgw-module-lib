@@ -70,3 +70,28 @@ func TestValidateInputsSecrets(t *testing.T) {
 		t.Errorf("validateInputsSecrets(%v, %v); err != nil", inputs, mSecrets)
 	}
 }
+
+func TestValidateInputsConfigs(t *testing.T) {
+	str := "test"
+	var inputs map[string]model.Input
+	var mConfigs model.Configs
+	if err := validateInputsConfigs(inputs, mConfigs); err != nil {
+		t.Errorf("validateInputsConfigs(%v, %v); err != nil", inputs, mConfigs)
+	}
+	inputs = make(map[string]model.Input)
+	if err := validateInputsConfigs(inputs, mConfigs); err != nil {
+		t.Errorf("validateInputsConfigs(%v, %v); err != nil", inputs, mConfigs)
+	}
+	inputs[str] = model.Input{}
+	if err := validateInputsConfigs(inputs, mConfigs); err == nil {
+		t.Errorf("validateInputsConfigs(%v, %v); err == nil", inputs, mConfigs)
+	}
+	mConfigs = make(model.Configs)
+	if err := validateInputsConfigs(inputs, mConfigs); err == nil {
+		t.Errorf("validateInputsConfigs(%v, %v); err == nil", inputs, mConfigs)
+	}
+	mConfigs.SetString(str, nil, nil, false, "", nil)
+	if err := validateInputsConfigs(inputs, mConfigs); err != nil {
+		t.Errorf("validateInputsConfigs(%v, %v); err != nil", inputs, mConfigs)
+	}
+}
