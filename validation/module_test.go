@@ -23,21 +23,21 @@ import (
 func TestValidateModuleDependencies(t *testing.T) {
 	var d map[string]string
 	if err := validateModuleDependencies(d); err != nil {
-		t.Error("err != nil")
+		t.Errorf("validateModuleDependencies(%v); err != nil", d)
 	}
 	d = make(map[string]string)
 	d["test.test/test"] = "=v1.0.0"
 	if err := validateModuleDependencies(d); err != nil {
-		t.Error("err != nil")
+		t.Errorf("validateModuleDependencies(%v); err != nil", d)
 	}
 	d["test.test/test"] = "v1.0.0"
 	if err := validateModuleDependencies(d); err == nil {
-		t.Error("err == nil")
+		t.Errorf("validateModuleDependencies(%v); err == nil", d)
 	}
 	delete(d, "test.test/test")
 	d["test"] = "=v1.0.0"
 	if err := validateModuleDependencies(d); err == nil {
-		t.Error("err == nil")
+		t.Errorf("validateModuleDependencies(%v); err == nil", d)
 	}
 }
 
