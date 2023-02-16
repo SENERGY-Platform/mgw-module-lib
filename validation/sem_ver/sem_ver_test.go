@@ -93,7 +93,7 @@ func TestInSemVerRange(t *testing.T) {
 	for _, v := range ok {
 		k, err := InSemVerRange(v[0], v[1])
 		if k != true {
-			t.Errorf("InSemVerRange(\"%s\", \"%s\") != true", v[0], v[1])
+			t.Errorf("InSemVerRange(\"%s\", \"%s\"); k != true", v[0], v[1])
 		}
 		if err != nil {
 			t.Errorf("InSemVerRange(\"%s\", \"%s\"); err != nil", v[0], v[1])
@@ -102,7 +102,7 @@ func TestInSemVerRange(t *testing.T) {
 	for _, v := range notOk {
 		k, err := InSemVerRange(v[0], v[1])
 		if k != false {
-			t.Errorf("InSemVerRange(\"%s\", \"%s\") != false", v[0], v[1])
+			t.Errorf("InSemVerRange(\"%s\", \"%s\"); k != false", v[0], v[1])
 		}
 		if err != nil {
 			t.Errorf("InSemVerRange(\"%s\", \"%s\"); err != nil", v[0], v[1])
@@ -111,7 +111,7 @@ func TestInSemVerRange(t *testing.T) {
 	for _, v := range notOkErr {
 		k, err := InSemVerRange(v[0], v[1])
 		if k != false {
-			t.Errorf("InSemVerRange(\"%s\", \"%s\") != false", v[0], v[1])
+			t.Errorf("InSemVerRange(\"%s\", \"%s\"); k != false", v[0], v[1])
 		}
 		if err == nil {
 			t.Errorf("InSemVerRange(\"%s\", \"%s\"); err == nil", v[0], v[1])
