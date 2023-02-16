@@ -45,3 +45,28 @@ func TestValidateInputsResources(t *testing.T) {
 		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
 	}
 }
+
+func TestValidateInputsSecrets(t *testing.T) {
+	str := "test"
+	var inputs map[string]model.Input
+	var mSecrets map[string]model.Secret
+	if err := validateInputsSecrets(inputs, mSecrets); err != nil {
+		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mSecrets)
+	}
+	inputs = make(map[string]model.Input)
+	if err := validateInputsSecrets(inputs, mSecrets); err != nil {
+		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mSecrets)
+	}
+	inputs[str] = model.Input{}
+	if err := validateInputsSecrets(inputs, mSecrets); err == nil {
+		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mSecrets)
+	}
+	mSecrets = make(map[string]model.Secret)
+	if err := validateInputsSecrets(inputs, mSecrets); err == nil {
+		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mSecrets)
+	}
+	mSecrets[str] = model.Secret{}
+	if err := validateInputsSecrets(inputs, mSecrets); err != nil {
+		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mSecrets)
+	}
+}
