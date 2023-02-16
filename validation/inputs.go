@@ -42,15 +42,16 @@ func validateInputsResources(inputs map[string]model.Input, mResources map[strin
 
 func validateInputsSecrets(inputs map[string]model.Input, mSecrets map[string]model.Secret) error {
 	if inputs != nil {
-		if mSecrets == nil {
-			return errors.New("no secrets defined")
-		}
 		for ref := range inputs {
 			if ref == "" {
 				return errors.New("invalid input reference")
 			}
-			if _, ok := mSecrets[ref]; !ok {
-				return fmt.Errorf("secret '%s' not defined", ref)
+			if mSecrets != nil {
+				if _, ok := mSecrets[ref]; !ok {
+					return fmt.Errorf("secret '%s' not defined", ref)
+				}
+			} else {
+				return errors.New("no secrets defined")
 			}
 		}
 	}
