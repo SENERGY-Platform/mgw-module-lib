@@ -15,3 +15,33 @@
  */
 
 package validation
+
+import (
+	"github.com/SENERGY-Platform/mgw-module-lib/model"
+	"testing"
+)
+
+func TestValidateInputsResources(t *testing.T) {
+	str := "test"
+	var inputs map[string]model.Input
+	var mResources map[string]model.Set[string]
+	if err := validateInputsResources(inputs, mResources); err != nil {
+		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
+	}
+	inputs = make(map[string]model.Input)
+	if err := validateInputsResources(inputs, mResources); err != nil {
+		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
+	}
+	inputs[str] = model.Input{}
+	if err := validateInputsResources(inputs, mResources); err == nil {
+		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mResources)
+	}
+	mResources = make(map[string]model.Set[string])
+	if err := validateInputsResources(inputs, mResources); err == nil {
+		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mResources)
+	}
+	mResources[str] = model.Set[string]{}
+	if err := validateInputsResources(inputs, mResources); err != nil {
+		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
+	}
+}
