@@ -23,19 +23,19 @@ import (
 func TestValidateKeyNotEmptyString(t *testing.T) {
 	var m map[string]struct{}
 	if validateKeyNotEmptyString(m) != true {
-		t.Error("validateKeyNotEmptyString(m) != true")
+		t.Errorf("validateKeyNotEmptyString(%v) != true", m)
 	}
 	m = make(map[string]struct{})
 	if validateKeyNotEmptyString(m) != true {
-		t.Error("validateKeyNotEmptyString(m) != true")
+		t.Errorf("validateKeyNotEmptyString(%v) != true", m)
 	}
 	m["test"] = struct{}{}
 	if validateKeyNotEmptyString(m) != true {
-		t.Error("validateKeyNotEmptyString(m) != true")
+		t.Errorf("validateKeyNotEmptyString(%v) != true", m)
 	}
 	m[""] = struct{}{}
 	if validateKeyNotEmptyString(m) != false {
-		t.Error("validateKeyNotEmptyString(m) != false")
+		t.Errorf("validateKeyNotEmptyString(%v) != false", m)
 	}
 }
 
@@ -44,7 +44,7 @@ func TestValidateMapKeys(t *testing.T) {
 	var m map[string]struct{}
 	k := make(map[string]struct{})
 	if err := validateMapKeys(m, k); err != nil {
-		t.Error("err != nil")
+		t.Errorf("validateMapKeys(%v, %v); err != nil", m, k)
 	}
 	if len(k) != 0 {
 		t.Error("len(k) != 0")
@@ -52,16 +52,16 @@ func TestValidateMapKeys(t *testing.T) {
 	m = make(map[string]struct{})
 	m[str] = struct{}{}
 	if err := validateMapKeys(m, k); err != nil {
-		t.Error("err != nil")
+		t.Errorf("validateMapKeys(%v, %v); err != nil", m, k)
 	}
 	if len(k) != 1 {
 		t.Error("len(k) != 1")
 	}
 	if _, ok := k[str]; !ok {
-		t.Error("_, ok := k[\"test\"]; !ok")
+		t.Errorf("_, ok := k[\"%s\"]; !ok", str)
 	}
 	if err := validateMapKeys(m, k); err == nil {
-		t.Error("err == nil")
+		t.Errorf("validateMapKeys(%v, %v); err == nil", m, k)
 	}
 	if len(k) != 1 {
 		t.Error("len(k) != 1")
@@ -70,7 +70,7 @@ func TestValidateMapKeys(t *testing.T) {
 	delete(k, str)
 	m[""] = struct{}{}
 	if err := validateMapKeys(m, k); err == nil {
-		t.Error("err == nil")
+		t.Errorf("validateMapKeys(%v, %v); err == nil", m, k)
 	}
 	if len(k) != 0 {
 		t.Error("len(k) != 0")
