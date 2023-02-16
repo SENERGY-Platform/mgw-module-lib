@@ -95,3 +95,32 @@ func TestValidateInputsConfigs(t *testing.T) {
 		t.Errorf("validateInputsConfigs(%v, %v); err != nil", inputs, mConfigs)
 	}
 }
+
+func TestValidateInputsAndGroups(t *testing.T) {
+	str := "test"
+	var inputs map[string]model.Input
+	var groups map[string]model.InputGroup
+	if err := validateInputsAndGroups(inputs, groups); err != nil {
+		t.Errorf("validateInputsAndGroups(%v, %v); err != nil", inputs, groups)
+	}
+	inputs = make(map[string]model.Input)
+	if err := validateInputsAndGroups(inputs, groups); err != nil {
+		t.Errorf("validateInputsAndGroups(%v, %v); err != nil", inputs, groups)
+	}
+	inputs["a"] = model.Input{}
+	if err := validateInputsAndGroups(inputs, groups); err != nil {
+		t.Errorf("validateInputsAndGroups(%v, %v); err != nil", inputs, groups)
+	}
+	inputs["b"] = model.Input{Group: &str}
+	if err := validateInputsAndGroups(inputs, groups); err == nil {
+		t.Errorf("validateInputsAndGroups(%v, %v); err == nil", inputs, groups)
+	}
+	groups = make(map[string]model.InputGroup)
+	if err := validateInputsAndGroups(inputs, groups); err == nil {
+		t.Errorf("validateInputsAndGroups(%v, %v); err == nil", inputs, groups)
+	}
+	groups[str] = model.InputGroup{}
+	if err := validateInputsAndGroups(inputs, groups); err != nil {
+		t.Errorf("validateInputsAndGroups(%v, %v); err != nil", inputs, groups)
+	}
+}
