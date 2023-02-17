@@ -121,12 +121,13 @@ func validateServiceExternalDependencies(sExtDependencies map[string]model.Exter
 
 func validateServiceReferences(sReferences map[string]string, mServices map[string]*model.Service) error {
 	if sReferences != nil {
-		if mServices == nil {
-			return errors.New("no services defined")
-		}
 		for _, srvRef := range sReferences {
-			if _, ok := mServices[srvRef]; !ok {
-				return fmt.Errorf("service '%s' not defined", srvRef)
+			if mServices != nil {
+				if _, ok := mServices[srvRef]; !ok {
+					return fmt.Errorf("service '%s' not defined", srvRef)
+				}
+			} else {
+				return errors.New("no services defined")
 			}
 		}
 	}
