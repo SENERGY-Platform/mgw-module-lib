@@ -95,3 +95,28 @@ func TestValidateServiceSecrets(t *testing.T) {
 		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecrets, mSecrets)
 	}
 }
+
+func TestValidateServiceConfigs(t *testing.T) {
+	str := "test"
+	var sConfigs map[string]string
+	var mConfigs model.Configs
+	if err := validateServiceConfigs(sConfigs, mConfigs); err != nil {
+		t.Errorf("validateServiceConfigs(%v, %v); err != nil", sConfigs, mConfigs)
+	}
+	sConfigs = make(map[string]string)
+	if err := validateServiceConfigs(sConfigs, mConfigs); err != nil {
+		t.Errorf("validateServiceConfigs(%v, %v); err != nil", sConfigs, mConfigs)
+	}
+	sConfigs["a"] = str
+	if err := validateServiceConfigs(sConfigs, mConfigs); err == nil {
+		t.Errorf("validateServiceConfigs(%v, %v); err == nil", sConfigs, mConfigs)
+	}
+	mConfigs = make(model.Configs)
+	if err := validateServiceConfigs(sConfigs, mConfigs); err == nil {
+		t.Errorf("validateServiceConfigs(%v, %v); err == nil", sConfigs, mConfigs)
+	}
+	mConfigs.SetString(str, nil, nil, false, "", nil)
+	if err := validateServiceConfigs(sConfigs, mConfigs); err != nil {
+		t.Errorf("validateServiceConfigs(%v, %v); err != nil", sConfigs, mConfigs)
+	}
+}
