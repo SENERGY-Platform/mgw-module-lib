@@ -74,9 +74,8 @@ func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) 
 	return nil
 }
 
-func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint) error {
+func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint, extPaths map[string]struct{}) error {
 	if sHttpEndpoints != nil {
-		extPaths := make(map[string]struct{})
 		for extPath := range sHttpEndpoints {
 			if !isValidPath(extPath) {
 				return fmt.Errorf("invalid path '%s'", extPath)

@@ -77,6 +77,7 @@ func Validate(m model.Module) error {
 		hostPorts := make(map[uint]struct{})
 		refVars := make(map[string]struct{})
 		mntPts := make(map[string]struct{})
+		extPaths := make(map[string]struct{})
 		for ref, service := range m.Services {
 			if ref == "" {
 				return errors.New("empty service reference")
@@ -117,7 +118,7 @@ func Validate(m model.Module) error {
 			if err := validateServiceConfigs(service.Configs, m.Configs); err != nil {
 				return fmt.Errorf("service '%s' invalid config configuration: %s", ref, err)
 			}
-			if err := validateServiceHttpEndpoints(service.HttpEndpoints); err != nil {
+			if err := validateServiceHttpEndpoints(service.HttpEndpoints, extPaths); err != nil {
 				return fmt.Errorf("service '%s' invalid http endpoint configuration: %s", ref, err)
 			}
 			if err := validateServiceReferences(service.SrvReferences, m.Services); err != nil {
