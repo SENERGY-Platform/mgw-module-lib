@@ -106,6 +106,9 @@ func validateServiceDependencies(sDependencies model.Set[string], mServices map[
 func validateServiceExternalDependencies(sExtDependencies map[string]model.ExternalDependencyTarget, mDependencies map[string]string) error {
 	if sExtDependencies != nil {
 		for _, target := range sExtDependencies {
+			if target.Service == "" {
+				return errors.New("empty service reference")
+			}
 			if mDependencies != nil {
 				if _, ok := mDependencies[target.ID]; !ok {
 					return fmt.Errorf("module dependency '%s' not defined", target.ID)
