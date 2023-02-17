@@ -120,3 +120,50 @@ func TestValidateServiceConfigs(t *testing.T) {
 		t.Errorf("validateServiceConfigs(%v, %v); err != nil", sConfigs, mConfigs)
 	}
 }
+
+func TestValidateServiceHttpEndpoints(t *testing.T) {
+	var sHttpEndpoints map[string]model.HttpEndpoint
+	extPaths := make(map[string]struct{})
+	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err != nil {
+		t.Errorf("validateServiceHttpEndpoints(%v); err != nil", sHttpEndpoints)
+	}
+	if len(extPaths) != 0 {
+		t.Error("len(extPaths) != 0")
+	}
+	sHttpEndpoints = make(map[string]model.HttpEndpoint)
+	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err != nil {
+		t.Errorf("validateServiceHttpEndpoints(%v); err != nil", sHttpEndpoints)
+	}
+	if len(extPaths) != 0 {
+		t.Error("len(extPaths) != 0")
+	}
+	sHttpEndpoints["/test"] = model.HttpEndpoint{Path: "/test"}
+	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err != nil {
+		t.Errorf("validateServiceHttpEndpoints(%v); err != nil", sHttpEndpoints)
+	}
+	if len(extPaths) != 1 {
+		t.Error("len(extPaths) != 1")
+	}
+	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err == nil {
+		t.Errorf("validateServiceHttpEndpoints(%v); err == nil", sHttpEndpoints)
+	}
+	if len(extPaths) != 1 {
+		t.Error("len(extPaths) != 1")
+	}
+	delete(sHttpEndpoints, "/test")
+	sHttpEndpoints["test"] = model.HttpEndpoint{Path: "/test"}
+	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err == nil {
+		t.Errorf("validateServiceHttpEndpoints(%v); err == nil", sHttpEndpoints)
+	}
+	if len(extPaths) != 1 {
+		t.Error("len(extPaths) != 1")
+	}
+	delete(sHttpEndpoints, "test")
+	sHttpEndpoints["/test"] = model.HttpEndpoint{Path: "test"}
+	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err == nil {
+		t.Errorf("validateServiceHttpEndpoints(%v); err == nil", sHttpEndpoints)
+	}
+	if len(extPaths) != 1 {
+		t.Error("len(extPaths) != 1")
+	}
+}
