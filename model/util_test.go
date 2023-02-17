@@ -205,6 +205,18 @@ func TestPortMappings_Add(t *testing.T) {
 	if len(pm) != 0 {
 		t.Error("len(pm) != 0")
 	}
+	if err := pm.Add(nil, []uint{0, 1}, []uint{0}, TcpPort); err == nil {
+		t.Errorf("pm.Add(nil, []uint{0, 1}, []uint{0}, \"%s\"); err == nil", TcpPort)
+	}
+	if len(pm) != 0 {
+		t.Error("len(pm) != 0")
+	}
+	if err := pm.Add(nil, []uint{0, 5}, []uint{0, 10}, TcpPort); err == nil {
+		t.Errorf("pm.Add(nil, []uint{0, 5}, []uint{0, 10}, \"%s\"); err == nil", TcpPort)
+	}
+	if len(pm) != 0 {
+		t.Error("len(pm) != 0")
+	}
 	if err := pm.Add(nil, []uint{0}, nil, ""); err == nil {
 		t.Error("Add(nil, []uint{0}, nil, \"\") -> err == nil")
 	}
@@ -229,5 +241,17 @@ func TestPortMappings_Add(t *testing.T) {
 	}
 	if len(pm) != 1 {
 		t.Error("len(pm) != 1")
+	}
+	if err := pm.Add(nil, []uint{0, 5}, []uint{0, 5}, TcpPort); err != nil {
+		t.Errorf("pm.Add(nil, []uint{0, 5}, []uint{0, 5}, \"%s\"); err != nil", TcpPort)
+	}
+	if len(pm) != 2 {
+		t.Error("len(pm) != 2")
+	}
+	if err := pm.Add(nil, []uint{1}, []uint{0, 5}, TcpPort); err != nil {
+		t.Errorf("pm.Add(nil, []uint{0, 5}, []uint{0, 5}, \"%s\"); err != nil", TcpPort)
+	}
+	if len(pm) != 3 {
+		t.Error("len(pm) != 3")
 	}
 }
