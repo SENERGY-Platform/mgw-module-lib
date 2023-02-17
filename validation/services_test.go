@@ -170,3 +170,28 @@ func TestValidateServiceHttpEndpoints(t *testing.T) {
 		t.Error("len(extPaths) != 1")
 	}
 }
+
+func TestValidateServiceDependencies(t *testing.T) {
+	str := "test"
+	var sDependencies model.Set[string]
+	var mServices map[string]*model.Service
+	if err := validateServiceDependencies(sDependencies, mServices); err != nil {
+		t.Errorf("validateServiceDependencies(%v, %v); err != nil", sDependencies, mServices)
+	}
+	sDependencies = make(model.Set[string])
+	if err := validateServiceDependencies(sDependencies, mServices); err != nil {
+		t.Errorf("validateServiceDependencies(%v, %v); err != nil", sDependencies, mServices)
+	}
+	sDependencies[str] = struct{}{}
+	if err := validateServiceDependencies(sDependencies, mServices); err == nil {
+		t.Errorf("validateServiceDependencies(%v, %v); err == nil", sDependencies, mServices)
+	}
+	mServices = make(map[string]*model.Service)
+	if err := validateServiceDependencies(sDependencies, mServices); err == nil {
+		t.Errorf("validateServiceDependencies(%v, %v); err == nil", sDependencies, mServices)
+	}
+	mServices[str] = &model.Service{}
+	if err := validateServiceDependencies(sDependencies, mServices); err != nil {
+		t.Errorf("validateServiceDependencies(%v, %v); err != nil", sDependencies, mServices)
+	}
+}
