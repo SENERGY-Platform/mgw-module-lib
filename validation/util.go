@@ -23,27 +23,23 @@ import (
 )
 
 func validateKeyNotEmptyString[T any](m map[string]T) bool {
-	if m != nil {
-		for ref := range m {
-			if ref == "" {
-				return false
-			}
+	for ref := range m {
+		if ref == "" {
+			return false
 		}
 	}
 	return true
 }
 
 func validateMapKeys[T any](m map[string]T, keys map[string]struct{}) error {
-	if m != nil {
-		for k := range m {
-			if k == "" {
-				return errors.New("empty")
-			}
-			if _, ok := keys[k]; ok {
-				return fmt.Errorf("duplicate '%s'", k)
-			}
-			keys[k] = struct{}{}
+	for k := range m {
+		if k == "" {
+			return errors.New("empty")
 		}
+		if _, ok := keys[k]; ok {
+			return fmt.Errorf("duplicate '%s'", k)
+		}
+		keys[k] = struct{}{}
 	}
 	return nil
 }
