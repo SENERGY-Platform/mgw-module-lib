@@ -39,12 +39,13 @@ func validateServiceVolumes(sVolumes map[string]string, mVolumes model.Set[strin
 
 func validateServiceResources(sResources map[string]model.ResourceTarget, mResources map[string]model.Set[string]) error {
 	if sResources != nil {
-		if mResources == nil {
-			return errors.New("no resources defined")
-		}
 		for _, target := range sResources {
-			if _, ok := mResources[target.Ref]; !ok {
-				return fmt.Errorf("resource '%s' not defined", target.Ref)
+			if mResources != nil {
+				if _, ok := mResources[target.Ref]; !ok {
+					return fmt.Errorf("resource '%s' not defined", target.Ref)
+				}
+			} else {
+				return errors.New("no resources defined")
 			}
 		}
 	}
