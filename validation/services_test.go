@@ -144,6 +144,9 @@ func TestValidateServiceHttpEndpoints(t *testing.T) {
 	if len(extPaths) != 1 {
 		t.Error("len(extPaths) != 1")
 	}
+	if _, ok := extPaths["/test"]; !ok {
+		t.Error("_, ok := extPaths[\"/test\"]; !ok")
+	}
 	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err == nil {
 		t.Errorf("validateServiceHttpEndpoints(%v); err == nil", sHttpEndpoints)
 	}
