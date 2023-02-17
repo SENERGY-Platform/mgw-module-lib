@@ -54,12 +54,13 @@ func validateServiceResources(sResources map[string]model.ResourceTarget, mResou
 
 func validateServiceSecrets(sSecrets map[string]string, mSecrets map[string]model.Secret) error {
 	if sSecrets != nil {
-		if mSecrets == nil {
-			return errors.New("no secrets defined")
-		}
 		for _, secretRef := range sSecrets {
-			if _, ok := mSecrets[secretRef]; !ok {
-				return fmt.Errorf("secret '%s' not defined", secretRef)
+			if mSecrets != nil {
+				if _, ok := mSecrets[secretRef]; !ok {
+					return fmt.Errorf("secret '%s' not defined", secretRef)
+				}
+			} else {
+				return errors.New("no secrets defined")
 			}
 		}
 	}
