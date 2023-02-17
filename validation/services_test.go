@@ -15,3 +15,33 @@
  */
 
 package validation
+
+import (
+	"github.com/SENERGY-Platform/mgw-module-lib/model"
+	"testing"
+)
+
+func TestValidateServiceVolumes(t *testing.T) {
+	str := "test"
+	var sVolumes map[string]string
+	var mVolumes model.Set[string]
+	if err := validateServiceVolumes(sVolumes, mVolumes); err != nil {
+		t.Errorf("validateServiceVolumes(%v, %v); err != nil", sVolumes, mVolumes)
+	}
+	sVolumes = make(map[string]string)
+	if err := validateServiceVolumes(sVolumes, mVolumes); err != nil {
+		t.Errorf("validateServiceVolumes(%v, %v); err != nil", sVolumes, mVolumes)
+	}
+	sVolumes["a"] = str
+	if err := validateServiceVolumes(sVolumes, mVolumes); err == nil {
+		t.Errorf("validateServiceVolumes(%v, %v); err == nil", sVolumes, mVolumes)
+	}
+	mVolumes = make(model.Set[string])
+	if err := validateServiceVolumes(sVolumes, mVolumes); err == nil {
+		t.Errorf("validateServiceVolumes(%v, %v); err == nil", sVolumes, mVolumes)
+	}
+	mVolumes[str] = struct{}{}
+	if err := validateServiceVolumes(sVolumes, mVolumes); err != nil {
+		t.Errorf("validateServiceVolumes(%v, %v); err != nil", sVolumes, mVolumes)
+	}
+}
