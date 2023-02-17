@@ -70,3 +70,28 @@ func TestValidateServiceResources(t *testing.T) {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}
 }
+
+func TestValidateServiceSecrets(t *testing.T) {
+	str := "test"
+	var sSecrets map[string]string
+	var mSecrets map[string]model.Secret
+	if err := validateServiceSecrets(sSecrets, mSecrets); err != nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecrets, mSecrets)
+	}
+	sSecrets = make(map[string]string)
+	if err := validateServiceSecrets(sSecrets, mSecrets); err != nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecrets, mSecrets)
+	}
+	sSecrets["a"] = str
+	if err := validateServiceSecrets(sSecrets, mSecrets); err == nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err == nil", sSecrets, mSecrets)
+	}
+	mSecrets = make(map[string]model.Secret)
+	if err := validateServiceSecrets(sSecrets, mSecrets); err == nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err == nil", sSecrets, mSecrets)
+	}
+	mSecrets[str] = model.Secret{}
+	if err := validateServiceSecrets(sSecrets, mSecrets); err != nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecrets, mSecrets)
+	}
+}
