@@ -44,6 +44,10 @@ func TestValidateInputsResources(t *testing.T) {
 	if err := validateInputsResources(inputs, mResources); err != nil {
 		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
 	}
+	inputs[""] = model.Input{}
+	if err := validateInputsResources(inputs, mResources); err == nil {
+		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mResources)
+	}
 }
 
 func TestValidateInputsSecrets(t *testing.T) {
