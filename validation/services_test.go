@@ -45,3 +45,28 @@ func TestValidateServiceVolumes(t *testing.T) {
 		t.Errorf("validateServiceVolumes(%v, %v); err != nil", sVolumes, mVolumes)
 	}
 }
+
+func TestValidateServiceResources(t *testing.T) {
+	str := "test"
+	var sResources map[string]model.ResourceTarget
+	var mResources map[string]model.Set[string]
+	if err := validateServiceResources(sResources, mResources); err != nil {
+		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
+	}
+	sResources = make(map[string]model.ResourceTarget)
+	if err := validateServiceResources(sResources, mResources); err != nil {
+		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
+	}
+	sResources["a"] = model.ResourceTarget{Ref: str}
+	if err := validateServiceResources(sResources, mResources); err == nil {
+		t.Errorf("validateServiceResources(%v, %v); err == nil", sResources, mResources)
+	}
+	mResources = make(map[string]model.Set[string])
+	if err := validateServiceResources(sResources, mResources); err == nil {
+		t.Errorf("validateServiceResources(%v, %v); err == nil", sResources, mResources)
+	}
+	mResources[str] = model.Set[string]{}
+	if err := validateServiceResources(sResources, mResources); err != nil {
+		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
+	}
+}
