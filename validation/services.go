@@ -24,12 +24,13 @@ import (
 
 func validateServiceVolumes(sVolumes map[string]string, mVolumes model.Set[string]) error {
 	if sVolumes != nil {
-		if mVolumes == nil {
-			return errors.New("no volumes defined")
-		}
 		for _, volume := range sVolumes {
-			if _, ok := mVolumes[volume]; !ok {
-				return fmt.Errorf("volume '%s' not defined", volume)
+			if mVolumes != nil {
+				if _, ok := mVolumes[volume]; !ok {
+					return fmt.Errorf("volume '%s' not defined", volume)
+				}
+			} else {
+				return errors.New("no volumes defined")
 			}
 		}
 	}
