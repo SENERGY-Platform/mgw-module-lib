@@ -23,60 +23,52 @@ import (
 )
 
 func validateServiceVolumes(sVolumes map[string]string, mVolumes model.Set[string]) error {
-	if sVolumes != nil {
-		for _, volume := range sVolumes {
-			if mVolumes != nil {
-				if _, ok := mVolumes[volume]; !ok {
-					return fmt.Errorf("volume '%s' not defined", volume)
-				}
-			} else {
-				return errors.New("no volumes defined")
+	for _, volume := range sVolumes {
+		if mVolumes != nil {
+			if _, ok := mVolumes[volume]; !ok {
+				return fmt.Errorf("volume '%s' not defined", volume)
 			}
+		} else {
+			return errors.New("no volumes defined")
 		}
 	}
 	return nil
 }
 
 func validateServiceResources(sResources map[string]model.ResourceTarget, mResources map[string]model.Set[string]) error {
-	if sResources != nil {
-		for _, target := range sResources {
-			if mResources != nil {
-				if _, ok := mResources[target.Ref]; !ok {
-					return fmt.Errorf("resource '%s' not defined", target.Ref)
-				}
-			} else {
-				return errors.New("no resources defined")
+	for _, target := range sResources {
+		if mResources != nil {
+			if _, ok := mResources[target.Ref]; !ok {
+				return fmt.Errorf("resource '%s' not defined", target.Ref)
 			}
+		} else {
+			return errors.New("no resources defined")
 		}
 	}
 	return nil
 }
 
 func validateServiceSecrets(sSecrets map[string]string, mSecrets map[string]model.Secret) error {
-	if sSecrets != nil {
-		for _, secretRef := range sSecrets {
-			if mSecrets != nil {
-				if _, ok := mSecrets[secretRef]; !ok {
-					return fmt.Errorf("secret '%s' not defined", secretRef)
-				}
-			} else {
-				return errors.New("no secrets defined")
+	for _, secretRef := range sSecrets {
+		if mSecrets != nil {
+			if _, ok := mSecrets[secretRef]; !ok {
+				return fmt.Errorf("secret '%s' not defined", secretRef)
 			}
+		} else {
+			return errors.New("no secrets defined")
 		}
 	}
 	return nil
 }
 
 func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) error {
-	if sConfigs != nil {
-		for _, confRef := range sConfigs {
-			if mConfigs != nil {
-				if _, ok := mConfigs[confRef]; !ok {
-					return fmt.Errorf("config '%s' not defined", confRef)
-				}
-			} else {
-				return errors.New("no configs defined")
+	for _, confRef := range sConfigs {
+		if mConfigs != nil {
+			if _, ok := mConfigs[confRef]; !ok {
+				return fmt.Errorf("config '%s' not defined", confRef)
 			}
+		} else {
+			return errors.New("no configs defined")
 		}
 	}
 	return nil
