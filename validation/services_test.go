@@ -195,3 +195,32 @@ func TestValidateServiceDependencies(t *testing.T) {
 		t.Errorf("validateServiceDependencies(%v, %v); err != nil", sDependencies, mServices)
 	}
 }
+
+func TestValidateServiceExternalDependencies(t *testing.T) {
+	str := "test.test/test"
+	var sExtDependencies map[string]model.ExternalDependencyTarget
+	var mDependencies map[string]string
+	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err != nil {
+		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
+	}
+	sExtDependencies = make(map[string]model.ExternalDependencyTarget)
+	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err != nil {
+		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
+	}
+	sExtDependencies["a"] = model.ExternalDependencyTarget{ID: str, Service: "test"}
+	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err == nil {
+		t.Errorf("validateServiceExternalDependencies(%v, %v); err == nil", sExtDependencies, mDependencies)
+	}
+	mDependencies = make(map[string]string)
+	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err == nil {
+		t.Errorf("validateServiceExternalDependencies(%v, %v); err == nil", sExtDependencies, mDependencies)
+	}
+	mDependencies[str] = "v1.0.0"
+	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err != nil {
+		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
+	}
+	sExtDependencies["b"] = model.ExternalDependencyTarget{ID: str}
+	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err == nil {
+		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
+	}
+}
