@@ -190,46 +190,39 @@ func TestIsValidPort(t *testing.T) {
 
 func TestPortMappings_Add(t *testing.T) {
 	pm := make(PortMappings)
-	err := pm.Add(nil, nil, nil, TcpPort)
-	if err == nil {
-		t.Error("Add(nil, nil, nil, nil) -> err == nil")
+	if err := pm.Add(nil, nil, nil, TcpPort); err == nil {
+		t.Errorf("pm.Add(nil, nil, nil, \"%s\"); err == nil", TcpPort)
 	}
 	if len(pm) != 0 {
 		t.Error("len(pm) != 0")
 	}
-	err = pm.Add(nil, []uint{0}, []uint{1, 0}, TcpPort)
-	if err == nil {
-		t.Error("Add(nil, []uint{0}, []uint{1, 0}, nil) -> err == nil")
+	if err := pm.Add(nil, []uint{0}, []uint{1, 0}, TcpPort); err == nil {
+		t.Errorf("pm.Add(nil, []uint{0}, []uint{1, 0}, \"%s\"); err == nil", TcpPort)
 	}
 	if len(pm) != 0 {
 		t.Error("len(pm) != 0")
 	}
-	var str string
-	err = pm.Add(nil, []uint{0}, nil, "")
-	if err == nil {
+	if err := pm.Add(nil, []uint{0}, nil, ""); err == nil {
 		t.Error("Add(nil, []uint{0}, nil, \"\") -> err == nil")
 	}
 	if len(pm) != 0 {
 		t.Error("len(pm) != 0")
 	}
-	err = pm.Add(nil, []uint{0}, nil, TcpPort)
-	if err != nil {
-		t.Error("Add(nil, []uint{0}, nil, nil) -> err != nil")
+	if err := pm.Add(nil, []uint{0}, nil, TcpPort); err != nil {
+		t.Errorf("pm.Add(nil, []uint{0}, nil, \"%s\"); err != nil", TcpPort)
 	}
 	if len(pm) != 1 {
 		t.Error("len(pm) != 1")
 	}
-	err = pm.Add(nil, []uint{0}, []uint{0}, TcpPort)
-	if err != nil {
-		t.Error("Add(nil, []uint{0}, []uint{0}, nil) -> err != nil")
+	if err := pm.Add(nil, []uint{0}, []uint{0}, TcpPort); err != nil {
+		t.Errorf("pm.Add(nil, []uint{0}, []uint{0}, \"%s\"); err != nil", TcpPort)
 	}
 	if len(pm) != 1 {
 		t.Error("len(pm) != 1")
 	}
-	str = "test"
-	err = pm.Add(&str, []uint{0}, nil, TcpPort)
-	if err != nil {
-		t.Error("Add(\"test\", []uint{0}, nil, nil) -> err != nil")
+	str := "test"
+	if err := pm.Add(&str, []uint{0}, nil, TcpPort); err != nil {
+		t.Errorf("pm.Add(\"%s\", []uint{0}, nil, \"%s\"); err != nil", str, TcpPort)
 	}
 	if len(pm) != 1 {
 		t.Error("len(pm) != 1")
