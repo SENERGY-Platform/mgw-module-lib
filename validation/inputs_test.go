@@ -73,6 +73,10 @@ func TestValidateInputsSecrets(t *testing.T) {
 	if err := validateInputsSecrets(inputs, mSecrets); err != nil {
 		t.Errorf("validateInputsSecrets(%v, %v); err != nil", inputs, mSecrets)
 	}
+	inputs[""] = model.Input{}
+	if err := validateInputsSecrets(inputs, mSecrets); err == nil {
+		t.Errorf("validateInputsSecrets(%v, %v); err == nil", inputs, mSecrets)
+	}
 }
 
 func TestValidateInputsConfigs(t *testing.T) {
