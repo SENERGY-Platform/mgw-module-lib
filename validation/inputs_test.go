@@ -160,7 +160,13 @@ func TestValidateInputGroups(t *testing.T) {
 	if err := validateInputGroups(groups); err == nil {
 		t.Errorf("validateInputGroups(%v); err == nil", groups)
 	}
+	delete(groups, "c")
 	groups[str2] = model.InputGroup{Group: &str2}
+	if err := validateInputGroups(groups); err == nil {
+		t.Errorf("validateInputGroups(%v); err == nil", groups)
+	}
+	delete(groups, str2)
+	groups[""] = model.InputGroup{}
 	if err := validateInputGroups(groups); err == nil {
 		t.Errorf("validateInputGroups(%v); err == nil", groups)
 	}
