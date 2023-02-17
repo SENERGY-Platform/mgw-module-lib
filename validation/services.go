@@ -69,12 +69,13 @@ func validateServiceSecrets(sSecrets map[string]string, mSecrets map[string]mode
 
 func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) error {
 	if sConfigs != nil {
-		if mConfigs == nil {
-			return errors.New("no configs defined")
-		}
 		for _, confRef := range sConfigs {
-			if _, ok := mConfigs[confRef]; !ok {
-				return fmt.Errorf("config '%s' not defined", confRef)
+			if mConfigs != nil {
+				if _, ok := mConfigs[confRef]; !ok {
+					return fmt.Errorf("config '%s' not defined", confRef)
+				}
+			} else {
+				return errors.New("no configs defined")
 			}
 		}
 	}
