@@ -76,9 +76,12 @@ func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) 
 
 func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint, extPaths map[string]struct{}) error {
 	if sHttpEndpoints != nil {
-		for extPath := range sHttpEndpoints {
+		for extPath, ept := range sHttpEndpoints {
 			if !isValidPath(extPath) {
-				return fmt.Errorf("invalid path '%s'", extPath)
+				return fmt.Errorf("invalid external path '%s'", extPath)
+			}
+			if !isValidPath(ept.Path) {
+				return fmt.Errorf("invalid internal path '%s'", ept.Path)
 			}
 			if _, ok := extPaths[extPath]; ok {
 				return fmt.Errorf("duplicate path '%s'", extPath)
