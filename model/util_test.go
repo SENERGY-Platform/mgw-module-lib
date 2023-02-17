@@ -184,7 +184,10 @@ func TestIsValidPort(t *testing.T) {
 		t.Error("isValidPort([]uint{1}) == false")
 	}
 	if isValidPort([]uint{1, 2}) == false {
-		t.Error("isValidPort([]uint{1}) == false")
+		t.Error("isValidPort([]uint{1, 2}) == false")
+	}
+	if isValidPort([]uint{1, 10}) == false {
+		t.Error("isValidPort([]uint{1, 10}) == false")
 	}
 }
 
