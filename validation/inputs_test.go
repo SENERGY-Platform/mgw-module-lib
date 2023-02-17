@@ -102,6 +102,10 @@ func TestValidateInputsConfigs(t *testing.T) {
 	if err := validateInputsConfigs(inputs, mConfigs); err != nil {
 		t.Errorf("validateInputsConfigs(%v, %v); err != nil", inputs, mConfigs)
 	}
+	inputs[""] = model.Input{}
+	if err := validateInputsConfigs(inputs, mConfigs); err == nil {
+		t.Errorf("validateInputsConfigs(%v, %v); err == nil", inputs, mConfigs)
+	}
 }
 
 func TestValidateInputsAndGroups(t *testing.T) {
