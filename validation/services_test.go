@@ -224,3 +224,28 @@ func TestValidateServiceExternalDependencies(t *testing.T) {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
 	}
 }
+
+func TestValidateServiceReferences(t *testing.T) {
+	str := "test"
+	var sReferences map[string]string
+	var mServices map[string]*model.Service
+	if err := validateServiceReferences(sReferences, mServices); err != nil {
+		t.Errorf("validateServiceReferences(%v, %v); err != nil", sReferences, mServices)
+	}
+	sReferences = make(map[string]string)
+	if err := validateServiceReferences(sReferences, mServices); err != nil {
+		t.Errorf("validateServiceReferences(%v, %v); err != nil", sReferences, mServices)
+	}
+	sReferences["a"] = str
+	if err := validateServiceReferences(sReferences, mServices); err == nil {
+		t.Errorf("validateServiceReferences(%v, %v); err == nil", sReferences, mServices)
+	}
+	mServices = make(map[string]*model.Service)
+	if err := validateServiceReferences(sReferences, mServices); err == nil {
+		t.Errorf("validateServiceReferences(%v, %v); err == nil", sReferences, mServices)
+	}
+	mServices[str] = &model.Service{}
+	if err := validateServiceReferences(sReferences, mServices); err != nil {
+		t.Errorf("validateServiceReferences(%v, %v); err != nil", sReferences, mServices)
+	}
+}
