@@ -163,3 +163,107 @@ func TestNewConfigValueSlice(t *testing.T) {
 		t.Error("*cvs3.Delimiter != str")
 	}
 }
+
+func TestConfigs_SetString(t *testing.T) {
+	configs := make(Configs)
+	configs.SetString("", nil, nil, false, "", nil)
+	for _, config := range configs {
+		if config.DataType != StringType {
+			t.Error("config.DataType != StringType")
+		}
+		if config.IsSlice != false {
+			t.Error("config.IsSlice != false")
+		}
+	}
+}
+
+func TestConfigs_SetStringSlice(t *testing.T) {
+	configs := make(Configs)
+	configs.SetStringSlice("", nil, nil, false, "", nil, nil)
+	for _, config := range configs {
+		if config.DataType != StringType {
+			t.Error("config.DataType != StringType")
+		}
+		if config.IsSlice != true {
+			t.Error("config.IsSlice != true")
+		}
+	}
+}
+
+func TestConfigs_SetBool(t *testing.T) {
+	configs := make(Configs)
+	configs.SetBool("", nil, nil, false, "", nil)
+	for _, config := range configs {
+		if config.DataType != BoolType {
+			t.Error("config.DataType != BoolType")
+		}
+		if config.IsSlice != false {
+			t.Error("config.IsSlice != false")
+		}
+	}
+}
+
+func TestConfigs_SetBoolSlice(t *testing.T) {
+	configs := make(Configs)
+	configs.SetBoolSlice("", nil, nil, false, "", nil, nil)
+	for _, config := range configs {
+		if config.DataType != BoolType {
+			t.Error("config.DataType != BoolType")
+		}
+		if config.IsSlice != true {
+			t.Error("config.IsSlice != true")
+		}
+	}
+}
+
+func TestConfigs_SetFloat64(t *testing.T) {
+	configs := make(Configs)
+	configs.SetFloat64("", nil, nil, false, "", nil)
+	for _, config := range configs {
+		if config.DataType != Float64Type {
+			t.Error("config.DataType != Float64Type")
+		}
+		if config.IsSlice != false {
+			t.Error("config.IsSlice != false")
+		}
+	}
+}
+
+func TestConfigs_SetFloat64Slice(t *testing.T) {
+	configs := make(Configs)
+	configs.SetFloat64Slice("", nil, nil, false, "", nil, nil)
+	for _, config := range configs {
+		if config.DataType != Float64Type {
+			t.Error("config.DataType != Float64Type")
+		}
+		if config.IsSlice != true {
+			t.Error("config.IsSlice != true")
+		}
+	}
+}
+
+func TestConfigs_SetInt64(t *testing.T) {
+	configs := make(Configs)
+	configs.SetInt64("", nil, nil, false, "", nil)
+	for _, config := range configs {
+		if config.DataType != Int64Type {
+			t.Error("config.DataType != Int64Type")
+		}
+		if config.IsSlice != false {
+			t.Error("config.IsSlice != false")
+		}
+	}
+}
+
+func TestConfigs_SetInt64Slice(t *testing.T) {
+	configs := make(Configs)
+	configs.SetInt64Slice("", nil, nil, false, "", nil, nil)
+	for _, config := range configs {
+		if config.DataType != Int64Type {
+			t.Error("config.DataType != Int64Type")
+		}
+		if config.IsSlice != true {
+			t.Error("config.IsSlice != true")
+		}
+	}
+}
