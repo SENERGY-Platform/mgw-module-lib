@@ -41,11 +41,6 @@ func IsValidSemVer(s string) bool {
 	return semver.IsValid(s)
 }
 
-func IsValidOperator(s string) bool {
-	_, ok := OperatorMap[s]
-	return ok
-}
-
 func ValidateSemVerRange(s string) error {
 	_, _, err := semVerRangeParse(s)
 	return err
@@ -75,7 +70,7 @@ func semVerRangeParsePart(s string) (string, string, error) {
 	if pos < 1 || pos > 2 {
 		return "", "", fmt.Errorf("format '%s' invalid", s)
 	}
-	if IsValidOperator(s[:pos]) {
+	if _, ok := OperatorMap[(s[:pos])]; ok {
 		if !semver.IsValid(s[pos:]) {
 			return "", "", fmt.Errorf("format '%s' invalid", s[pos:])
 		}
