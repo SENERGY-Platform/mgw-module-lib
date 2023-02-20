@@ -73,66 +73,64 @@ func Validate(m model.Module) error {
 	if err := validateInputsConfigs(m.Inputs.Configs, m.Configs); err != nil {
 		return fmt.Errorf("invalid input configuration: %s", err)
 	}
-	if m.Services != nil {
-		refVars := make(map[string]struct{})
-		mntPts := make(map[string]struct{})
-		extPaths := make(map[string]struct{})
-		hostPorts := make(map[string]struct{})
-		for ref, service := range m.Services {
-			if ref == "" {
-				return errors.New("empty service reference")
-			}
-			if err := validateMapKeys(service.Include, mntPts); err != nil {
-				return fmt.Errorf("service '%s' invalid include mount point configuration: %s", ref, err)
-			}
-			if err := validateMapKeys(service.Tmpfs, mntPts); err != nil {
-				return fmt.Errorf("service '%s' invalid tmpfs mount point configuration: %s", ref, err)
-			}
-			if err := validateMapKeys(service.Volumes, mntPts); err != nil {
-				return fmt.Errorf("service '%s' invalid volume mount point configuration: %s", ref, err)
-			}
-			if err := validateMapKeys(service.Resources, mntPts); err != nil {
-				return fmt.Errorf("service '%s' invalid resource mount point configuration: %s", ref, err)
-			}
-			if err := validateMapKeys(service.Secrets, mntPts); err != nil {
-				return fmt.Errorf("service '%s' invalid secret mount point configuration: %s", ref, err)
-			}
-			if err := validateMapKeys(service.Configs, refVars); err != nil {
-				return fmt.Errorf("service '%s' invalid config reference variable configuration: %s", ref, err)
-			}
-			if err := validateMapKeys(service.SrvReferences, refVars); err != nil {
-				return fmt.Errorf("service '%s' invalid service reference variable configuration: %s", ref, err)
-			}
-			if err := validateMapKeys(service.ExternalDependencies, refVars); err != nil {
-				return fmt.Errorf("service '%s' invalid external dependency reference variable configuration: %s", ref, err)
-			}
-			if err := validateServiceVolumes(service.Volumes, m.Volumes); err != nil {
-				return fmt.Errorf("service '%s' invalid volume configuration: %s", ref, err)
-			}
-			if err := validateServiceResources(service.Resources, m.Resources); err != nil {
-				return fmt.Errorf("service '%s' invalid resource configuration: %s", ref, err)
-			}
-			if err := validateServiceSecrets(service.Secrets, m.Secrets); err != nil {
-				return fmt.Errorf("service '%s' invalid secret configuration: %s", ref, err)
-			}
-			if err := validateServiceConfigs(service.Configs, m.Configs); err != nil {
-				return fmt.Errorf("service '%s' invalid config configuration: %s", ref, err)
-			}
-			if err := validateServiceHttpEndpoints(service.HttpEndpoints, extPaths); err != nil {
-				return fmt.Errorf("service '%s' invalid http endpoint configuration: %s", ref, err)
-			}
-			if err := validateServiceReferences(service.SrvReferences, m.Services); err != nil {
-				return fmt.Errorf("service '%s' invalid reference configuration: %s", ref, err)
-			}
-			if err := validateServiceDependencies(service.Dependencies, m.Services); err != nil {
-				return fmt.Errorf("service '%s' invalid dependency configuration: %s", ref, err)
-			}
-			if err := validateServiceExternalDependencies(service.ExternalDependencies, m.Dependencies); err != nil {
-				return fmt.Errorf("service '%s' invalid external dependency configuration: %s", ref, err)
-			}
-			if err := validateServicePorts(service.Ports, hostPorts); err != nil {
-				return fmt.Errorf("service '%s' invalid port mapping configuration: %s", ref, err)
-			}
+	refVars := make(map[string]struct{})
+	mntPts := make(map[string]struct{})
+	extPaths := make(map[string]struct{})
+	hostPorts := make(map[string]struct{})
+	for ref, service := range m.Services {
+		if ref == "" {
+			return errors.New("empty service reference")
+		}
+		if err := validateMapKeys(service.Include, mntPts); err != nil {
+			return fmt.Errorf("service '%s' invalid include mount point configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.Tmpfs, mntPts); err != nil {
+			return fmt.Errorf("service '%s' invalid tmpfs mount point configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.Volumes, mntPts); err != nil {
+			return fmt.Errorf("service '%s' invalid volume mount point configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.Resources, mntPts); err != nil {
+			return fmt.Errorf("service '%s' invalid resource mount point configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.Secrets, mntPts); err != nil {
+			return fmt.Errorf("service '%s' invalid secret mount point configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.Configs, refVars); err != nil {
+			return fmt.Errorf("service '%s' invalid config reference variable configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.SrvReferences, refVars); err != nil {
+			return fmt.Errorf("service '%s' invalid service reference variable configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.ExternalDependencies, refVars); err != nil {
+			return fmt.Errorf("service '%s' invalid external dependency reference variable configuration: %s", ref, err)
+		}
+		if err := validateServiceVolumes(service.Volumes, m.Volumes); err != nil {
+			return fmt.Errorf("service '%s' invalid volume configuration: %s", ref, err)
+		}
+		if err := validateServiceResources(service.Resources, m.Resources); err != nil {
+			return fmt.Errorf("service '%s' invalid resource configuration: %s", ref, err)
+		}
+		if err := validateServiceSecrets(service.Secrets, m.Secrets); err != nil {
+			return fmt.Errorf("service '%s' invalid secret configuration: %s", ref, err)
+		}
+		if err := validateServiceConfigs(service.Configs, m.Configs); err != nil {
+			return fmt.Errorf("service '%s' invalid config configuration: %s", ref, err)
+		}
+		if err := validateServiceHttpEndpoints(service.HttpEndpoints, extPaths); err != nil {
+			return fmt.Errorf("service '%s' invalid http endpoint configuration: %s", ref, err)
+		}
+		if err := validateServiceReferences(service.SrvReferences, m.Services); err != nil {
+			return fmt.Errorf("service '%s' invalid reference configuration: %s", ref, err)
+		}
+		if err := validateServiceDependencies(service.Dependencies, m.Services); err != nil {
+			return fmt.Errorf("service '%s' invalid dependency configuration: %s", ref, err)
+		}
+		if err := validateServiceExternalDependencies(service.ExternalDependencies, m.Dependencies); err != nil {
+			return fmt.Errorf("service '%s' invalid external dependency configuration: %s", ref, err)
+		}
+		if err := validateServicePorts(service.Ports, hostPorts); err != nil {
+			return fmt.Errorf("service '%s' invalid port mapping configuration: %s", ref, err)
 		}
 	}
 	return nil
