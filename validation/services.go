@@ -132,27 +132,6 @@ func validateServiceReferences(sReferences map[string]string, mServices map[stri
 	return nil
 }
 
-func validateServicePortMappings(sPortMappings model.PortMappings, hostPorts map[uint]struct{}) error {
-	for _, pm := range sPortMappings {
-		if pm.HostPort != nil && len(pm.HostPort) > 0 {
-			if len(pm.HostPort) > 1 {
-				for i := pm.HostPort[0]; i <= pm.HostPort[1]; i++ {
-					if _, ok := hostPorts[i]; ok {
-						return fmt.Errorf("duplicate port mapping '%d'", i)
-					}
-					hostPorts[i] = struct{}{}
-				}
-			} else {
-				if _, ok := hostPorts[pm.HostPort[0]]; ok {
-					return fmt.Errorf("duplicate port mapping '%d'", pm.HostPort[0])
-				}
-				hostPorts[pm.HostPort[0]] = struct{}{}
-			}
-		}
-	}
-	return nil
-}
-
 func genPortKey(n uint, p model.PortProtocol) string {
 	return fmt.Sprintf("%d%s", n, p)
 }

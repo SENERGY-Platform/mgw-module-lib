@@ -96,15 +96,6 @@ type Port struct {
 	Bindings []uint       `json:"bindings"`
 }
 
-type PortMappings map[string]portMapping
-
-type portMapping struct {
-	Name     *string      `json:"name"`
-	Port     []uint       `json:"port"`      // {n} || {s, e}
-	HostPort []uint       `json:"host_port"` // {n} || {s, e}
-	Protocol PortProtocol `json:"protocol"`
-}
-
 type ExternalDependencyTarget struct {
 	ID      string `json:"id"`
 	Service string `json:"service"`
