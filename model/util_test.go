@@ -381,3 +381,23 @@ func TestDataType_JSON(t *testing.T) {
 		t.Error("json.Unmarshal([]byte(\"1\"), &dt); err == nil")
 	}
 }
+
+func TestSet_JSON(t *testing.T) {
+	bytes, err := json.Marshal(Set[int]{1: struct{}{}})
+	if err != nil {
+		t.Error("json.Marshal(Set[int]{1: struct{}{}})")
+	}
+	if string(bytes) != "[1]" {
+		t.Error("string(bytes) != \"[1]\"")
+	}
+	var s Set[int]
+	if err := json.Unmarshal(bytes, &s); err != nil {
+		t.Error("json.Unmarshal(bytes, &s); err != nil")
+	}
+	if _, ok := s[1]; !ok {
+		t.Error("_, ok := s[1]; !ok")
+	}
+	if err := json.Unmarshal([]byte("1"), &s); err == nil {
+		t.Error("json.Unmarshal([]byte(\"1\"), &dt); err == nil")
+	}
+}
