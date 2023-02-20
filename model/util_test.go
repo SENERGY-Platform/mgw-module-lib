@@ -267,3 +267,59 @@ func TestConfigs_SetInt64Slice(t *testing.T) {
 		}
 	}
 }
+
+func TestConfigTypeOptions_SetString(t *testing.T) {
+	cto := make(ConfigTypeOptions)
+	val := "test"
+	cto.SetString("", val)
+	for _, opt := range cto {
+		if opt.DataType != StringType {
+			t.Error("opt.DataType != StringType")
+		}
+		if opt.Value != val {
+			t.Errorf("opt.Value != \"%s\"", val)
+		}
+	}
+}
+
+func TestConfigTypeOptions_SetBool(t *testing.T) {
+	cto := make(ConfigTypeOptions)
+	val := true
+	cto.SetBool("", val)
+	for _, opt := range cto {
+		if opt.DataType != BoolType {
+			t.Error("opt.DataType != BoolType")
+		}
+		if opt.Value != val {
+			t.Errorf("opt.Value != %v", val)
+		}
+	}
+}
+
+func TestConfigTypeOptions_SetFloat64(t *testing.T) {
+	cto := make(ConfigTypeOptions)
+	val := float64(1.0)
+	cto.SetFloat64("", val)
+	for _, opt := range cto {
+		if opt.DataType != Float64Type {
+			t.Error("opt.DataType != Float64Type")
+		}
+		if opt.Value != val {
+			t.Errorf("opt.Value != %f", val)
+		}
+	}
+}
+
+func TestConfigTypeOptions_SetInt64(t *testing.T) {
+	cto := make(ConfigTypeOptions)
+	val := int64(1)
+	cto.SetInt64("", val)
+	for _, opt := range cto {
+		if opt.DataType != Int64Type {
+			t.Error("opt.DataType != Int64Type")
+		}
+		if opt.Value != val {
+			t.Errorf("opt.Value != %d", val)
+		}
+	}
+}
