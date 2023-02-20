@@ -60,6 +60,7 @@ type Service struct {
 	HttpEndpoints        map[string]HttpEndpoint             `json:"http_endpoints"`        // {externalPath:HttpEndpoint}
 	Dependencies         Set[string]                         `json:"dependencies"`          // {ref}
 	ExternalDependencies map[string]ExternalDependencyTarget `json:"external_dependencies"` // {refVar:ExternalDependencyTarget}
+	Ports                []Port                              `json:"ports"`
 	PortMappings         PortMappings                        `json:"port_mappings"`
 }
 
@@ -85,6 +86,12 @@ type HttpEndpoint struct {
 	Name string `json:"name"`
 	Port *int   `json:"port"`
 	Path string `json:"path"` // internal path
+}
+
+type Port struct {
+	Name     *string      `json:"name"`
+	Number   uint         `json:"number"`
+	Protocol PortProtocol `json:"protocol"`
 }
 
 type PortMappings map[string]portMapping
