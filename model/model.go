@@ -61,7 +61,6 @@ type Service struct {
 	Dependencies         Set[string]                         `json:"dependencies"`          // {ref}
 	ExternalDependencies map[string]ExternalDependencyTarget `json:"external_dependencies"` // {refVar:ExternalDependencyTarget}
 	Ports                []Port                              `json:"ports"`
-	PortMappings         PortMappings                        `json:"port_mappings"`
 }
 
 type RunConfig struct {
