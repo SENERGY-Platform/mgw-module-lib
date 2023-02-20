@@ -17,8 +17,26 @@
 package validation
 
 import (
+	"fmt"
+	"github.com/SENERGY-Platform/mgw-module-lib/model"
 	"testing"
 )
+
+func TestValidate(t *testing.T) {
+	m := model.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Services: map[string]*model.Service{
+			"test": {},
+		},
+	}
+	if err := Validate(m); err != nil {
+		fmt.Println(err)
+		t.Error("Validate(model.Module{}); err != nil")
+	}
+}
 
 func TestValidateModuleDependencies(t *testing.T) {
 	var d map[string]string
@@ -67,5 +85,23 @@ func TestIsValidModuleID(t *testing.T) {
 		if isValidModuleID(s) != false {
 			t.Errorf("isValidModuleID(\"%s\") != false", s)
 		}
+	}
+}
+
+func TestIsValidModuleType(t *testing.T) {
+	if isValidModuleType(model.AddOnModule) != true {
+		t.Errorf("isValidModuleType(\"%s\") != true", model.AddOnModule)
+	}
+	if isValidModuleType("test") != false {
+		t.Error("isValidModuleType(\"test\") != false")
+	}
+}
+
+func TestIsValidDeploymentType(t *testing.T) {
+	if isValidDeploymentType(model.SingleDeployment) != true {
+		t.Errorf("isValidDeploymentType(\"%s\") != true", model.SingleDeployment)
+	}
+	if isValidDeploymentType("test") != false {
+		t.Error("isValidDeploymentType(\"test\") != false")
 	}
 }
