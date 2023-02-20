@@ -323,3 +323,22 @@ func TestConfigTypeOptions_SetInt64(t *testing.T) {
 		}
 	}
 }
+
+func TestConfigValue_OptionsLen(t *testing.T) {
+	cv1 := newConfigValue(nil, []string{"test"}, StringType, false, "", nil)
+	if cv1.OptionsLen() != 1 {
+		t.Error("cv1.OptionsLen() != 1")
+	}
+	cv2 := newConfigValue(nil, []bool{true}, StringType, false, "", nil)
+	if cv2.OptionsLen() != 1 {
+		t.Error("cv2.OptionsLen() != 1")
+	}
+	cv3 := newConfigValue(nil, []int64{1}, StringType, false, "", nil)
+	if cv3.OptionsLen() != 1 {
+		t.Error("cv3.OptionsLen() != 1")
+	}
+	cv4 := newConfigValue(nil, []float64{1.0}, StringType, false, "", nil)
+	if cv4.OptionsLen() != 1 {
+		t.Error("cv4.OptionsLen() != 1")
+	}
+}
