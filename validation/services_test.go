@@ -249,3 +249,129 @@ func TestValidateServiceReferences(t *testing.T) {
 		t.Errorf("validateServiceReferences(%v, %v); err != nil", sReferences, mServices)
 	}
 }
+
+func TestValidateServicePorts(t *testing.T) {
+	var sPorts []model.Port
+	hostPorts := make(map[string]struct{})
+	if err := validateServicePorts(sPorts, hostPorts); err != nil {
+		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
+	}
+	sPorts = append(sPorts, model.Port{
+		Number:   80,
+		Protocol: model.TcpPort,
+	})
+	if err := validateServicePorts(sPorts, hostPorts); err != nil {
+		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
+	}
+	if len(hostPorts) != 0 {
+		t.Error("len(hostPorts) != 0")
+	}
+	sPorts = append(sPorts, model.Port{
+		Number:   81,
+		Protocol: model.TcpPort,
+		Bindings: []uint{81},
+	})
+	if err := validateServicePorts(sPorts, hostPorts); err != nil {
+		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
+	}
+	hostPorts = make(map[string]struct{})
+	sPorts = append(sPorts, model.Port{
+		Number:   82,
+		Protocol: model.TcpPort,
+		Bindings: []uint{82, 83},
+	})
+	if err := validateServicePorts(sPorts, hostPorts); err != nil {
+		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
+	}
+	hostPorts = make(map[string]struct{})
+	sPorts = append(sPorts, model.Port{
+		Number:   80,
+		Protocol: model.UdpPort,
+	})
+	if err := validateServicePorts(sPorts, hostPorts); err != nil {
+		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
+	}
+	hostPorts = make(map[string]struct{})
+	sPorts = append(sPorts, model.Port{
+		Number:   81,
+		Protocol: model.UdpPort,
+		Bindings: []uint{81},
+	})
+	if err := validateServicePorts(sPorts, hostPorts); err != nil {
+		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
+	}
+	hostPorts = make(map[string]struct{})
+	sPorts = append(sPorts, model.Port{
+		Number:   82,
+		Protocol: model.UdpPort,
+		Bindings: []uint{82, 83},
+	})
+	if err := validateServicePorts(sPorts, hostPorts); err != nil {
+		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
+	}
+	if len(hostPorts) != 6 {
+		t.Error("len(hostPorts) != 6")
+	}
+	sPorts = nil
+	hostPorts = make(map[string]struct{})
+	sPorts = append(sPorts, model.Port{
+		Number:   80,
+		Protocol: "test",
+	})
+	if err := validateServicePorts(sPorts, hostPorts); err == nil {
+		t.Errorf("validateServicePorts(%v, %v); err == nil", sPorts, hostPorts)
+	}
+	if len(hostPorts) != 0 {
+		t.Error("len(hostPorts) != 0")
+	}
+	sPorts = nil
+	sPorts = append(sPorts, model.Port{
+		Number:   80,
+		Protocol: model.TcpPort,
+	})
+	sPorts = append(sPorts, model.Port{
+		Number:   80,
+		Protocol: model.TcpPort,
+	})
+	if err := validateServicePorts(sPorts, hostPorts); err == nil {
+		t.Errorf("validateServicePorts(%v, %v); err == nil", sPorts, hostPorts)
+	}
+	if len(hostPorts) != 0 {
+		t.Error("len(hostPorts) != 0")
+	}
+	sPorts = nil
+	hostPorts = make(map[string]struct{})
+	sPorts = append(sPorts, model.Port{
+		Number:   81,
+		Protocol: model.TcpPort,
+		Bindings: []uint{81},
+	})
+	sPorts = append(sPorts, model.Port{
+		Number:   81,
+		Protocol: model.TcpPort,
+		Bindings: []uint{81},
+	})
+	if err := validateServicePorts(sPorts, hostPorts); err == nil {
+		t.Errorf("validateServicePorts(%v, %v); err == nil", sPorts, hostPorts)
+	}
+	if len(hostPorts) != 1 {
+		t.Error("len(hostPorts) != 1")
+	}
+	sPorts = nil
+	sPorts = append(sPorts, model.Port{
+		Number:   81,
+		Protocol: model.TcpPort,
+		Bindings: []uint{81},
+	})
+	sPorts = append(sPorts, model.Port{
+		Number:   82,
+		Protocol: model.TcpPort,
+		Bindings: []uint{81},
+	})
+	if err := validateServicePorts(sPorts, hostPorts); err == nil {
+		t.Errorf("validateServicePorts(%v, %v); err == nil", sPorts, hostPorts)
+	}
+	if len(hostPorts) != 1 {
+		t.Error("len(hostPorts) != 1")
+	}
+}
