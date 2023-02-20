@@ -74,10 +74,10 @@ func Validate(m model.Module) error {
 		return fmt.Errorf("invalid input configuration: %s", err)
 	}
 	if m.Services != nil {
-		hostPorts := make(map[uint]struct{})
 		refVars := make(map[string]struct{})
 		mntPts := make(map[string]struct{})
 		extPaths := make(map[string]struct{})
+		hostPorts := make(map[string]struct{})
 		for ref, service := range m.Services {
 			if ref == "" {
 				return errors.New("empty service reference")
@@ -130,7 +130,7 @@ func Validate(m model.Module) error {
 			if err := validateServiceExternalDependencies(service.ExternalDependencies, m.Dependencies); err != nil {
 				return fmt.Errorf("service '%s' invalid external dependency configuration: %s", ref, err)
 			}
-			if err := validateServicePortMappings(service.PortMappings, hostPorts); err != nil {
+			if err := validateServicePorts(service.Ports, hostPorts); err != nil {
 				return fmt.Errorf("service '%s' invalid port mapping configuration: %s", ref, err)
 			}
 		}
