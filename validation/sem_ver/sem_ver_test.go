@@ -118,3 +118,21 @@ func TestInSemVerRange(t *testing.T) {
 		}
 	}
 }
+
+func TestIsValidSemVer(t *testing.T) {
+	if IsValidSemVer("v1.1.0") != true {
+		t.Error("IsValidSemVer(\"v1.1.0\") != true")
+	}
+	if IsValidSemVer("test") != false {
+		t.Error("IsValidSemVer(\"test\") != false")
+	}
+}
+
+func TestValidateSemVerRange(t *testing.T) {
+	if err := ValidateSemVerRange(">v1.0.0;<v2.0.0"); err != nil {
+		t.Error("ValidateSemVerRange(\">v1.0.0;<v2.0.0\"); err != nil")
+	}
+	if err := ValidateSemVerRange("test"); err == nil {
+		t.Error("ValidateSemVerRange(\"test\"); err == nil")
+	}
+}
