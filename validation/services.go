@@ -170,10 +170,10 @@ func validateServicePorts(sPorts []model.Port, hostPorts map[string]struct{}) er
 		expPorts[pKey] = struct{}{}
 		for _, binding := range port.Bindings {
 			bpKey := genPortKey(binding, port.Protocol)
-			if _, ok := expPorts[bpKey]; ok {
+			if _, ok := hostPorts[bpKey]; ok {
 				return fmt.Errorf("duplicate port binding '%d/%s'", binding, port.Protocol)
 			}
-			expPorts[bpKey] = struct{}{}
+			hostPorts[bpKey] = struct{}{}
 		}
 	}
 	return nil
