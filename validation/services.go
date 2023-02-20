@@ -152,3 +152,29 @@ func validateServicePortMappings(sPortMappings model.PortMappings, hostPorts map
 	}
 	return nil
 }
+
+func genPortKey(n uint, p model.PortProtocol) string {
+	return fmt.Sprintf("%d%s", n, p)
+}
+
+func validateServicePorts(sPorts []model.Port, hostPorts map[string]struct{}) error {
+	expPorts := make(map[string]struct{})
+	for _, port := range sPorts {
+		if _, ok := model.PortTypeMap[port.Protocol]; !ok {
+			return fmt.Errorf("invalid protocol '%s'", port.Protocol)
+		}
+		pKey := genPortKey(port.Number, port.Protocol)
+		if _, ok := expPorts[pKey]; ok {
+			return fmt.Errorf("duplicate port '%d/%s'", port.Number, port.Protocol)
+		}
+		expPorts[pKey] = struct{}{}
+		for _, binding := range port.Bindings {
+			bpKey := genPortKey(binding, port.Protocol)
+			if _, ok := expPorts[bpKey]; ok {
+				return fmt.Errorf("duplicate port binding '%d/%s'", binding, port.Protocol)
+			}
+			expPorts[bpKey] = struct{}{}
+		}
+	}
+	return nil
+}
