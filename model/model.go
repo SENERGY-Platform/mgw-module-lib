@@ -93,6 +93,7 @@ type Port struct {
 	Name     *string      `json:"name"`
 	Number   uint         `json:"number"`
 	Protocol PortProtocol `json:"protocol"`
+	Bindings []uint       `json:"bindings"`
 }
 
 type PortMappings map[string]portMapping
