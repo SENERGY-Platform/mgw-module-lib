@@ -139,14 +139,12 @@ func Validate(m model.Module) error {
 }
 
 func validateModuleDependencies(dependencies map[string]string) error {
-	if dependencies != nil {
-		for mid, ver := range dependencies {
-			if !isValidModuleID(mid) {
-				return fmt.Errorf("invalid module ID format '%s'", mid)
-			}
-			if err := sem_ver.ValidateSemVerRange(ver); err != nil {
-				return fmt.Errorf("version %s", err)
-			}
+	for mid, ver := range dependencies {
+		if !isValidModuleID(mid) {
+			return fmt.Errorf("invalid module ID format '%s'", mid)
+		}
+		if err := sem_ver.ValidateSemVerRange(ver); err != nil {
+			return fmt.Errorf("version %s", err)
 		}
 	}
 	return nil
