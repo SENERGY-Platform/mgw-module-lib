@@ -88,6 +88,8 @@ type HttpEndpoint struct {
 	Path string `json:"path"` // internal path
 }
 
+type PortProtocol = string
+
 type Port struct {
 	Name     *string      `json:"name"`
 	Number   uint         `json:"number"`
@@ -95,8 +97,6 @@ type Port struct {
 }
 
 type PortMappings map[string]portMapping
-
-type PortProtocol = string
 
 type portMapping struct {
 	Name     *string      `json:"name"`
