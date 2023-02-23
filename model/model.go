@@ -64,11 +64,11 @@ type Service struct {
 }
 
 type RunConfig struct {
-	MaxRetries     *int           `json:"max_retries"`
-	RemoveAfterRun bool           `json:"remove_after_run"`
-	StopTimeout    *time.Duration `json:"stop_timeout"`
-	StopSignal     *string        `json:"stop_signal"`
-	PseudoTTY      bool           `json:"pseudo_tty"`
+	MaxRetries  *int           `json:"max_retries"`
+	RunOnce     bool           `json:"run_once"`
+	StopTimeout *time.Duration `json:"stop_timeout"`
+	StopSignal  *string        `json:"stop_signal"`
+	PseudoTTY   bool           `json:"pseudo_tty"`
 }
 
 type BindMount struct {
