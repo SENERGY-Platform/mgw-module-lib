@@ -58,7 +58,8 @@ type Service struct {
 	Configs              map[string]string                   `json:"configs"`               // {refVar:ref}
 	SrvReferences        map[string]string                   `json:"srv_references"`        // {refVar:ref}
 	HttpEndpoints        map[string]HttpEndpoint             `json:"http_endpoints"`        // {externalPath:HttpEndpoint}
-	Dependencies         Set[string]                         `json:"dependencies"`          // {ref}
+	RequiredSrv          Set[string]                         `json:"required_srv"`          // {ref}
+	RequiredBySrv        Set[string]                         `json:"required_by_srv"`       // {ref}
 	ExternalDependencies map[string]ExternalDependencyTarget `json:"external_dependencies"` // {refVar:ExternalDependencyTarget}
 	Ports                []Port                              `json:"ports"`
 }
