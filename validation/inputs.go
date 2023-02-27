@@ -22,7 +22,7 @@ import (
 	"github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
-func validateInputsResources(inputs map[string]model.Input, mResources map[string]model.Set[string]) error {
+func validateInputsResources(inputs map[string]model.Input, mResources map[string]map[string]struct{}) error {
 	for ref := range inputs {
 		if ref == "" {
 			return errors.New("invalid input reference")

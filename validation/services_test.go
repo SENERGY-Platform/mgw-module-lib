@@ -24,7 +24,7 @@ import (
 func TestValidateServiceVolumes(t *testing.T) {
 	str := "test"
 	var sVolumes map[string]string
-	var mVolumes model.Set[string]
+	var mVolumes map[string]struct{}
 	if err := validateServiceVolumes(sVolumes, mVolumes); err != nil {
 		t.Errorf("validateServiceVolumes(%v, %v); err != nil", sVolumes, mVolumes)
 	}
@@ -36,7 +36,7 @@ func TestValidateServiceVolumes(t *testing.T) {
 	if err := validateServiceVolumes(sVolumes, mVolumes); err == nil {
 		t.Errorf("validateServiceVolumes(%v, %v); err == nil", sVolumes, mVolumes)
 	}
-	mVolumes = make(model.Set[string])
+	mVolumes = make(map[string]struct{})
 	if err := validateServiceVolumes(sVolumes, mVolumes); err == nil {
 		t.Errorf("validateServiceVolumes(%v, %v); err == nil", sVolumes, mVolumes)
 	}
@@ -49,7 +49,7 @@ func TestValidateServiceVolumes(t *testing.T) {
 func TestValidateServiceResources(t *testing.T) {
 	str := "test"
 	var sResources map[string]model.ResourceTarget
-	var mResources map[string]model.Set[string]
+	var mResources map[string]map[string]struct{}
 	if err := validateServiceResources(sResources, mResources); err != nil {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}
@@ -61,11 +61,11 @@ func TestValidateServiceResources(t *testing.T) {
 	if err := validateServiceResources(sResources, mResources); err == nil {
 		t.Errorf("validateServiceResources(%v, %v); err == nil", sResources, mResources)
 	}
-	mResources = make(map[string]model.Set[string])
+	mResources = make(map[string]map[string]struct{})
 	if err := validateServiceResources(sResources, mResources); err == nil {
 		t.Errorf("validateServiceResources(%v, %v); err == nil", sResources, mResources)
 	}
-	mResources[str] = model.Set[string]{}
+	mResources[str] = map[string]struct{}{}
 	if err := validateServiceResources(sResources, mResources); err != nil {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}
@@ -173,12 +173,12 @@ func TestValidateServiceHttpEndpoints(t *testing.T) {
 
 func TestValidateServiceDependencies(t *testing.T) {
 	str := "test"
-	var sDependencies model.Set[string]
+	var sDependencies map[string]struct{}
 	var mServices map[string]*model.Service
 	if err := validateServiceDependencies(sDependencies, mServices); err != nil {
 		t.Errorf("validateServiceDependencies(%v, %v); err != nil", sDependencies, mServices)
 	}
-	sDependencies = make(model.Set[string])
+	sDependencies = make(map[string]struct{})
 	if err := validateServiceDependencies(sDependencies, mServices); err != nil {
 		t.Errorf("validateServiceDependencies(%v, %v); err != nil", sDependencies, mServices)
 	}

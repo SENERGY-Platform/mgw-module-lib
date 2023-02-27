@@ -28,22 +28,22 @@ type ModuleType = string
 type DeploymentType = string
 
 type Module struct {
-	ID             string                 `json:"id"`
-	Name           string                 `json:"name"`
-	Description    string                 `json:"description"`
-	Tags           Set[string]            `json:"tags"`
-	License        string                 `json:"license"`
-	Author         string                 `json:"author"`
-	Version        string                 `json:"version"`
-	Type           ModuleType             `json:"type"`
-	DeploymentType DeploymentType         `json:"deployment_type"`
-	Services       map[string]*Service    `json:"services"`     // {ref:Service}
-	Volumes        Set[string]            `json:"volumes"`      // {volName}
-	Dependencies   map[string]string      `json:"dependencies"` // {moduleID:moduleVersion}
-	Resources      map[string]Set[string] `json:"resources"`    // {ref:{tag}}
-	Secrets        map[string]Secret      `json:"secrets"`      // {ref:Secret}
-	Configs        Configs                `json:"configs"`      // {ref:ConfigValue}
-	Inputs         Inputs                 `json:"inputs"`
+	ID             string                         `json:"id"`
+	Name           string                         `json:"name"`
+	Description    string                         `json:"description"`
+	Tags           map[string]struct{}            `json:"tags"`
+	License        string                         `json:"license"`
+	Author         string                         `json:"author"`
+	Version        string                         `json:"version"`
+	Type           ModuleType                     `json:"type"`
+	DeploymentType DeploymentType                 `json:"deployment_type"`
+	Services       map[string]*Service            `json:"services"`     // {ref:Service}
+	Volumes        map[string]struct{}            `json:"volumes"`      // {volName}
+	Dependencies   map[string]string              `json:"dependencies"` // {moduleID:moduleVersion}
+	Resources      map[string]map[string]struct{} `json:"resources"`    // {ref:{tag}}
+	Secrets        map[string]Secret              `json:"secrets"`      // {ref:Secret}
+	Configs        Configs                        `json:"configs"`      // {ref:ConfigValue}
+	Inputs         Inputs                         `json:"inputs"`
 }
 
 type Service struct {
@@ -58,8 +58,8 @@ type Service struct {
 	Configs              map[string]string                   `json:"configs"`               // {refVar:ref}
 	SrvReferences        map[string]string                   `json:"srv_references"`        // {refVar:ref}
 	HttpEndpoints        map[string]HttpEndpoint             `json:"http_endpoints"`        // {externalPath:HttpEndpoint}
-	RequiredSrv          Set[string]                         `json:"required_srv"`          // {ref}
-	RequiredBySrv        Set[string]                         `json:"required_by_srv"`       // {ref}
+	RequiredSrv          map[string]struct{}                 `json:"required_srv"`          // {ref}
+	RequiredBySrv        map[string]struct{}                 `json:"required_by_srv"`       // {ref}
 	ExternalDependencies map[string]ExternalDependencyTarget `json:"external_dependencies"` // {refVar:ExternalDependencyTarget}
 	Ports                []Port                              `json:"ports"`
 }
@@ -108,8 +108,8 @@ type ResourceTarget struct {
 }
 
 type Secret struct {
-	Type string      `json:"type"`
-	Tags Set[string] `json:"tags"`
+	Type string              `json:"type"`
+	Tags map[string]struct{} `json:"tags"`
 }
 
 type Configs map[string]configValue

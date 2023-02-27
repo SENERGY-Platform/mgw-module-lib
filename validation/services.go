@@ -22,7 +22,7 @@ import (
 	"github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
-func validateServiceVolumes(sVolumes map[string]string, mVolumes model.Set[string]) error {
+func validateServiceVolumes(sVolumes map[string]string, mVolumes map[string]struct{}) error {
 	for _, volume := range sVolumes {
 		if mVolumes != nil {
 			if _, ok := mVolumes[volume]; !ok {
@@ -35,7 +35,7 @@ func validateServiceVolumes(sVolumes map[string]string, mVolumes model.Set[strin
 	return nil
 }
 
-func validateServiceResources(sResources map[string]model.ResourceTarget, mResources map[string]model.Set[string]) error {
+func validateServiceResources(sResources map[string]model.ResourceTarget, mResources map[string]map[string]struct{}) error {
 	for _, target := range sResources {
 		if mResources != nil {
 			if _, ok := mResources[target.Ref]; !ok {
@@ -90,7 +90,7 @@ func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint, 
 	return nil
 }
 
-func validateServiceDependencies(sDependencies model.Set[string], mServices map[string]*model.Service) error {
+func validateServiceDependencies(sDependencies map[string]struct{}, mServices map[string]*model.Service) error {
 	for srvRef := range sDependencies {
 		if mServices != nil {
 			if _, ok := mServices[srvRef]; !ok {
