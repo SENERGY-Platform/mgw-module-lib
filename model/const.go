@@ -47,10 +47,10 @@ var PortTypeMap = map[PortProtocol]struct{}{
 }
 
 const (
-	BoolType DataType = iota
-	Int64Type
-	Float64Type
-	StringType
+	BoolType    DataType = "bool"
+	Int64Type   DataType = "int"
+	Float64Type DataType = "float"
+	StringType  DataType = "string"
 )
 
 var DataTypeRef = []string{

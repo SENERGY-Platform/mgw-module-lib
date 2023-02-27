@@ -127,7 +127,7 @@ type configValue struct {
 
 type ConfigTypeOptions map[string]configTypeOption
 
-type DataType uint
+type DataType = string
 
 type configTypeOption struct {
 	Value    any      `json:"value"`
