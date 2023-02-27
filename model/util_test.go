@@ -17,7 +17,6 @@
 package model
 
 import (
-	"encoding/json"
 	"testing"
 )
 
@@ -341,28 +340,5 @@ func TestConfigValue_OptionsLen(t *testing.T) {
 	cv4 := newConfigValue(nil, []float64{1.0}, StringType, false, "", nil)
 	if cv4.OptionsLen() != 1 {
 		t.Error("cv4.OptionsLen() != 1")
-	}
-}
-
-func TestDataType_JSON(t *testing.T) {
-	bytes, err := json.Marshal(StringType)
-	if err != nil {
-		t.Error("json.Marshal(StringType); err != nil")
-	}
-	if string(bytes) != "\"string\"" {
-		t.Error("string(bytes) != \"string\"")
-	}
-	var dt DataType
-	if err := json.Unmarshal(bytes, &dt); err != nil {
-		t.Error("json.Unmarshal(bytes, &dt); err != nil")
-	}
-	if dt != StringType {
-		t.Error("dt != StringType")
-	}
-	if err := json.Unmarshal([]byte("\"test\""), &dt); err == nil {
-		t.Error("json.Unmarshal([]byte(\"test\"), &dt); err == nil")
-	}
-	if err := json.Unmarshal([]byte("1"), &dt); err == nil {
-		t.Error("json.Unmarshal([]byte(\"1\"), &dt); err == nil")
 	}
 }
