@@ -52,18 +52,3 @@ const (
 	Float64Type DataType = "float"
 	StringType  DataType = "string"
 )
-
-var DataTypeRef = []string{
-	BoolType:    "bool",
-	Int64Type:   "int",
-	Float64Type: "float",
-	StringType:  "string",
-}
-
-var DataTypeRefMap = func() map[string]DataType {
-	m := make(map[string]DataType)
-	for i := 0; i < len(DataTypeRef); i++ {
-		m[DataTypeRef[i]] = DataType(i)
-	}
-	return m
-}()
