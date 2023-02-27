@@ -16,10 +16,6 @@
 
 package model
 
-import (
-	"encoding/json"
-)
-
 func newConfigValue[T any](def *T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions) configValue {
 	cv := configValue{
 		OptExt:   optExt,
@@ -130,25 +126,4 @@ func (v configValue) OptionsLen() (l int) {
 		l = len(o)
 	}
 	return
-}
-
-func (s *Set[T]) UnmarshalJSON(b []byte) error {
-	var sl []T
-	if err := json.Unmarshal(b, &sl); err != nil {
-		return err
-	}
-	set := make(Set[T])
-	for _, item := range sl {
-		set[item] = struct{}{}
-	}
-	*s = set
-	return nil
-}
-
-func (s Set[T]) MarshalJSON() ([]byte, error) {
-	var sl []T
-	for item := range s {
-		sl = append(sl, item)
-	}
-	return json.Marshal(sl)
 }

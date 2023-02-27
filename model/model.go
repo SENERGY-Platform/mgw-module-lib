@@ -21,8 +21,6 @@ import (
 	"time"
 )
 
-type Set[T comparable] map[T]struct{}
-
 type ModuleType = string
 
 type DeploymentType = string
