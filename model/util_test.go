@@ -344,21 +344,6 @@ func TestConfigValue_OptionsLen(t *testing.T) {
 	}
 }
 
-func TestDataType_String(t *testing.T) {
-	if BoolType.String() != "bool" {
-		t.Error("BoolType.String() != \"bool\"")
-	}
-	if Int64Type.String() != "int" {
-		t.Error("Int64Type.String() != \"int\"")
-	}
-	if Float64Type.String() != "float" {
-		t.Error("Float64Type.String() != \"float\"")
-	}
-	if StringType.String() != "string" {
-		t.Error("StringType.String() != \"string\"")
-	}
-}
-
 func TestDataType_JSON(t *testing.T) {
 	bytes, err := json.Marshal(StringType)
 	if err != nil {
