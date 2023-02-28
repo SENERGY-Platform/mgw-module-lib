@@ -148,7 +148,7 @@ func genPortKey(n uint, p model.PortProtocol) string {
 func validateServicePorts(sPorts []model.Port, hostPorts map[string]struct{}) error {
 	expPorts := make(map[string]struct{})
 	for _, port := range sPorts {
-		if _, ok := model.PortTypeMap[port.Protocol]; !ok {
+		if _, ok := model.PortProtocolMap[port.Protocol]; !ok {
 			return fmt.Errorf("invalid protocol '%s'", port.Protocol)
 		}
 		pKey := genPortKey(port.Number, port.Protocol)

@@ -41,7 +41,7 @@ const (
 	UdpPort PortProtocol = "udp"
 )
 
-var PortTypeMap = map[PortProtocol]struct{}{
+var PortProtocolMap = map[PortProtocol]struct{}{
 	TcpPort: {},
 	UdpPort: {},
 }
