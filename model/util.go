@@ -16,6 +16,8 @@
 
 package model
 
+import "github.com/SENERGY-Platform/mgw-module-lib/tsort"
+
 func newConfigValue[T any](def *T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions) configValue {
 	cv := configValue{
 		OptExt:   optExt,
@@ -126,4 +128,12 @@ func (v configValue) OptionsLen() (l int) {
 		l = len(o)
 	}
 	return
+}
+
+func GetServiceStartOrder(services map[string]*Service) ([]string, error) {
+	nodes := make(tsort.Nodes)
+	for ref, service := range services {
+		nodes.Add(ref, service.RequiredSrv, service.RequiredBySrv)
+	}
+	return tsort.GetTopOrder(nodes)
 }
