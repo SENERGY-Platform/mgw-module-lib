@@ -123,7 +123,7 @@ func Validate(m model.Module) error {
 		if err := validateServiceReferences(service.SrvReferences, m.Services); err != nil {
 			return fmt.Errorf("service '%s' invalid reference configuration: %s", ref, err)
 		}
-		if err := validateServiceDependencies(service.Dependencies, m.Services); err != nil {
+		if err := validateServiceDependencies(service.RequiredSrv, service.RequiredBySrv, m.Services); err != nil {
 			return fmt.Errorf("service '%s' invalid dependency configuration: %s", ref, err)
 		}
 		if err := validateServiceExternalDependencies(service.ExternalDependencies, m.Dependencies); err != nil {
