@@ -29,12 +29,26 @@ func TestValidate(t *testing.T) {
 		Type:           model.AddOnModule,
 		DeploymentType: model.SingleDeployment,
 		Services: map[string]*model.Service{
-			"test": {},
+			"a": {},
+			"b": {RequiredSrv: map[string]struct{}{"a": {}}},
 		},
 	}
 	if err := Validate(m); err != nil {
 		fmt.Println(err)
-		t.Error("Validate(model.Module{}); err != nil")
+		t.Errorf("Validate(%v); err != nil", m)
+	}
+	m = model.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Services: map[string]*model.Service{
+			"a": {RequiredSrv: map[string]struct{}{"a": {}}},
+		},
+	}
+	if err := Validate(m); err == nil {
+		fmt.Println(err)
+		t.Errorf("Validate(%v); err == nil", m)
 	}
 }
 
