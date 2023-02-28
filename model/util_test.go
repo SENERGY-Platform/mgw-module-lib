@@ -17,6 +17,7 @@
 package model
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -340,5 +341,35 @@ func TestConfigValue_OptionsLen(t *testing.T) {
 	cv4 := newConfigValue(nil, []float64{1.0}, StringType, false, "", nil)
 	if cv4.OptionsLen() != 1 {
 		t.Error("cv4.OptionsLen() != 1")
+	}
+}
+
+func TestGetServiceStartOrder(t *testing.T) {
+	sAref := "A"
+	sBref := "B"
+	sCref := "C"
+	order := []string{sCref, sAref, sBref} // (C -> A -> B)
+	var services map[string]*Service
+	if o, err := GetServiceStartOrder(services); err != nil {
+		t.Errorf("GetServiceStartOrder(%v); err != nil", services)
+	} else if len(o) > 0 {
+		t.Error("len(o) > 0")
+	}
+	services = make(map[string]*Service)
+	if o, err := GetServiceStartOrder(services); err != nil {
+		t.Errorf("GetServiceStartOrder(%v); err != nil", services)
+	} else if len(o) > 0 {
+		t.Error("len(o) > 0")
+	}
+	// add service "A" which requires service "C" (C -> A)
+	services[sAref] = &Service{RequiredSrv: map[string]struct{}{sCref: {}}}
+	// add service "B" which requires service "A" (A -> B)
+	services[sBref] = &Service{RequiredSrv: map[string]struct{}{sAref: {}}}
+	// add service "C"
+	services[sCref] = &Service{}
+	if o, err := GetServiceStartOrder(services); err != nil {
+		t.Errorf("GetServiceStartOrder(%v); err != nil", services)
+	} else if !reflect.DeepEqual(order, o) {
+		t.Errorf("%v != %v", order, o)
 	}
 }
