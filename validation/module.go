@@ -20,6 +20,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/SENERGY-Platform/mgw-module-lib/model"
+	"github.com/SENERGY-Platform/mgw-module-lib/tsort"
 	"github.com/SENERGY-Platform/mgw-module-lib/validation/sem_ver"
 	"regexp"
 )
@@ -77,6 +78,7 @@ func Validate(m model.Module) error {
 	mntPts := make(map[string]struct{})
 	extPaths := make(map[string]struct{})
 	hostPorts := make(map[string]struct{})
+	nodes := make(tsort.Nodes)
 	for ref, service := range m.Services {
 		if ref == "" {
 			return errors.New("empty service reference")
@@ -132,6 +134,11 @@ func Validate(m model.Module) error {
 		if err := validateServicePorts(service.Ports, hostPorts); err != nil {
 			return fmt.Errorf("service '%s' invalid port mapping configuration: %s", ref, err)
 		}
+		nodes.Add(ref, service.RequiredSrv, service.RequiredBySrv)
+	}
+	_, err := tsort.GetTopOrder(nodes)
+	if err != nil {
+		return fmt.Errorf("invalid service startup configuration: %s", err)
 	}
 	return nil
 }
