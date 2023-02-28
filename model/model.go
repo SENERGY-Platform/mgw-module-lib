@@ -25,6 +25,8 @@ type ModuleType = string
 
 type DeploymentType = string
 
+type CPUArch = string
+
 type Module struct {
 	ID             string                         `json:"id"`
 	Name           string                         `json:"name"`
@@ -35,6 +37,7 @@ type Module struct {
 	Version        string                         `json:"version"`
 	Type           ModuleType                     `json:"type"`
 	DeploymentType DeploymentType                 `json:"deployment_type"`
+	Architectures  map[CPUArch]struct{}           `json:"architectures"`
 	Services       map[string]*Service            `json:"services"`     // {ref:Service}
 	Volumes        map[string]struct{}            `json:"volumes"`      // {volName}
 	Dependencies   map[string]string              `json:"dependencies"` // {moduleID:moduleVersion}
