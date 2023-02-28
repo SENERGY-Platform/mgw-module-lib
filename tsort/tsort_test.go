@@ -94,6 +94,14 @@ func TestGetTopOrder(t *testing.T) {
 		t.Errorf("%v != %v", order, o)
 	}
 	n = make(Nodes)
+	// add node "A" which requires node "C" (C -> A) and is required by node "B" (B <- A)
+	n.Add(nAid, map[string]struct{}{nCid: {}}, map[string]struct{}{nBid: {}})
+	if o, err := GetTopOrder(n); err != nil {
+		t.Error("err != nil")
+	} else if !reflect.DeepEqual(order, o) {
+		t.Errorf("%v != %v", order, o)
+	}
+	n = make(Nodes)
 	// add node "A" which requires node "C" (C -> A)
 	n.Add(nAid, map[string]struct{}{nCid: {}}, nil)
 	// add node "B" which requires node "A" (A -> B)
