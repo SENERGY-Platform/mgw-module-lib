@@ -119,3 +119,12 @@ func TestIsValidDeploymentType(t *testing.T) {
 		t.Error("isValidDeploymentType(\"test\") != false")
 	}
 }
+
+func TestIsValidCPUArch(t *testing.T) {
+	if isValidCPUArch(model.X86_64) != true {
+		t.Errorf("isValidCPUArch(\"%s\") != true", model.X86_64)
+	}
+	if isValidCPUArch("test") != false {
+		t.Error("isValidCPUArch(\"test\") != false")
+	}
+}

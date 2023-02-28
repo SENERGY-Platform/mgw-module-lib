@@ -169,3 +169,8 @@ func isValidModuleID(s string) bool {
 	re := regexp.MustCompile(`^(?:[a-zA-Z0-9-_]+)\.(?:[a-zA-Z]+)(?:\/[a-zA-Z0-9-_]+)+$`)
 	return re.MatchString(s)
 }
+
+func isValidCPUArch(s string) bool {
+	_, ok := model.CPUArchMap[s]
+	return ok
+}
