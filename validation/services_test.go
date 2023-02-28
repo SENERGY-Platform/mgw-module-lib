@@ -188,16 +188,23 @@ func TestValidateServiceDependencies(t *testing.T) {
 	if err := validateServiceDependencies(requiredSrv, requiredBySrv, mServices); err == nil {
 		t.Errorf("validateServiceDependencies(%v, %v, %v); err == nil", requiredSrv, requiredBySrv, mServices)
 	}
-	delete(requiredSrv, str)
+	requiredSrv = make(map[string]struct{})
 	requiredBySrv[str] = struct{}{}
 	if err := validateServiceDependencies(requiredSrv, requiredBySrv, mServices); err == nil {
 		t.Errorf("validateServiceDependencies(%v, %v, %v); err == nil", requiredSrv, requiredBySrv, mServices)
 	}
 	requiredSrv[str] = struct{}{}
+	requiredBySrv = make(map[string]struct{})
 	mServices = make(map[string]*model.Service)
 	if err := validateServiceDependencies(requiredSrv, requiredBySrv, mServices); err == nil {
 		t.Errorf("validateServiceDependencies(%v, %v, %v); err == nil", requiredSrv, requiredBySrv, mServices)
 	}
+	requiredSrv = make(map[string]struct{})
+	requiredBySrv[str] = struct{}{}
+	if err := validateServiceDependencies(requiredSrv, requiredBySrv, mServices); err == nil {
+		t.Errorf("validateServiceDependencies(%v, %v, %v); err == nil", requiredSrv, requiredBySrv, mServices)
+	}
+	requiredSrv[str] = struct{}{}
 	mServices[str] = &model.Service{}
 	if err := validateServiceDependencies(requiredSrv, requiredBySrv, mServices); err != nil {
 		t.Errorf("validateServiceDependencies(%v, %v, %v); err != nil", requiredSrv, requiredBySrv, mServices)
