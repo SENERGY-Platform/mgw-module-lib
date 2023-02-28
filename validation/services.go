@@ -90,8 +90,17 @@ func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint, 
 	return nil
 }
 
-func validateServiceDependencies(sDependencies map[string]struct{}, mServices map[string]*model.Service) error {
-	for srvRef := range sDependencies {
+func validateServiceDependencies(requiredSrv map[string]struct{}, requiredBySrv map[string]struct{}, mServices map[string]*model.Service) error {
+	for srvRef := range requiredSrv {
+		if mServices != nil {
+			if _, ok := mServices[srvRef]; !ok {
+				return fmt.Errorf("service '%s' not defined", srvRef)
+			}
+		} else {
+			return errors.New("no services defined")
+		}
+	}
+	for srvRef := range requiredBySrv {
 		if mServices != nil {
 			if _, ok := mServices[srvRef]; !ok {
 				return fmt.Errorf("service '%s' not defined", srvRef)
