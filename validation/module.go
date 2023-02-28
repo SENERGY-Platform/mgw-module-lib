@@ -19,13 +19,13 @@ package validation
 import (
 	"errors"
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-module-lib/model"
+	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"github.com/SENERGY-Platform/mgw-module-lib/tsort"
 	"github.com/SENERGY-Platform/mgw-module-lib/validation/sem_ver"
 	"regexp"
 )
 
-func Validate(m model.Module) error {
+func Validate(m module.Module) error {
 	if !isValidModuleID(m.ID) {
 		return fmt.Errorf("invalid module ID format '%s'", m.ID)
 	}
@@ -156,12 +156,12 @@ func validateModuleDependencies(dependencies map[string]string) error {
 }
 
 func isValidModuleType(s string) bool {
-	_, ok := model.ModuleTypeMap[s]
+	_, ok := module.ModuleTypeMap[s]
 	return ok
 }
 
 func isValidDeploymentType(s string) bool {
-	_, ok := model.DeploymentTypeMap[s]
+	_, ok := module.DeploymentTypeMap[s]
 	return ok
 }
 
@@ -171,6 +171,6 @@ func isValidModuleID(s string) bool {
 }
 
 func isValidCPUArch(s string) bool {
-	_, ok := model.CPUArchMap[s]
+	_, ok := module.CPUArchMap[s]
 	return ok
 }

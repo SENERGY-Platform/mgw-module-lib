@@ -18,17 +18,17 @@ package validation
 
 import (
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-module-lib/model"
+	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"testing"
 )
 
 func TestValidate(t *testing.T) {
-	m := model.Module{
+	m := module.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
-		Services: map[string]*model.Service{
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Services: map[string]*module.Service{
 			"a": {},
 			"b": {RequiredSrv: map[string]struct{}{"a": {}}},
 		},
@@ -37,12 +37,12 @@ func TestValidate(t *testing.T) {
 		fmt.Println(err)
 		t.Errorf("Validate(%v); err != nil", m)
 	}
-	m = model.Module{
+	m = module.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
-		Services: map[string]*model.Service{
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Services: map[string]*module.Service{
 			"a": {RequiredSrv: map[string]struct{}{"a": {}}},
 		},
 	}
@@ -103,8 +103,8 @@ func TestIsValidModuleID(t *testing.T) {
 }
 
 func TestIsValidModuleType(t *testing.T) {
-	if isValidModuleType(model.AddOnModule) != true {
-		t.Errorf("isValidModuleType(\"%s\") != true", model.AddOnModule)
+	if isValidModuleType(module.AddOnModule) != true {
+		t.Errorf("isValidModuleType(\"%s\") != true", module.AddOnModule)
 	}
 	if isValidModuleType("test") != false {
 		t.Error("isValidModuleType(\"test\") != false")
@@ -112,8 +112,8 @@ func TestIsValidModuleType(t *testing.T) {
 }
 
 func TestIsValidDeploymentType(t *testing.T) {
-	if isValidDeploymentType(model.SingleDeployment) != true {
-		t.Errorf("isValidDeploymentType(\"%s\") != true", model.SingleDeployment)
+	if isValidDeploymentType(module.SingleDeployment) != true {
+		t.Errorf("isValidDeploymentType(\"%s\") != true", module.SingleDeployment)
 	}
 	if isValidDeploymentType("test") != false {
 		t.Error("isValidDeploymentType(\"test\") != false")
@@ -121,8 +121,8 @@ func TestIsValidDeploymentType(t *testing.T) {
 }
 
 func TestIsValidCPUArch(t *testing.T) {
-	if isValidCPUArch(model.X86_64) != true {
-		t.Errorf("isValidCPUArch(\"%s\") != true", model.X86_64)
+	if isValidCPUArch(module.X86_64) != true {
+		t.Errorf("isValidCPUArch(\"%s\") != true", module.X86_64)
 	}
 	if isValidCPUArch("test") != false {
 		t.Error("isValidCPUArch(\"test\") != false")

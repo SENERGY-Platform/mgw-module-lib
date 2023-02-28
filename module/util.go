@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package model
+package module
 
 import "github.com/SENERGY-Platform/mgw-module-lib/tsort"
 

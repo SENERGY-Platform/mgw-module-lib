@@ -17,22 +17,22 @@
 package validation
 
 import (
-	"github.com/SENERGY-Platform/mgw-module-lib/model"
+	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"testing"
 )
 
 func TestValidateInputsResources(t *testing.T) {
 	str := "test"
-	var inputs map[string]model.Input
+	var inputs map[string]module.Input
 	var mResources map[string]map[string]struct{}
 	if err := validateInputsResources(inputs, mResources); err != nil {
 		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
 	}
-	inputs = make(map[string]model.Input)
+	inputs = make(map[string]module.Input)
 	if err := validateInputsResources(inputs, mResources); err != nil {
 		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
 	}
-	inputs[str] = model.Input{}
+	inputs[str] = module.Input{}
 	if err := validateInputsResources(inputs, mResources); err == nil {
 		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mResources)
 	}
@@ -44,7 +44,7 @@ func TestValidateInputsResources(t *testing.T) {
 	if err := validateInputsResources(inputs, mResources); err != nil {
 		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
 	}
-	inputs[""] = model.Input{}
+	inputs[""] = module.Input{}
 	if err := validateInputsResources(inputs, mResources); err == nil {
 		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mResources)
 	}
@@ -52,28 +52,28 @@ func TestValidateInputsResources(t *testing.T) {
 
 func TestValidateInputsSecrets(t *testing.T) {
 	str := "test"
-	var inputs map[string]model.Input
-	var mSecrets map[string]model.Secret
+	var inputs map[string]module.Input
+	var mSecrets map[string]module.Secret
 	if err := validateInputsSecrets(inputs, mSecrets); err != nil {
 		t.Errorf("validateInputsSecrets(%v, %v); err != nil", inputs, mSecrets)
 	}
-	inputs = make(map[string]model.Input)
+	inputs = make(map[string]module.Input)
 	if err := validateInputsSecrets(inputs, mSecrets); err != nil {
 		t.Errorf("validateInputsSecrets(%v, %v); err != nil", inputs, mSecrets)
 	}
-	inputs[str] = model.Input{}
+	inputs[str] = module.Input{}
 	if err := validateInputsSecrets(inputs, mSecrets); err == nil {
 		t.Errorf("validateInputsSecrets(%v, %v); err == nil", inputs, mSecrets)
 	}
-	mSecrets = make(map[string]model.Secret)
+	mSecrets = make(map[string]module.Secret)
 	if err := validateInputsSecrets(inputs, mSecrets); err == nil {
 		t.Errorf("validateInputsSecrets(%v, %v); err == nil", inputs, mSecrets)
 	}
-	mSecrets[str] = model.Secret{}
+	mSecrets[str] = module.Secret{}
 	if err := validateInputsSecrets(inputs, mSecrets); err != nil {
 		t.Errorf("validateInputsSecrets(%v, %v); err != nil", inputs, mSecrets)
 	}
-	inputs[""] = model.Input{}
+	inputs[""] = module.Input{}
 	if err := validateInputsSecrets(inputs, mSecrets); err == nil {
 		t.Errorf("validateInputsSecrets(%v, %v); err == nil", inputs, mSecrets)
 	}
@@ -81,20 +81,20 @@ func TestValidateInputsSecrets(t *testing.T) {
 
 func TestValidateInputsConfigs(t *testing.T) {
 	str := "test"
-	var inputs map[string]model.Input
-	var mConfigs model.Configs
+	var inputs map[string]module.Input
+	var mConfigs module.Configs
 	if err := validateInputsConfigs(inputs, mConfigs); err != nil {
 		t.Errorf("validateInputsConfigs(%v, %v); err != nil", inputs, mConfigs)
 	}
-	inputs = make(map[string]model.Input)
+	inputs = make(map[string]module.Input)
 	if err := validateInputsConfigs(inputs, mConfigs); err != nil {
 		t.Errorf("validateInputsConfigs(%v, %v); err != nil", inputs, mConfigs)
 	}
-	inputs[str] = model.Input{}
+	inputs[str] = module.Input{}
 	if err := validateInputsConfigs(inputs, mConfigs); err == nil {
 		t.Errorf("validateInputsConfigs(%v, %v); err == nil", inputs, mConfigs)
 	}
-	mConfigs = make(model.Configs)
+	mConfigs = make(module.Configs)
 	if err := validateInputsConfigs(inputs, mConfigs); err == nil {
 		t.Errorf("validateInputsConfigs(%v, %v); err == nil", inputs, mConfigs)
 	}
@@ -102,7 +102,7 @@ func TestValidateInputsConfigs(t *testing.T) {
 	if err := validateInputsConfigs(inputs, mConfigs); err != nil {
 		t.Errorf("validateInputsConfigs(%v, %v); err != nil", inputs, mConfigs)
 	}
-	inputs[""] = model.Input{}
+	inputs[""] = module.Input{}
 	if err := validateInputsConfigs(inputs, mConfigs); err == nil {
 		t.Errorf("validateInputsConfigs(%v, %v); err == nil", inputs, mConfigs)
 	}
@@ -110,28 +110,28 @@ func TestValidateInputsConfigs(t *testing.T) {
 
 func TestValidateInputsAndGroups(t *testing.T) {
 	str := "test"
-	var inputs map[string]model.Input
-	var groups map[string]model.InputGroup
+	var inputs map[string]module.Input
+	var groups map[string]module.InputGroup
 	if err := validateInputsAndGroups(inputs, groups); err != nil {
 		t.Errorf("validateInputsAndGroups(%v, %v); err != nil", inputs, groups)
 	}
-	inputs = make(map[string]model.Input)
+	inputs = make(map[string]module.Input)
 	if err := validateInputsAndGroups(inputs, groups); err != nil {
 		t.Errorf("validateInputsAndGroups(%v, %v); err != nil", inputs, groups)
 	}
-	inputs["a"] = model.Input{}
+	inputs["a"] = module.Input{}
 	if err := validateInputsAndGroups(inputs, groups); err != nil {
 		t.Errorf("validateInputsAndGroups(%v, %v); err != nil", inputs, groups)
 	}
-	inputs["b"] = model.Input{Group: &str}
+	inputs["b"] = module.Input{Group: &str}
 	if err := validateInputsAndGroups(inputs, groups); err == nil {
 		t.Errorf("validateInputsAndGroups(%v, %v); err == nil", inputs, groups)
 	}
-	groups = make(map[string]model.InputGroup)
+	groups = make(map[string]module.InputGroup)
 	if err := validateInputsAndGroups(inputs, groups); err == nil {
 		t.Errorf("validateInputsAndGroups(%v, %v); err == nil", inputs, groups)
 	}
-	groups[str] = model.InputGroup{}
+	groups[str] = module.InputGroup{}
 	if err := validateInputsAndGroups(inputs, groups); err != nil {
 		t.Errorf("validateInputsAndGroups(%v, %v); err != nil", inputs, groups)
 	}
@@ -140,33 +140,33 @@ func TestValidateInputsAndGroups(t *testing.T) {
 func TestValidateInputGroups(t *testing.T) {
 	str1 := "a"
 	str2 := "test"
-	var groups map[string]model.InputGroup
+	var groups map[string]module.InputGroup
 	if err := validateInputGroups(groups); err != nil {
 		t.Errorf("validateInputGroups(%v); err != nil", groups)
 	}
-	groups = make(map[string]model.InputGroup)
+	groups = make(map[string]module.InputGroup)
 	if err := validateInputGroups(groups); err != nil {
 		t.Errorf("validateInputGroups(%v); err != nil", groups)
 	}
-	groups[str1] = model.InputGroup{}
+	groups[str1] = module.InputGroup{}
 	if err := validateInputGroups(groups); err != nil {
 		t.Errorf("validateInputGroups(%v); err != nil", groups)
 	}
-	groups["b"] = model.InputGroup{Group: &str1}
+	groups["b"] = module.InputGroup{Group: &str1}
 	if err := validateInputGroups(groups); err != nil {
 		t.Errorf("validateInputGroups(%v); err != nil", groups)
 	}
-	groups["c"] = model.InputGroup{Group: &str2}
+	groups["c"] = module.InputGroup{Group: &str2}
 	if err := validateInputGroups(groups); err == nil {
 		t.Errorf("validateInputGroups(%v); err == nil", groups)
 	}
 	delete(groups, "c")
-	groups[str2] = model.InputGroup{Group: &str2}
+	groups[str2] = module.InputGroup{Group: &str2}
 	if err := validateInputGroups(groups); err == nil {
 		t.Errorf("validateInputGroups(%v); err == nil", groups)
 	}
 	delete(groups, str2)
-	groups[""] = model.InputGroup{}
+	groups[""] = module.InputGroup{}
 	if err := validateInputGroups(groups); err == nil {
 		t.Errorf("validateInputGroups(%v); err == nil", groups)
 	}

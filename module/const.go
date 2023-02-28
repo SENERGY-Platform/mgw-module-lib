@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package model
+package module
 
 const (
 	AddOnModule           ModuleType = "add-on"
