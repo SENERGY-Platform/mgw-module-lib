@@ -98,7 +98,7 @@ type Port struct {
 	Bindings []uint       `json:"bindings"`
 }
 
-type ExternalDependencyTarget struct {
+type ExtDependencyTarget struct {
 	ID      string `json:"id"`
 	Service string `json:"service"`
 }
