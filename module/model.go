@@ -48,21 +48,21 @@ type Module struct {
 }
 
 type Service struct {
-	Name                 string                              `json:"name"`
-	Image                string                              `json:"image"`
-	RunConfig            RunConfig                           `json:"run_config"`
-	Include              map[string]BindMount                `json:"include"`               // {mntPoint:BindMount}
-	Tmpfs                map[string]TmpfsMount               `json:"tmpfs"`                 // {mntPoint:TmpfsMount}
-	Volumes              map[string]string                   `json:"volumes"`               // {mntPoint:volName}
-	Resources            map[string]ResourceTarget           `json:"resources"`             // {mntPoint:ResourceTarget}
-	Secrets              map[string]string                   `json:"secrets"`               // {mntPoint:ref}
-	Configs              map[string]string                   `json:"configs"`               // {refVar:ref}
-	SrvReferences        map[string]string                   `json:"srv_references"`        // {refVar:ref}
-	HttpEndpoints        map[string]HttpEndpoint             `json:"http_endpoints"`        // {externalPath:HttpEndpoint}
-	RequiredSrv          map[string]struct{}                 `json:"required_srv"`          // {ref}
-	RequiredBySrv        map[string]struct{}                 `json:"required_by_srv"`       // {ref}
-	ExternalDependencies map[string]ExternalDependencyTarget `json:"external_dependencies"` // {refVar:ExternalDependencyTarget}
-	Ports                []Port                              `json:"ports"`
+	Name            string                         `json:"name"`
+	Image           string                         `json:"image"`
+	RunConfig       RunConfig                      `json:"run_config"`
+	BindMounts      map[string]BindMount           `json:"bind_mounts"`      // {mntPoint:BindMount}
+	Tmpfs           map[string]TmpfsMount          `json:"tmpfs"`            // {mntPoint:TmpfsMount}
+	Volumes         map[string]string              `json:"volumes"`          // {mntPoint:volName}
+	Resources       map[string]ResourceTarget      `json:"resources"`        // {mntPoint:ResourceTarget}
+	Secrets         map[string]string              `json:"secrets"`          // {mntPoint:ref}
+	Configs         map[string]string              `json:"configs"`          // {refVar:ref}
+	SrvReferences   map[string]string              `json:"srv_references"`   // {refVar:ref}
+	HttpEndpoints   map[string]HttpEndpoint        `json:"http_endpoints"`   // {externalPath:HttpEndpoint}
+	RequiredSrv     map[string]struct{}            `json:"required_srv"`     // {ref}
+	RequiredBySrv   map[string]struct{}            `json:"required_by_srv"`  // {ref}
+	ExtDependencies map[string]ExtDependencyTarget `json:"ext_dependencies"` // {refVar:ExtDependencyTarget}
+	Ports           []Port                         `json:"ports"`
 }
 
 type RunConfig struct {

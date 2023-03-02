@@ -112,7 +112,7 @@ func validateServiceDependencies(requiredSrv map[string]struct{}, requiredBySrv 
 	return nil
 }
 
-func validateServiceExternalDependencies(sExtDependencies map[string]module.ExternalDependencyTarget, mDependencies map[string]string) error {
+func validateServiceExternalDependencies(sExtDependencies map[string]module.ExtDependencyTarget, mDependencies map[string]string) error {
 	for _, target := range sExtDependencies {
 		if target.Service == "" {
 			return errors.New("empty service reference")

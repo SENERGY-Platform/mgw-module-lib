@@ -83,7 +83,7 @@ func Validate(m module.Module) error {
 		if ref == "" {
 			return errors.New("empty service reference")
 		}
-		if err := validateMapKeys(service.Include, mntPts); err != nil {
+		if err := validateMapKeys(service.BindMounts, mntPts); err != nil {
 			return fmt.Errorf("service '%s' invalid include mount point configuration: %s", ref, err)
 		}
 		if err := validateMapKeys(service.Tmpfs, mntPts); err != nil {
@@ -104,7 +104,7 @@ func Validate(m module.Module) error {
 		if err := validateMapKeys(service.SrvReferences, refVars); err != nil {
 			return fmt.Errorf("service '%s' invalid service reference variable configuration: %s", ref, err)
 		}
-		if err := validateMapKeys(service.ExternalDependencies, refVars); err != nil {
+		if err := validateMapKeys(service.ExtDependencies, refVars); err != nil {
 			return fmt.Errorf("service '%s' invalid external dependency reference variable configuration: %s", ref, err)
 		}
 		if err := validateServiceVolumes(service.Volumes, m.Volumes); err != nil {
@@ -128,7 +128,7 @@ func Validate(m module.Module) error {
 		if err := validateServiceDependencies(service.RequiredSrv, service.RequiredBySrv, m.Services); err != nil {
 			return fmt.Errorf("service '%s' invalid dependency configuration: %s", ref, err)
 		}
-		if err := validateServiceExternalDependencies(service.ExternalDependencies, m.Dependencies); err != nil {
+		if err := validateServiceExternalDependencies(service.ExtDependencies, m.Dependencies); err != nil {
 			return fmt.Errorf("service '%s' invalid external dependency configuration: %s", ref, err)
 		}
 		if err := validateServicePorts(service.Ports, hostPorts); err != nil {

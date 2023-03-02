@@ -213,16 +213,16 @@ func TestValidateServiceDependencies(t *testing.T) {
 
 func TestValidateServiceExternalDependencies(t *testing.T) {
 	str := "test.test/test"
-	var sExtDependencies map[string]module.ExternalDependencyTarget
+	var sExtDependencies map[string]module.ExtDependencyTarget
 	var mDependencies map[string]string
 	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err != nil {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
 	}
-	sExtDependencies = make(map[string]module.ExternalDependencyTarget)
+	sExtDependencies = make(map[string]module.ExtDependencyTarget)
 	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err != nil {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
 	}
-	sExtDependencies["a"] = module.ExternalDependencyTarget{ID: str, Service: "test"}
+	sExtDependencies["a"] = module.ExtDependencyTarget{ID: str, Service: "test"}
 	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err == nil {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err == nil", sExtDependencies, mDependencies)
 	}
@@ -234,7 +234,7 @@ func TestValidateServiceExternalDependencies(t *testing.T) {
 	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err != nil {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
 	}
-	sExtDependencies["b"] = module.ExternalDependencyTarget{ID: str}
+	sExtDependencies["b"] = module.ExtDependencyTarget{ID: str}
 	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err == nil {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
 	}
