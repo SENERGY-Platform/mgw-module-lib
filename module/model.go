@@ -79,8 +79,8 @@ type BindMount struct {
 }
 
 type TmpfsMount struct {
-	Size uint64       `json:"size"`
-	Mode *fs.FileMode `json:"mode"`
+	Size uint64      `json:"size"`
+	Mode fs.FileMode `json:"mode"`
 }
 
 type HttpEndpoint struct {
