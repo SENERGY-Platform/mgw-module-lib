@@ -36,7 +36,7 @@ func newConfigValue[T any](def *T, opt []T, dType DataType, optExt bool, cType s
 	return cv
 }
 
-func newConfigValueSlice[T any](def []T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter *string) configValue {
+func newConfigValueSlice[T any](def []T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string) configValue {
 	cv := configValue{
 		OptExt:    optExt,
 		Type:      cType,
@@ -72,19 +72,19 @@ func (c Configs) SetFloat64(ref string, def *float64, opt []float64, optExt bool
 	c[ref] = newConfigValue(def, opt, Float64Type, optExt, cType, cTypeOpt)
 }
 
-func (c Configs) SetStringSlice(ref string, def []string, opt []string, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter *string) {
+func (c Configs) SetStringSlice(ref string, def []string, opt []string, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string) {
 	c[ref] = newConfigValueSlice(def, opt, StringType, optExt, cType, cTypeOpt, delimiter)
 }
 
-func (c Configs) SetBoolSlice(ref string, def []bool, opt []bool, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter *string) {
+func (c Configs) SetBoolSlice(ref string, def []bool, opt []bool, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string) {
 	c[ref] = newConfigValueSlice(def, opt, BoolType, optExt, cType, cTypeOpt, delimiter)
 }
 
-func (c Configs) SetInt64Slice(ref string, def []int64, opt []int64, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter *string) {
+func (c Configs) SetInt64Slice(ref string, def []int64, opt []int64, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string) {
 	c[ref] = newConfigValueSlice(def, opt, Int64Type, optExt, cType, cTypeOpt, delimiter)
 }
 
-func (c Configs) SetFloat64Slice(ref string, def []float64, opt []float64, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter *string) {
+func (c Configs) SetFloat64Slice(ref string, def []float64, opt []float64, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string) {
 	c[ref] = newConfigValueSlice(def, opt, Float64Type, optExt, cType, cTypeOpt, delimiter)
 }
 

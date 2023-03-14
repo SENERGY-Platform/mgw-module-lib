@@ -88,7 +88,7 @@ func TestNewConfigValue(t *testing.T) {
 
 func TestNewConfigValueSlice(t *testing.T) {
 	str := "test"
-	cvs1 := newConfigValueSlice[string](nil, nil, StringType, false, str, nil, nil)
+	cvs1 := newConfigValueSlice[string](nil, nil, StringType, false, str, nil, str)
 	if cvs1.IsSlice != true {
 		t.Error("cvs1.IsSlice != true")
 	}
@@ -113,13 +113,13 @@ func TestNewConfigValueSlice(t *testing.T) {
 	if cvs1.TypeOpt != nil {
 		t.Error("cvs1.TypeOpt != nil")
 	}
-	if cvs1.Delimiter != nil {
-		t.Error("cvs1.Delimiter != nil")
+	if cvs1.Delimiter != str {
+		t.Error("cvs1.Delimiter !=", str)
 	}
 	var def []string
 	var opt []string
 	cto := make(ConfigTypeOptions)
-	cvs2 := newConfigValueSlice(def, opt, StringType, false, str, cto, nil)
+	cvs2 := newConfigValueSlice(def, opt, StringType, false, str, cto, "")
 	if cvs2.Default != nil {
 		t.Error("cvs2.Default != nil")
 	}
@@ -135,7 +135,7 @@ func TestNewConfigValueSlice(t *testing.T) {
 	def = append(def, str)
 	opt = append(opt, str)
 	cto.SetString(str, str)
-	cvs3 := newConfigValueSlice(def, opt, StringType, true, str, cto, &str)
+	cvs3 := newConfigValueSlice(def, opt, StringType, true, str, cto, "")
 	if cvs3.Default == nil {
 		t.Error("cvs3.Default == nil")
 	}
@@ -157,12 +157,6 @@ func TestNewConfigValueSlice(t *testing.T) {
 	if cvs3.TypeOpt == nil {
 		t.Error("cvs3.TypeOpt == nil")
 	}
-	if cvs3.Delimiter == nil {
-		t.Error("cvs3.Delimiter == nil")
-	}
-	if *cvs3.Delimiter != str {
-		t.Error("*cvs3.Delimiter != str")
-	}
 }
 
 func TestConfigs_SetString(t *testing.T) {
@@ -180,7 +174,7 @@ func TestConfigs_SetString(t *testing.T) {
 
 func TestConfigs_SetStringSlice(t *testing.T) {
 	configs := make(Configs)
-	configs.SetStringSlice("", nil, nil, false, "", nil, nil)
+	configs.SetStringSlice("", nil, nil, false, "", nil, "")
 	for _, config := range configs {
 		if config.DataType != StringType {
 			t.Error("config.DataType != StringType")
@@ -206,7 +200,7 @@ func TestConfigs_SetBool(t *testing.T) {
 
 func TestConfigs_SetBoolSlice(t *testing.T) {
 	configs := make(Configs)
-	configs.SetBoolSlice("", nil, nil, false, "", nil, nil)
+	configs.SetBoolSlice("", nil, nil, false, "", nil, "")
 	for _, config := range configs {
 		if config.DataType != BoolType {
 			t.Error("config.DataType != BoolType")
@@ -232,7 +226,7 @@ func TestConfigs_SetFloat64(t *testing.T) {
 
 func TestConfigs_SetFloat64Slice(t *testing.T) {
 	configs := make(Configs)
-	configs.SetFloat64Slice("", nil, nil, false, "", nil, nil)
+	configs.SetFloat64Slice("", nil, nil, false, "", nil, "")
 	for _, config := range configs {
 		if config.DataType != Float64Type {
 			t.Error("config.DataType != Float64Type")
@@ -258,7 +252,7 @@ func TestConfigs_SetInt64(t *testing.T) {
 
 func TestConfigs_SetInt64Slice(t *testing.T) {
 	configs := make(Configs)
-	configs.SetInt64Slice("", nil, nil, false, "", nil, nil)
+	configs.SetInt64Slice("", nil, nil, false, "", nil, "")
 	for _, config := range configs {
 		if config.DataType != Int64Type {
 			t.Error("config.DataType != Int64Type")

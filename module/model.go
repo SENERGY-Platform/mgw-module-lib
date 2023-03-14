@@ -123,7 +123,7 @@ type configValue struct {
 	TypeOpt   ConfigTypeOptions `json:"type_opt"`
 	DataType  DataType          `json:"data_type"`
 	IsSlice   bool              `json:"is_slice"`
-	Delimiter *string           `json:"delimiter"`
+	Delimiter string            `json:"delimiter"`
 }
 
 type ConfigTypeOptions map[string]configTypeOption
