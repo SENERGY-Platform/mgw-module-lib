@@ -21,6 +21,188 @@ import (
 	"testing"
 )
 
+func TestValidateServices(t *testing.T) {
+	s := map[string]*module.Service{
+		"a": {},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"": {},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			BindMounts: map[string]module.BindMount{"": {}},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			Tmpfs: map[string]module.TmpfsMount{"": {}},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			Volumes: map[string]string{"": ""},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			Resources: map[string]module.ResourceTarget{"": {}},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			Secrets: map[string]string{"": ""},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			Configs: map[string]string{"": ""},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			SrvReferences: map[string]string{"": ""},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			ExtDependencies: map[string]module.ExtDependencyTarget{"": {}},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			Volumes: map[string]string{"test": ""},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			Resources: map[string]module.ResourceTarget{"test": {}},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			Secrets: map[string]string{"test": ""},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			Configs: map[string]string{"test": ""},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			HttpEndpoints: map[string]module.HttpEndpoint{"": {}},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			SrvReferences: map[string]string{"test": ""},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			RequiredSrv: map[string]struct{}{"": {}},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			ExtDependencies: map[string]module.ExtDependencyTarget{"test": {}},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			Ports: []module.Port{
+				{},
+			},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			RequiredSrv: map[string]struct{}{
+				"a": {},
+			},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+}
+
 func TestValidateServiceVolumes(t *testing.T) {
 	str := "test"
 	var sVolumes map[string]string
