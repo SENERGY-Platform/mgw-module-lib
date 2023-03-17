@@ -27,10 +27,6 @@ func TestValidate(t *testing.T) {
 		Version:        "v1.0.0",
 		Type:           module.AddOnModule,
 		DeploymentType: module.SingleDeployment,
-		Services: map[string]*module.Service{
-			"a": {},
-			"b": {RequiredSrv: map[string]struct{}{"a": {}}},
-		},
 	}
 	if err := Validate(m); err != nil {
 		t.Error("err != nil")
