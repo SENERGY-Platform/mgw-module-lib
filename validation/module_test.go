@@ -17,7 +17,6 @@
 package validation
 
 import (
-	"fmt"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"testing"
 )
@@ -34,9 +33,9 @@ func TestValidate(t *testing.T) {
 		},
 	}
 	if err := Validate(m); err != nil {
-		fmt.Println(err)
-		t.Errorf("Validate(%v); err != nil", m)
+		t.Error("err != nil")
 	}
+	// ------------------------------
 	m = module.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
@@ -47,8 +46,188 @@ func TestValidate(t *testing.T) {
 		},
 	}
 	if err := Validate(m); err == nil {
-		fmt.Println(err)
-		t.Errorf("Validate(%v); err == nil", m)
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID: "",
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:      "test.test/test",
+		Version: "",
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:      "test.test/test",
+		Version: "v1.0.0",
+		Type:    "",
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: "",
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Volumes:        map[string]struct{}{"": {}},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Dependencies:   map[string]string{"": ""},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Resources:      map[string]map[string]struct{}{"": {}},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Secrets:        map[string]module.Secret{"": {}},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Configs:        module.Configs{"": {}},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Inputs: module.Inputs{
+			Groups: map[string]module.InputGroup{"": {}},
+		},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	g := ""
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Inputs: module.Inputs{
+			Resources: map[string]module.Input{"test": {Group: &g}},
+		},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Inputs: module.Inputs{
+			Secrets: map[string]module.Input{"test": {Group: &g}},
+		},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Inputs: module.Inputs{
+			Configs: map[string]module.Input{"test": {Group: &g}},
+		},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Inputs: module.Inputs{
+			Resources: map[string]module.Input{"": {}},
+		},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Inputs: module.Inputs{
+			Secrets: map[string]module.Input{"": {}},
+		},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	m = module.Module{
+		ID:             "test.test/test",
+		Version:        "v1.0.0",
+		Type:           module.AddOnModule,
+		DeploymentType: module.SingleDeployment,
+		Inputs: module.Inputs{
+			Configs: map[string]module.Input{"": {}},
+		},
+	}
+	if err := Validate(m); err == nil {
+		t.Error("err == nil")
 	}
 }
 
