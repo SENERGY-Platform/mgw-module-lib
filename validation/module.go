@@ -24,7 +24,7 @@ import (
 	"regexp"
 )
 
-func Validate(m module.Module) error {
+func Validate(m *module.Module) error {
 	if !isValidModuleID(m.ID) {
 		return fmt.Errorf("invalid module ID format '%s'", m.ID)
 	}
