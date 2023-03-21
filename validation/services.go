@@ -21,9 +21,10 @@ import (
 	"fmt"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
 	"github.com/SENERGY-Platform/mgw-module-lib/tsort"
+	"github.com/SENERGY-Platform/mgw-module-lib/util"
 )
 
-func validateServices(mServices map[string]*module.Service, mVolumes map[string]struct{}, mResources map[string]map[string]struct{}, mSecrets map[string]module.Secret, mConfigs module.Configs, mDependencies map[string]string) error {
+func validateServices(mServices map[string]*module.Service, mVolumes map[string]struct{}, mResources map[string]util.Set[string], mSecrets map[string]module.Secret, mConfigs module.Configs, mDependencies map[string]string) error {
 	refVars := make(map[string]struct{})
 	mntPts := make(map[string]struct{})
 	extPaths := make(map[string]struct{})
@@ -106,7 +107,7 @@ func validateServiceVolumes(sVolumes map[string]string, mVolumes map[string]stru
 	return nil
 }
 
-func validateServiceResources(sResources map[string]module.ResourceTarget, mResources map[string]map[string]struct{}) error {
+func validateServiceResources(sResources map[string]module.ResourceTarget, mResources map[string]util.Set[string]) error {
 	for _, target := range sResources {
 		if mResources != nil {
 			if _, ok := mResources[target.Ref]; !ok {

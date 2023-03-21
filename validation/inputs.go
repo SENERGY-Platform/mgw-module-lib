@@ -20,9 +20,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	"github.com/SENERGY-Platform/mgw-module-lib/util"
 )
 
-func validateInputsResources(inputs map[string]module.Input, mResources map[string]map[string]struct{}) error {
+func validateInputsResources(inputs map[string]module.Input, mResources map[string]util.Set[string]) error {
 	for ref := range inputs {
 		if ref == "" {
 			return errors.New("invalid input reference")
