@@ -110,8 +110,9 @@ type ResourceTarget struct {
 }
 
 type Secret struct {
-	Type string           `json:"type"`
-	Tags util.Set[string] `json:"tags"`
+	Type     string           `json:"type"`
+	Tags     util.Set[string] `json:"tags"`
+	Required bool             `json:"required"`
 }
 
 type Configs map[string]configValue
