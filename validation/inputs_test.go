@@ -18,14 +18,13 @@ package validation
 
 import (
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
-	"github.com/SENERGY-Platform/mgw-module-lib/util"
 	"testing"
 )
 
 func TestValidateInputsResources(t *testing.T) {
 	str := "test"
 	var inputs map[string]module.Input
-	var mResources map[string]util.Set[string]
+	var mResources map[string]module.Resource
 	if err := validateInputsResources(inputs, mResources); err != nil {
 		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
 	}
@@ -37,11 +36,11 @@ func TestValidateInputsResources(t *testing.T) {
 	if err := validateInputsResources(inputs, mResources); err == nil {
 		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mResources)
 	}
-	mResources = make(map[string]util.Set[string])
+	mResources = make(map[string]module.Resource)
 	if err := validateInputsResources(inputs, mResources); err == nil {
 		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mResources)
 	}
-	mResources[str] = map[string]struct{}{}
+	mResources[str] = module.Resource{}
 	if err := validateInputsResources(inputs, mResources); err != nil {
 		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
 	}

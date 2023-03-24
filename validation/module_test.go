@@ -18,7 +18,6 @@ package validation
 
 import (
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
-	"github.com/SENERGY-Platform/mgw-module-lib/util"
 	"testing"
 )
 
@@ -107,7 +106,7 @@ func TestValidate(t *testing.T) {
 		Version:        "v1.0.0",
 		Type:           module.AddOnModule,
 		DeploymentType: module.SingleDeployment,
-		Resources:      map[string]util.Set[string]{"": {}},
+		Resources:      map[string]module.Resource{"": {}},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")

@@ -18,7 +18,6 @@ package validation
 
 import (
 	"github.com/SENERGY-Platform/mgw-module-lib/module"
-	"github.com/SENERGY-Platform/mgw-module-lib/util"
 	"testing"
 )
 
@@ -232,7 +231,7 @@ func TestValidateServiceVolumes(t *testing.T) {
 func TestValidateServiceResources(t *testing.T) {
 	str := "test"
 	var sResources map[string]module.ResourceTarget
-	var mResources map[string]util.Set[string]
+	var mResources map[string]module.Resource
 	if err := validateServiceResources(sResources, mResources); err != nil {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}
@@ -244,11 +243,11 @@ func TestValidateServiceResources(t *testing.T) {
 	if err := validateServiceResources(sResources, mResources); err == nil {
 		t.Errorf("validateServiceResources(%v, %v); err == nil", sResources, mResources)
 	}
-	mResources = make(map[string]util.Set[string])
+	mResources = make(map[string]module.Resource)
 	if err := validateServiceResources(sResources, mResources); err == nil {
 		t.Errorf("validateServiceResources(%v, %v); err == nil", sResources, mResources)
 	}
-	mResources[str] = map[string]struct{}{}
+	mResources[str] = module.Resource{}
 	if err := validateServiceResources(sResources, mResources); err != nil {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}

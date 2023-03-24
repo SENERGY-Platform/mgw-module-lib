@@ -29,23 +29,23 @@ type DeploymentType = string
 type CPUArch = string
 
 type Module struct {
-	ID             string                      `json:"id"`
-	Name           string                      `json:"name"`
-	Description    string                      `json:"description"`
-	Tags           util.Set[string]            `json:"tags"`
-	License        string                      `json:"license"`
-	Author         string                      `json:"author"`
-	Version        string                      `json:"version"`
-	Type           ModuleType                  `json:"type"`
-	DeploymentType DeploymentType              `json:"deployment_type"`
-	Architectures  util.Set[CPUArch]           `json:"architectures"`
-	Services       map[string]*Service         `json:"services"`     // {ref:Service}
-	Volumes        util.Set[string]            `json:"volumes"`      // {volName}
-	Dependencies   map[string]string           `json:"dependencies"` // {moduleID:moduleVersion}
-	Resources      map[string]util.Set[string] `json:"resources"`    // {ref:{tag}}
-	Secrets        map[string]Secret           `json:"secrets"`      // {ref:Secret}
-	Configs        Configs                     `json:"configs"`      // {ref:ConfigValue}
-	Inputs         Inputs                      `json:"inputs"`
+	ID             string              `json:"id"`
+	Name           string              `json:"name"`
+	Description    string              `json:"description"`
+	Tags           util.Set[string]    `json:"tags"`
+	License        string              `json:"license"`
+	Author         string              `json:"author"`
+	Version        string              `json:"version"`
+	Type           ModuleType          `json:"type"`
+	DeploymentType DeploymentType      `json:"deployment_type"`
+	Architectures  util.Set[CPUArch]   `json:"architectures"`
+	Services       map[string]*Service `json:"services"`     // {ref:Service}
+	Volumes        util.Set[string]    `json:"volumes"`      // {volName}
+	Dependencies   map[string]string   `json:"dependencies"` // {moduleID:moduleVersion}
+	Resources      map[string]Resource `json:"resources"`    // {ref:{tag}}
+	Secrets        map[string]Secret   `json:"secrets"`      // {ref:Secret}
+	Configs        Configs             `json:"configs"`      // {ref:ConfigValue}
+	Inputs         Inputs              `json:"inputs"`
 }
 
 type Service struct {
@@ -107,6 +107,11 @@ type ExtDependencyTarget struct {
 type ResourceTarget struct {
 	Ref      string `json:"ref"`
 	ReadOnly bool   `json:"read_only"`
+}
+
+type Resource struct {
+	Tags     util.Set[string] `json:"tags"`
+	Required bool             `json:"required"`
 }
 
 type Secret struct {
