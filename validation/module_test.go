@@ -303,3 +303,44 @@ func TestIsValidCPUArch(t *testing.T) {
 		t.Error("isValidCPUArch(\"test\") != false")
 	}
 }
+
+func TestValidateConfigs(t *testing.T) {
+	var mCs module.Configs
+	var inputs map[string]module.Input
+	if err := validateConfigs(mCs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	str := "test"
+	mCs = make(module.Configs)
+	mCs.SetString(str, nil, nil, false, "", nil, false)
+	if err := validateConfigs(mCs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	mCs = make(module.Configs)
+	mCs.SetString("", nil, nil, false, "", nil, false)
+	if err := validateConfigs(mCs, inputs); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	mCs = make(module.Configs)
+	mCs.SetString(str, nil, nil, false, "", nil, true)
+	if err := validateConfigs(mCs, inputs); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	mCs = make(module.Configs)
+	mCs.SetString(str, &str, nil, false, "", nil, true)
+	if err := validateConfigs(mCs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	mCs = make(module.Configs)
+	inputs = make(map[string]module.Input)
+	inputs[str] = module.Input{}
+	mCs.SetString(str, nil, nil, false, "", nil, true)
+	if err := validateConfigs(mCs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+}

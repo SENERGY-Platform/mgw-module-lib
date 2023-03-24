@@ -49,8 +49,8 @@ func Validate(m *module.Module) error {
 	if !validateKeyNotEmptyString(m.Secrets) {
 		return errors.New("empty secret reference")
 	}
-	if !validateKeyNotEmptyString(m.Configs) {
-		return errors.New("empty config reference")
+	if err := validateConfigs(m.Configs, m.Inputs.Configs); err != nil {
+		return fmt.Errorf("invalid config configuration: %s", err)
 	}
 	if err := validateInputGroups(m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
@@ -109,4 +109,18 @@ func isValidModuleID(s string) bool {
 func isValidCPUArch(s string) bool {
 	_, ok := module.CPUArchMap[s]
 	return ok
+}
+
+func validateConfigs(mCs module.Configs, inputs map[string]module.Input) error {
+	for ref, cv := range mCs {
+		if ref == "" {
+			return errors.New("empty config reference")
+		}
+		if cv.Required && cv.Default == nil {
+			if _, ok := inputs[ref]; !ok {
+				return fmt.Errorf("config '%s' is required but no default value or input defined", ref)
+			}
+		}
+	}
+	return nil
 }
