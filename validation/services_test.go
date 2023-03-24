@@ -298,7 +298,7 @@ func TestValidateServiceConfigs(t *testing.T) {
 	if err := validateServiceConfigs(sConfigs, mConfigs); err == nil {
 		t.Errorf("validateServiceConfigs(%v, %v); err == nil", sConfigs, mConfigs)
 	}
-	mConfigs.SetString(str, nil, nil, false, "", nil)
+	mConfigs.SetString(str, nil, nil, false, "", nil, false)
 	if err := validateServiceConfigs(sConfigs, mConfigs); err != nil {
 		t.Errorf("validateServiceConfigs(%v, %v); err != nil", sConfigs, mConfigs)
 	}

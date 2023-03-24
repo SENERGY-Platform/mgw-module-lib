@@ -18,11 +18,12 @@ package module
 
 import "github.com/SENERGY-Platform/mgw-module-lib/tsort"
 
-func newConfigValue[T any](def *T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions) configValue {
+func newConfigValue[T any](def *T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions, required bool) configValue {
 	cv := configValue{
 		OptExt:   optExt,
 		Type:     cType,
 		DataType: dType,
+		Required: required,
 	}
 	if def != nil {
 		cv.Default = *def
@@ -36,13 +37,14 @@ func newConfigValue[T any](def *T, opt []T, dType DataType, optExt bool, cType s
 	return cv
 }
 
-func newConfigValueSlice[T any](def []T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string) configValue {
+func newConfigValueSlice[T any](def []T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string, required bool) configValue {
 	cv := configValue{
 		OptExt:    optExt,
 		Type:      cType,
 		DataType:  dType,
 		IsSlice:   true,
 		Delimiter: delimiter,
+		Required:  required,
 	}
 	if def != nil && len(def) > 0 {
 		cv.Default = def
@@ -56,36 +58,36 @@ func newConfigValueSlice[T any](def []T, opt []T, dType DataType, optExt bool, c
 	return cv
 }
 
-func (c Configs) SetString(ref string, def *string, opt []string, optExt bool, cType string, cTypeOpt ConfigTypeOptions) {
-	c[ref] = newConfigValue(def, opt, StringType, optExt, cType, cTypeOpt)
+func (c Configs) SetString(ref string, def *string, opt []string, optExt bool, cType string, cTypeOpt ConfigTypeOptions, required bool) {
+	c[ref] = newConfigValue(def, opt, StringType, optExt, cType, cTypeOpt, required)
 }
 
-func (c Configs) SetBool(ref string, def *bool, opt []bool, optExt bool, cType string, cTypeOpt ConfigTypeOptions) {
-	c[ref] = newConfigValue(def, opt, BoolType, optExt, cType, cTypeOpt)
+func (c Configs) SetBool(ref string, def *bool, opt []bool, optExt bool, cType string, cTypeOpt ConfigTypeOptions, required bool) {
+	c[ref] = newConfigValue(def, opt, BoolType, optExt, cType, cTypeOpt, required)
 }
 
-func (c Configs) SetInt64(ref string, def *int64, opt []int64, optExt bool, cType string, cTypeOpt ConfigTypeOptions) {
-	c[ref] = newConfigValue(def, opt, Int64Type, optExt, cType, cTypeOpt)
+func (c Configs) SetInt64(ref string, def *int64, opt []int64, optExt bool, cType string, cTypeOpt ConfigTypeOptions, required bool) {
+	c[ref] = newConfigValue(def, opt, Int64Type, optExt, cType, cTypeOpt, required)
 }
 
-func (c Configs) SetFloat64(ref string, def *float64, opt []float64, optExt bool, cType string, cTypeOpt ConfigTypeOptions) {
-	c[ref] = newConfigValue(def, opt, Float64Type, optExt, cType, cTypeOpt)
+func (c Configs) SetFloat64(ref string, def *float64, opt []float64, optExt bool, cType string, cTypeOpt ConfigTypeOptions, required bool) {
+	c[ref] = newConfigValue(def, opt, Float64Type, optExt, cType, cTypeOpt, required)
 }
 
-func (c Configs) SetStringSlice(ref string, def []string, opt []string, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string) {
-	c[ref] = newConfigValueSlice(def, opt, StringType, optExt, cType, cTypeOpt, delimiter)
+func (c Configs) SetStringSlice(ref string, def []string, opt []string, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string, required bool) {
+	c[ref] = newConfigValueSlice(def, opt, StringType, optExt, cType, cTypeOpt, delimiter, required)
 }
 
-func (c Configs) SetBoolSlice(ref string, def []bool, opt []bool, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string) {
-	c[ref] = newConfigValueSlice(def, opt, BoolType, optExt, cType, cTypeOpt, delimiter)
+func (c Configs) SetBoolSlice(ref string, def []bool, opt []bool, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string, required bool) {
+	c[ref] = newConfigValueSlice(def, opt, BoolType, optExt, cType, cTypeOpt, delimiter, required)
 }
 
-func (c Configs) SetInt64Slice(ref string, def []int64, opt []int64, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string) {
-	c[ref] = newConfigValueSlice(def, opt, Int64Type, optExt, cType, cTypeOpt, delimiter)
+func (c Configs) SetInt64Slice(ref string, def []int64, opt []int64, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string, required bool) {
+	c[ref] = newConfigValueSlice(def, opt, Int64Type, optExt, cType, cTypeOpt, delimiter, required)
 }
 
-func (c Configs) SetFloat64Slice(ref string, def []float64, opt []float64, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string) {
-	c[ref] = newConfigValueSlice(def, opt, Float64Type, optExt, cType, cTypeOpt, delimiter)
+func (c Configs) SetFloat64Slice(ref string, def []float64, opt []float64, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string, required bool) {
+	c[ref] = newConfigValueSlice(def, opt, Float64Type, optExt, cType, cTypeOpt, delimiter, required)
 }
 
 func (o ConfigTypeOptions) SetString(ref string, val string) {

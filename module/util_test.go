@@ -23,7 +23,7 @@ import (
 
 func TestNewConfigValue(t *testing.T) {
 	str := "test"
-	cv1 := newConfigValue[string](nil, nil, StringType, false, str, nil)
+	cv1 := newConfigValue[string](nil, nil, StringType, false, str, nil, true)
 	if cv1.IsSlice != false {
 		t.Error("cv1.IsSlice != false")
 	}
@@ -48,9 +48,12 @@ func TestNewConfigValue(t *testing.T) {
 	if cv1.TypeOpt != nil {
 		t.Error("cv1.TypeOpt != nil")
 	}
+	if cv1.Required == false {
+		t.Error("cv1.Required == false")
+	}
 	var opt []string
 	cto := make(ConfigTypeOptions)
-	cv2 := newConfigValue(nil, opt, StringType, false, str, cto)
+	cv2 := newConfigValue(nil, opt, StringType, false, str, cto, false)
 	if cv2.Options != nil {
 		t.Error("cv2.Options != nil")
 	}
@@ -62,7 +65,7 @@ func TestNewConfigValue(t *testing.T) {
 	}
 	opt = append(opt, str)
 	cto.SetString(str, str)
-	cv3 := newConfigValue(&str, opt, StringType, true, str, cto)
+	cv3 := newConfigValue(&str, opt, StringType, true, str, cto, false)
 	if cv3.Default == nil {
 		t.Error("cv3.Default == nil")
 	}
@@ -88,7 +91,7 @@ func TestNewConfigValue(t *testing.T) {
 
 func TestNewConfigValueSlice(t *testing.T) {
 	str := "test"
-	cvs1 := newConfigValueSlice[string](nil, nil, StringType, false, str, nil, str)
+	cvs1 := newConfigValueSlice[string](nil, nil, StringType, false, str, nil, str, true)
 	if cvs1.IsSlice != true {
 		t.Error("cvs1.IsSlice != true")
 	}
@@ -116,10 +119,13 @@ func TestNewConfigValueSlice(t *testing.T) {
 	if cvs1.Delimiter != str {
 		t.Error("cvs1.Delimiter !=", str)
 	}
+	if cvs1.Required == false {
+		t.Error("cvs1.Required == false")
+	}
 	var def []string
 	var opt []string
 	cto := make(ConfigTypeOptions)
-	cvs2 := newConfigValueSlice(def, opt, StringType, false, str, cto, "")
+	cvs2 := newConfigValueSlice(def, opt, StringType, false, str, cto, "", false)
 	if cvs2.Default != nil {
 		t.Error("cvs2.Default != nil")
 	}
@@ -135,7 +141,7 @@ func TestNewConfigValueSlice(t *testing.T) {
 	def = append(def, str)
 	opt = append(opt, str)
 	cto.SetString(str, str)
-	cvs3 := newConfigValueSlice(def, opt, StringType, true, str, cto, "")
+	cvs3 := newConfigValueSlice(def, opt, StringType, true, str, cto, "", false)
 	if cvs3.Default == nil {
 		t.Error("cvs3.Default == nil")
 	}
@@ -161,7 +167,7 @@ func TestNewConfigValueSlice(t *testing.T) {
 
 func TestConfigs_SetString(t *testing.T) {
 	configs := make(Configs)
-	configs.SetString("", nil, nil, false, "", nil)
+	configs.SetString("", nil, nil, false, "", nil, false)
 	for _, config := range configs {
 		if config.DataType != StringType {
 			t.Error("config.DataType != StringType")
@@ -174,7 +180,7 @@ func TestConfigs_SetString(t *testing.T) {
 
 func TestConfigs_SetStringSlice(t *testing.T) {
 	configs := make(Configs)
-	configs.SetStringSlice("", nil, nil, false, "", nil, "")
+	configs.SetStringSlice("", nil, nil, false, "", nil, "", false)
 	for _, config := range configs {
 		if config.DataType != StringType {
 			t.Error("config.DataType != StringType")
@@ -187,7 +193,7 @@ func TestConfigs_SetStringSlice(t *testing.T) {
 
 func TestConfigs_SetBool(t *testing.T) {
 	configs := make(Configs)
-	configs.SetBool("", nil, nil, false, "", nil)
+	configs.SetBool("", nil, nil, false, "", nil, false)
 	for _, config := range configs {
 		if config.DataType != BoolType {
 			t.Error("config.DataType != BoolType")
@@ -200,7 +206,7 @@ func TestConfigs_SetBool(t *testing.T) {
 
 func TestConfigs_SetBoolSlice(t *testing.T) {
 	configs := make(Configs)
-	configs.SetBoolSlice("", nil, nil, false, "", nil, "")
+	configs.SetBoolSlice("", nil, nil, false, "", nil, "", false)
 	for _, config := range configs {
 		if config.DataType != BoolType {
 			t.Error("config.DataType != BoolType")
@@ -213,7 +219,7 @@ func TestConfigs_SetBoolSlice(t *testing.T) {
 
 func TestConfigs_SetFloat64(t *testing.T) {
 	configs := make(Configs)
-	configs.SetFloat64("", nil, nil, false, "", nil)
+	configs.SetFloat64("", nil, nil, false, "", nil, false)
 	for _, config := range configs {
 		if config.DataType != Float64Type {
 			t.Error("config.DataType != Float64Type")
@@ -226,7 +232,7 @@ func TestConfigs_SetFloat64(t *testing.T) {
 
 func TestConfigs_SetFloat64Slice(t *testing.T) {
 	configs := make(Configs)
-	configs.SetFloat64Slice("", nil, nil, false, "", nil, "")
+	configs.SetFloat64Slice("", nil, nil, false, "", nil, "", false)
 	for _, config := range configs {
 		if config.DataType != Float64Type {
 			t.Error("config.DataType != Float64Type")
@@ -239,7 +245,7 @@ func TestConfigs_SetFloat64Slice(t *testing.T) {
 
 func TestConfigs_SetInt64(t *testing.T) {
 	configs := make(Configs)
-	configs.SetInt64("", nil, nil, false, "", nil)
+	configs.SetInt64("", nil, nil, false, "", nil, false)
 	for _, config := range configs {
 		if config.DataType != Int64Type {
 			t.Error("config.DataType != Int64Type")
@@ -252,7 +258,7 @@ func TestConfigs_SetInt64(t *testing.T) {
 
 func TestConfigs_SetInt64Slice(t *testing.T) {
 	configs := make(Configs)
-	configs.SetInt64Slice("", nil, nil, false, "", nil, "")
+	configs.SetInt64Slice("", nil, nil, false, "", nil, "", false)
 	for _, config := range configs {
 		if config.DataType != Int64Type {
 			t.Error("config.DataType != Int64Type")
@@ -320,19 +326,19 @@ func TestConfigTypeOptions_SetInt64(t *testing.T) {
 }
 
 func TestConfigValue_OptionsLen(t *testing.T) {
-	cv1 := newConfigValue(nil, []string{"test"}, StringType, false, "", nil)
+	cv1 := newConfigValue(nil, []string{"test"}, StringType, false, "", nil, false)
 	if cv1.OptionsLen() != 1 {
 		t.Error("cv1.OptionsLen() != 1")
 	}
-	cv2 := newConfigValue(nil, []bool{true}, StringType, false, "", nil)
+	cv2 := newConfigValue(nil, []bool{true}, StringType, false, "", nil, false)
 	if cv2.OptionsLen() != 1 {
 		t.Error("cv2.OptionsLen() != 1")
 	}
-	cv3 := newConfigValue(nil, []int64{1}, StringType, false, "", nil)
+	cv3 := newConfigValue(nil, []int64{1}, StringType, false, "", nil, false)
 	if cv3.OptionsLen() != 1 {
 		t.Error("cv3.OptionsLen() != 1")
 	}
-	cv4 := newConfigValue(nil, []float64{1.0}, StringType, false, "", nil)
+	cv4 := newConfigValue(nil, []float64{1.0}, StringType, false, "", nil, false)
 	if cv4.OptionsLen() != 1 {
 		t.Error("cv4.OptionsLen() != 1")
 	}

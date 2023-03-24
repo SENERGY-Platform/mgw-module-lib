@@ -125,6 +125,7 @@ type configValue struct {
 	DataType  DataType          `json:"data_type"`
 	IsSlice   bool              `json:"is_slice"`
 	Delimiter string            `json:"delimiter"`
+	Required  bool              `json:"required"`
 }
 
 type ConfigTypeOptions map[string]configTypeOption

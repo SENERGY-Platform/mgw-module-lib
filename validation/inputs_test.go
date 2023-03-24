@@ -99,7 +99,7 @@ func TestValidateInputsConfigs(t *testing.T) {
 	if err := validateInputsConfigs(inputs, mConfigs); err == nil {
 		t.Errorf("validateInputsConfigs(%v, %v); err == nil", inputs, mConfigs)
 	}
-	mConfigs.SetString(str, nil, nil, false, "", nil)
+	mConfigs.SetString(str, nil, nil, false, "", nil, false)
 	if err := validateInputsConfigs(inputs, mConfigs); err != nil {
 		t.Errorf("validateInputsConfigs(%v, %v); err != nil", inputs, mConfigs)
 	}
