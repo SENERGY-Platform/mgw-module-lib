@@ -139,7 +139,6 @@ type configTypeOption struct {
 type Input struct {
 	Name        string  `json:"name"`
 	Description *string `json:"description"`
-	Required    bool    `json:"required"`
 	Group       *string `json:"group"`
 }
 
