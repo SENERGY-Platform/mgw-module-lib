@@ -43,11 +43,11 @@ func Validate(m *module.Module) error {
 	if err := validateModuleDependencies(m.Dependencies); err != nil {
 		return fmt.Errorf("invalid dependency configuration: %s", err)
 	}
-	if !validateKeyNotEmptyString(m.Resources) {
-		return errors.New("empty resource reference")
+	if err := validateResources(m.Resources, m.Inputs.Resources); err != nil {
+		return fmt.Errorf("invalid resource configuration: %s", err)
 	}
-	if !validateKeyNotEmptyString(m.Secrets) {
-		return errors.New("empty secret reference")
+	if err := validateSecrets(m.Secrets, m.Inputs.Secrets); err != nil {
+		return fmt.Errorf("invalid secret configuration: %s", err)
 	}
 	if err := validateConfigs(m.Configs, m.Inputs.Configs); err != nil {
 		return fmt.Errorf("invalid config configuration: %s", err)
@@ -109,6 +109,34 @@ func isValidModuleID(s string) bool {
 func isValidCPUArch(s string) bool {
 	_, ok := module.CPUArchMap[s]
 	return ok
+}
+
+func validateResources(mRs map[string]module.Resource, inputs map[string]module.Input) error {
+	for ref, r := range mRs {
+		if ref == "" {
+			return errors.New("empty resource reference")
+		}
+		if r.Required && len(r.Tags) == 0 {
+			if _, ok := inputs[ref]; !ok {
+				return fmt.Errorf("resource '%s' is required but no tags or input defined", ref)
+			}
+		}
+	}
+	return nil
+}
+
+func validateSecrets(mSs map[string]module.Secret, inputs map[string]module.Input) error {
+	for ref, s := range mSs {
+		if ref == "" {
+			return errors.New("empty secret reference")
+		}
+		if s.Required && len(s.Tags) == 0 {
+			if _, ok := inputs[ref]; !ok {
+				return fmt.Errorf("secret '%s' is required but no tags or input defined", ref)
+			}
+		}
+	}
+	return nil
 }
 
 func validateConfigs(mCs module.Configs, inputs map[string]module.Input) error {

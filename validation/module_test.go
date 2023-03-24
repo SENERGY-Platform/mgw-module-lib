@@ -344,3 +344,109 @@ func TestValidateConfigs(t *testing.T) {
 		t.Error("err != nil")
 	}
 }
+
+func TestValidateResources(t *testing.T) {
+	var mRs map[string]module.Resource
+	var inputs map[string]module.Input
+	if err := validateResources(mRs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	str := "test"
+	mRs = make(map[string]module.Resource)
+	mRs[str] = module.Resource{
+		Tags:     nil,
+		Required: false,
+	}
+	if err := validateResources(mRs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	mRs[str] = module.Resource{
+		Tags:     map[string]struct{}{"": {}},
+		Required: true,
+	}
+	if err := validateResources(mRs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	mRs = map[string]module.Resource{
+		"": {},
+	}
+	if err := validateResources(mRs, inputs); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	mRs = map[string]module.Resource{
+		str: {
+			Tags:     nil,
+			Required: true,
+		},
+	}
+	if err := validateResources(mRs, inputs); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	inputs = make(map[string]module.Input)
+	inputs[str] = module.Input{}
+	mRs[str] = module.Resource{
+		Tags:     nil,
+		Required: true,
+	}
+	if err := validateResources(mRs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+}
+
+func TestValidateSecrets(t *testing.T) {
+	var mSs map[string]module.Secret
+	var inputs map[string]module.Input
+	if err := validateSecrets(mSs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	str := "test"
+	mSs = make(map[string]module.Secret)
+	mSs[str] = module.Secret{
+		Tags:     nil,
+		Required: false,
+	}
+	if err := validateSecrets(mSs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	mSs[str] = module.Secret{
+		Tags:     map[string]struct{}{"": {}},
+		Required: true,
+	}
+	if err := validateSecrets(mSs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	mSs = map[string]module.Secret{
+		"": {},
+	}
+	if err := validateSecrets(mSs, inputs); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	mSs = map[string]module.Secret{
+		str: {
+			Tags:     nil,
+			Required: true,
+		},
+	}
+	if err := validateSecrets(mSs, inputs); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	inputs = make(map[string]module.Input)
+	inputs[str] = module.Input{}
+	mSs[str] = module.Secret{
+		Tags:     nil,
+		Required: true,
+	}
+	if err := validateSecrets(mSs, inputs); err != nil {
+		t.Error("err != nil")
+	}
+}
