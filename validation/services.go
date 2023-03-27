@@ -23,7 +23,7 @@ import (
 	"github.com/SENERGY-Platform/mgw-module-lib/tsort"
 )
 
-func validateServices(mServices map[string]*module.Service, mVolumes map[string]struct{}, mResources map[string]module.Resource, mSecrets map[string]module.Secret, mConfigs module.Configs, mDependencies map[string]string) error {
+func validateServices(mServices map[string]*module.Service, mVolumes map[string]struct{}, mResources map[string]module.HostResource, mSecrets map[string]module.Secret, mConfigs module.Configs, mDependencies map[string]string) error {
 	refVars := make(map[string]struct{})
 	mntPts := make(map[string]struct{})
 	extPaths := make(map[string]struct{})
@@ -42,7 +42,7 @@ func validateServices(mServices map[string]*module.Service, mVolumes map[string]
 		if err := validateMapKeys(service.Volumes, mntPts); err != nil {
 			return fmt.Errorf("service '%s' invalid volume mount point configuration: %s", ref, err)
 		}
-		if err := validateMapKeys(service.Resources, mntPts); err != nil {
+		if err := validateMapKeys(service.HostResources, mntPts); err != nil {
 			return fmt.Errorf("service '%s' invalid resource mount point configuration: %s", ref, err)
 		}
 		if err := validateMapKeys(service.Secrets, mntPts); err != nil {
@@ -60,7 +60,7 @@ func validateServices(mServices map[string]*module.Service, mVolumes map[string]
 		if err := validateServiceVolumes(service.Volumes, mVolumes); err != nil {
 			return fmt.Errorf("service '%s' invalid volume configuration: %s", ref, err)
 		}
-		if err := validateServiceResources(service.Resources, mResources); err != nil {
+		if err := validateServiceResources(service.HostResources, mResources); err != nil {
 			return fmt.Errorf("service '%s' invalid resource configuration: %s", ref, err)
 		}
 		if err := validateServiceSecrets(service.Secrets, mSecrets); err != nil {
@@ -106,7 +106,7 @@ func validateServiceVolumes(sVolumes map[string]string, mVolumes map[string]stru
 	return nil
 }
 
-func validateServiceResources(sResources map[string]module.ResourceTarget, mResources map[string]module.Resource) error {
+func validateServiceResources(sResources map[string]module.HostResTarget, mResources map[string]module.HostResource) error {
 	for _, target := range sResources {
 		if mResources != nil {
 			if _, ok := mResources[target.Ref]; !ok {

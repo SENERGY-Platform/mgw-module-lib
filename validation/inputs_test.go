@@ -24,7 +24,7 @@ import (
 func TestValidateInputsResources(t *testing.T) {
 	str := "test"
 	var inputs map[string]module.Input
-	var mResources map[string]module.Resource
+	var mResources map[string]module.HostResource
 	if err := validateInputsResources(inputs, mResources); err != nil {
 		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
 	}
@@ -36,11 +36,11 @@ func TestValidateInputsResources(t *testing.T) {
 	if err := validateInputsResources(inputs, mResources); err == nil {
 		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mResources)
 	}
-	mResources = make(map[string]module.Resource)
+	mResources = make(map[string]module.HostResource)
 	if err := validateInputsResources(inputs, mResources); err == nil {
 		t.Errorf("validateInputsResources(%v, %v); err == nil", inputs, mResources)
 	}
-	mResources[str] = module.Resource{}
+	mResources[str] = module.HostResource{}
 	if err := validateInputsResources(inputs, mResources); err != nil {
 		t.Errorf("validateInputsResources(%v, %v); err != nil", inputs, mResources)
 	}

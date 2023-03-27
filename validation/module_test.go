@@ -106,7 +106,7 @@ func TestValidate(t *testing.T) {
 		Version:        "v1.0.0",
 		Type:           module.AddOnModule,
 		DeploymentType: module.SingleDeployment,
-		Resources:      map[string]module.Resource{"": {}},
+		HostResources:  map[string]module.HostResource{"": {}},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
@@ -346,41 +346,47 @@ func TestValidateConfigs(t *testing.T) {
 }
 
 func TestValidateResources(t *testing.T) {
-	var mRs map[string]module.Resource
+	var mRs map[string]module.HostResource
 	var inputs map[string]module.Input
 	if err := validateResources(mRs, inputs); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
 	str := "test"
-	mRs = make(map[string]module.Resource)
-	mRs[str] = module.Resource{
-		Tags:     nil,
-		Required: false,
+	mRs = make(map[string]module.HostResource)
+	mRs[str] = module.HostResource{
+		Resource: module.Resource{
+			Tags:     nil,
+			Required: false,
+		},
 	}
 	if err := validateResources(mRs, inputs); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	mRs[str] = module.Resource{
-		Tags:     map[string]struct{}{"": {}},
-		Required: true,
+	mRs[str] = module.HostResource{
+		Resource: module.Resource{
+			Tags:     map[string]struct{}{"": {}},
+			Required: true,
+		},
 	}
 	if err := validateResources(mRs, inputs); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	mRs = map[string]module.Resource{
+	mRs = map[string]module.HostResource{
 		"": {},
 	}
 	if err := validateResources(mRs, inputs); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	mRs = map[string]module.Resource{
+	mRs = map[string]module.HostResource{
 		str: {
-			Tags:     nil,
-			Required: true,
+			Resource: module.Resource{
+				Tags:     nil,
+				Required: true,
+			},
 		},
 	}
 	if err := validateResources(mRs, inputs); err == nil {
@@ -389,9 +395,11 @@ func TestValidateResources(t *testing.T) {
 	// ------------------------------
 	inputs = make(map[string]module.Input)
 	inputs[str] = module.Input{}
-	mRs[str] = module.Resource{
-		Tags:     nil,
-		Required: true,
+	mRs[str] = module.HostResource{
+		Resource: module.Resource{
+			Tags:     nil,
+			Required: true,
+		},
 	}
 	if err := validateResources(mRs, inputs); err != nil {
 		t.Error("err != nil")

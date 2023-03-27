@@ -29,23 +29,23 @@ type DeploymentType = string
 type CPUArch = string
 
 type Module struct {
-	ID             string              `json:"id"`
-	Name           string              `json:"name"`
-	Description    string              `json:"description"`
-	Tags           util.Set[string]    `json:"tags"`
-	License        string              `json:"license"`
-	Author         string              `json:"author"`
-	Version        string              `json:"version"`
-	Type           ModuleType          `json:"type"`
-	DeploymentType DeploymentType      `json:"deployment_type"`
-	Architectures  util.Set[CPUArch]   `json:"architectures"`
-	Services       map[string]*Service `json:"services"`     // {ref:Service}
-	Volumes        util.Set[string]    `json:"volumes"`      // {volName}
-	Dependencies   map[string]string   `json:"dependencies"` // {moduleID:moduleVersion}
-	Resources      map[string]Resource `json:"resources"`    // {ref:{tag}}
-	Secrets        map[string]Secret   `json:"secrets"`      // {ref:Secret}
-	Configs        Configs             `json:"configs"`      // {ref:ConfigValue}
-	Inputs         Inputs              `json:"inputs"`
+	ID             string                  `json:"id"`
+	Name           string                  `json:"name"`
+	Description    string                  `json:"description"`
+	Tags           util.Set[string]        `json:"tags"`
+	License        string                  `json:"license"`
+	Author         string                  `json:"author"`
+	Version        string                  `json:"version"`
+	Type           ModuleType              `json:"type"`
+	DeploymentType DeploymentType          `json:"deployment_type"`
+	Architectures  util.Set[CPUArch]       `json:"architectures"`
+	Services       map[string]*Service     `json:"services"`       // {ref:Service}
+	Volumes        util.Set[string]        `json:"volumes"`        // {volName}
+	Dependencies   map[string]string       `json:"dependencies"`   // {moduleID:moduleVersion}
+	HostResources  map[string]HostResource `json:"host_resources"` // {ref:{tag}}
+	Secrets        map[string]Secret       `json:"secrets"`        // {ref:Secret}
+	Configs        Configs                 `json:"configs"`        // {ref:ConfigValue}
+	Inputs         Inputs                  `json:"inputs"`
 }
 
 type Service struct {
@@ -55,7 +55,7 @@ type Service struct {
 	BindMounts      map[string]BindMount           `json:"bind_mounts"`      // {mntPoint:BindMount}
 	Tmpfs           map[string]TmpfsMount          `json:"tmpfs"`            // {mntPoint:TmpfsMount}
 	Volumes         map[string]string              `json:"volumes"`          // {mntPoint:volName}
-	Resources       map[string]ResourceTarget      `json:"resources"`        // {mntPoint:ResourceTarget}
+	HostResources   map[string]HostResTarget       `json:"host_resources"`   // {mntPoint:HostResTarget}
 	Secrets         map[string]string              `json:"secrets"`          // {mntPoint:ref}
 	Configs         map[string]string              `json:"configs"`          // {refVar:ref}
 	SrvReferences   map[string]string              `json:"srv_references"`   // {refVar:ref}
@@ -104,7 +104,7 @@ type ExtDependencyTarget struct {
 	Service string `json:"service"`
 }
 
-type ResourceTarget struct {
+type HostResTarget struct {
 	Ref      string `json:"ref"`
 	ReadOnly bool   `json:"read_only"`
 }
@@ -112,6 +112,10 @@ type ResourceTarget struct {
 type Resource struct {
 	Tags     util.Set[string] `json:"tags"`
 	Required bool             `json:"required"`
+}
+
+type HostResource struct {
+	Resource
 }
 
 type Secret struct {

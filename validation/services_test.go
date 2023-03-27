@@ -65,7 +65,7 @@ func TestValidateServices(t *testing.T) {
 	// ------------------------------
 	s = map[string]*module.Service{
 		"a": {
-			Resources: map[string]module.ResourceTarget{"": {}},
+			HostResources: map[string]module.HostResTarget{"": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
@@ -119,7 +119,7 @@ func TestValidateServices(t *testing.T) {
 	// ------------------------------
 	s = map[string]*module.Service{
 		"a": {
-			Resources: map[string]module.ResourceTarget{"test": {}},
+			HostResources: map[string]module.HostResTarget{"test": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
@@ -230,24 +230,24 @@ func TestValidateServiceVolumes(t *testing.T) {
 
 func TestValidateServiceResources(t *testing.T) {
 	str := "test"
-	var sResources map[string]module.ResourceTarget
-	var mResources map[string]module.Resource
+	var sResources map[string]module.HostResTarget
+	var mResources map[string]module.HostResource
 	if err := validateServiceResources(sResources, mResources); err != nil {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}
-	sResources = make(map[string]module.ResourceTarget)
+	sResources = make(map[string]module.HostResTarget)
 	if err := validateServiceResources(sResources, mResources); err != nil {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}
-	sResources["a"] = module.ResourceTarget{Ref: str}
+	sResources["a"] = module.HostResTarget{Ref: str}
 	if err := validateServiceResources(sResources, mResources); err == nil {
 		t.Errorf("validateServiceResources(%v, %v); err == nil", sResources, mResources)
 	}
-	mResources = make(map[string]module.Resource)
+	mResources = make(map[string]module.HostResource)
 	if err := validateServiceResources(sResources, mResources); err == nil {
 		t.Errorf("validateServiceResources(%v, %v); err == nil", sResources, mResources)
 	}
-	mResources[str] = module.Resource{}
+	mResources[str] = module.HostResource{}
 	if err := validateServiceResources(sResources, mResources); err != nil {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}

@@ -43,7 +43,7 @@ func Validate(m *module.Module) error {
 	if err := validateModuleDependencies(m.Dependencies); err != nil {
 		return fmt.Errorf("invalid dependency configuration: %s", err)
 	}
-	if err := validateResources(m.Resources, m.Inputs.Resources); err != nil {
+	if err := validateResources(m.HostResources, m.Inputs.Resources); err != nil {
 		return fmt.Errorf("invalid resource configuration: %s", err)
 	}
 	if err := validateSecrets(m.Secrets, m.Inputs.Secrets); err != nil {
@@ -64,7 +64,7 @@ func Validate(m *module.Module) error {
 	if err := validateInputsAndGroups(m.Inputs.Configs, m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
 	}
-	if err := validateInputsResources(m.Inputs.Resources, m.Resources); err != nil {
+	if err := validateInputsResources(m.Inputs.Resources, m.HostResources); err != nil {
 		return fmt.Errorf("invalid input configuration: %s", err)
 	}
 	if err := validateInputsSecrets(m.Inputs.Secrets, m.Secrets); err != nil {
@@ -73,7 +73,7 @@ func Validate(m *module.Module) error {
 	if err := validateInputsConfigs(m.Inputs.Configs, m.Configs); err != nil {
 		return fmt.Errorf("invalid input configuration: %s", err)
 	}
-	if err := validateServices(m.Services, m.Volumes, m.Resources, m.Secrets, m.Configs, m.Dependencies); err != nil {
+	if err := validateServices(m.Services, m.Volumes, m.HostResources, m.Secrets, m.Configs, m.Dependencies); err != nil {
 		return err
 	}
 	return nil
@@ -111,7 +111,7 @@ func isValidCPUArch(s string) bool {
 	return ok
 }
 
-func validateResources(mRs map[string]module.Resource, inputs map[string]module.Input) error {
+func validateResources(mRs map[string]module.HostResource, inputs map[string]module.Input) error {
 	for ref, r := range mRs {
 		if ref == "" {
 			return errors.New("empty resource reference")
