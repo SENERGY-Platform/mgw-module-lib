@@ -416,16 +416,20 @@ func TestValidateSecrets(t *testing.T) {
 	str := "test"
 	mSs = make(map[string]module.Secret)
 	mSs[str] = module.Secret{
-		Tags:     nil,
-		Required: false,
+		Resource: module.Resource{
+			Tags:     nil,
+			Required: false,
+		},
 	}
 	if err := validateSecrets(mSs, inputs); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
 	mSs[str] = module.Secret{
-		Tags:     map[string]struct{}{"": {}},
-		Required: true,
+		Resource: module.Resource{
+			Tags:     map[string]struct{}{"": {}},
+			Required: true,
+		},
 	}
 	if err := validateSecrets(mSs, inputs); err != nil {
 		t.Error("err != nil")
@@ -440,8 +444,10 @@ func TestValidateSecrets(t *testing.T) {
 	// ------------------------------
 	mSs = map[string]module.Secret{
 		str: {
-			Tags:     nil,
-			Required: true,
+			Resource: module.Resource{
+				Tags:     nil,
+				Required: true,
+			},
 		},
 	}
 	if err := validateSecrets(mSs, inputs); err == nil {
@@ -451,8 +457,10 @@ func TestValidateSecrets(t *testing.T) {
 	inputs = make(map[string]module.Input)
 	inputs[str] = module.Input{}
 	mSs[str] = module.Secret{
-		Tags:     nil,
-		Required: true,
+		Resource: module.Resource{
+			Tags:     nil,
+			Required: true,
+		},
 	}
 	if err := validateSecrets(mSs, inputs); err != nil {
 		t.Error("err != nil")

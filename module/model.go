@@ -119,9 +119,8 @@ type HostResource struct {
 }
 
 type Secret struct {
-	Type     string           `json:"type"`
-	Tags     util.Set[string] `json:"tags"`
-	Required bool             `json:"required"`
+	Resource
+	Type string `json:"type"`
 }
 
 type Configs map[string]configValue
