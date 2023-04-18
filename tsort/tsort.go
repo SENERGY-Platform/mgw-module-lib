@@ -23,10 +23,7 @@ import (
 )
 
 func GetTopOrder(nodes Nodes) ([]string, error) {
-	var stack []string
-	var err error
-	stack, err = topSort(nodes.Copy(), stack)
-	return stack, err
+	return topSort(nodes.Copy(), nil)
 }
 
 func topSort(nodes Nodes, stack []string) ([]string, error) {
