@@ -24,12 +24,12 @@ import (
 )
 
 func validateServices(mServices map[string]*module.Service, mVolumes map[string]struct{}, mResources map[string]module.HostResource, mSecrets map[string]module.Secret, mConfigs module.Configs, mDependencies map[string]string) error {
-	refVars := make(map[string]struct{})
-	mntPts := make(map[string]struct{})
 	extPaths := make(map[string]struct{})
 	hostPorts := make(map[string]struct{})
 	nodes := make(tsort.Nodes)
 	for ref, service := range mServices {
+		refVars := make(map[string]struct{})
+		mntPts := make(map[string]struct{})
 		if ref == "" {
 			return errors.New("empty service reference")
 		}
