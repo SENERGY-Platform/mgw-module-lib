@@ -46,6 +46,15 @@ func ValidateSemVerRange(s string) error {
 	return err
 }
 
+func CompareSemVer(v, w string) (int, error) {
+	for _, s := range [2]string{w, v} {
+		if !semver.IsValid(s) {
+			return 0, fmt.Errorf("format '%s' invalid", s)
+		}
+	}
+	return semver.Compare(v, w), nil
+}
+
 func semVerRangeCheck(o string, w, v string) bool {
 	res := semver.Compare(v, w)
 	switch res {
