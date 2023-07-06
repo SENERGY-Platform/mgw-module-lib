@@ -56,7 +56,8 @@ type Service struct {
 	Tmpfs           map[string]TmpfsMount          `json:"tmpfs"`            // {mntPoint:TmpfsMount}
 	Volumes         map[string]string              `json:"volumes"`          // {mntPoint:volName}
 	HostResources   map[string]HostResTarget       `json:"host_resources"`   // {mntPoint:HostResTarget}
-	Secrets         map[string]string              `json:"secrets"`          // {mntPoint:ref}
+	SecretMounts    map[string]SecretTarget        `json:"secret_mounts"`    // {mntPoint:SecretTarget}
+	SecretVars      map[string]SecretTarget        `json:"secret_vars"`      // {refVar:SecretTarget}
 	Configs         map[string]string              `json:"configs"`          // {refVar:ref}
 	SrvReferences   map[string]string              `json:"srv_references"`   // {refVar:ref}
 	HttpEndpoints   map[string]HttpEndpoint        `json:"http_endpoints"`   // {externalPath:HttpEndpoint}
@@ -116,6 +117,11 @@ type Resource struct {
 
 type HostResource struct {
 	Resource
+}
+
+type SecretTarget struct {
+	Ref     string            `json:"ref"`
+	TypeOpt map[string]string `json:"type_opt"`
 }
 
 type Secret struct {

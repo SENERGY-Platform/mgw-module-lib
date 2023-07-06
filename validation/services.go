@@ -45,8 +45,11 @@ func validateServices(mServices map[string]*module.Service, mVolumes map[string]
 		if err := validateMapKeys(service.HostResources, mntPts); err != nil {
 			return fmt.Errorf("service '%s' invalid resource mount point configuration: %s", ref, err)
 		}
-		if err := validateMapKeys(service.Secrets, mntPts); err != nil {
+		if err := validateMapKeys(service.SecretMounts, mntPts); err != nil {
 			return fmt.Errorf("service '%s' invalid secret mount point configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.SecretVars, refVars); err != nil {
+			return fmt.Errorf("service '%s' invalid secret reference variable configuration: %s", ref, err)
 		}
 		if err := validateMapKeys(service.Configs, refVars); err != nil {
 			return fmt.Errorf("service '%s' invalid config reference variable configuration: %s", ref, err)
@@ -63,7 +66,7 @@ func validateServices(mServices map[string]*module.Service, mVolumes map[string]
 		if err := validateServiceResources(service.HostResources, mResources); err != nil {
 			return fmt.Errorf("service '%s' invalid resource configuration: %s", ref, err)
 		}
-		if err := validateServiceSecrets(service.Secrets, mSecrets); err != nil {
+		if err := validateServiceSecrets(service.SecretMounts, service.SecretVars, mSecrets); err != nil {
 			return fmt.Errorf("service '%s' invalid secret configuration: %s", ref, err)
 		}
 		if err := validateServiceConfigs(service.Configs, mConfigs); err != nil {
@@ -119,11 +122,20 @@ func validateServiceResources(sResources map[string]module.HostResTarget, mResou
 	return nil
 }
 
-func validateServiceSecrets(sSecrets map[string]string, mSecrets map[string]module.Secret) error {
-	for _, secretRef := range sSecrets {
+func validateServiceSecrets(sSecretMounts, sSecretVars map[string]module.SecretTarget, mSecrets map[string]module.Secret) error {
+	for _, target := range sSecretMounts {
 		if mSecrets != nil {
-			if _, ok := mSecrets[secretRef]; !ok {
-				return fmt.Errorf("secret '%s' not defined", secretRef)
+			if _, ok := mSecrets[target.Ref]; !ok {
+				return fmt.Errorf("secret '%s' not defined", target)
+			}
+		} else {
+			return errors.New("no secrets defined")
+		}
+	}
+	for _, target := range sSecretVars {
+		if mSecrets != nil {
+			if _, ok := mSecrets[target.Ref]; !ok {
+				return fmt.Errorf("secret '%s' not defined", target)
 			}
 		} else {
 			return errors.New("no secrets defined")
