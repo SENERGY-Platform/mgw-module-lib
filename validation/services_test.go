@@ -74,7 +74,16 @@ func TestValidateServices(t *testing.T) {
 	// ------------------------------
 	s = map[string]*module.Service{
 		"a": {
-			Secrets: map[string]string{"": ""},
+			SecretMounts: map[string]module.SecretTarget{"": {}},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			SecretVars: map[string]module.SecretTarget{"": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
@@ -128,7 +137,16 @@ func TestValidateServices(t *testing.T) {
 	// ------------------------------
 	s = map[string]*module.Service{
 		"a": {
-			Secrets: map[string]string{"test": ""},
+			SecretMounts: map[string]module.SecretTarget{"test": {}},
+		},
+	}
+	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.Service{
+		"a": {
+			SecretVars: map[string]module.SecretTarget{"test": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
@@ -255,26 +273,32 @@ func TestValidateServiceResources(t *testing.T) {
 
 func TestValidateServiceSecrets(t *testing.T) {
 	str := "test"
-	var sSecrets map[string]string
+	var sSecretMounts map[string]module.SecretTarget
+	var sSecretVars map[string]module.SecretTarget
 	var mSecrets map[string]module.Secret
-	if err := validateServiceSecrets(sSecrets, mSecrets); err != nil {
-		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecrets, mSecrets)
+	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err != nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecretMounts, mSecrets)
 	}
-	sSecrets = make(map[string]string)
-	if err := validateServiceSecrets(sSecrets, mSecrets); err != nil {
-		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecrets, mSecrets)
+	sSecretMounts = make(map[string]module.SecretTarget)
+	sSecretVars = make(map[string]module.SecretTarget)
+	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err != nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecretMounts, mSecrets)
 	}
-	sSecrets["a"] = str
-	if err := validateServiceSecrets(sSecrets, mSecrets); err == nil {
-		t.Errorf("validateServiceSecrets(%v, %v); err == nil", sSecrets, mSecrets)
+	sSecretMounts["a"] = module.SecretTarget{Ref: str}
+	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err == nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err == nil", sSecretMounts, mSecrets)
 	}
 	mSecrets = make(map[string]module.Secret)
-	if err := validateServiceSecrets(sSecrets, mSecrets); err == nil {
-		t.Errorf("validateServiceSecrets(%v, %v); err == nil", sSecrets, mSecrets)
+	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err == nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err == nil", sSecretMounts, mSecrets)
 	}
 	mSecrets[str] = module.Secret{}
-	if err := validateServiceSecrets(sSecrets, mSecrets); err != nil {
-		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecrets, mSecrets)
+	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err != nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecretMounts, mSecrets)
+	}
+	sSecretVars["a"] = module.SecretTarget{Ref: str}
+	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err != nil {
+		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecretMounts, mSecrets)
 	}
 }
 
