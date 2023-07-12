@@ -126,7 +126,7 @@ func validateServiceSecrets(sSecretMounts, sSecretVars map[string]module.SecretT
 	for _, target := range sSecretMounts {
 		if mSecrets != nil {
 			if _, ok := mSecrets[target.Ref]; !ok {
-				return fmt.Errorf("secret '%s' not defined", target)
+				return fmt.Errorf("secret '%s' not defined", target.Ref)
 			}
 		} else {
 			return errors.New("no secrets defined")
@@ -135,7 +135,7 @@ func validateServiceSecrets(sSecretMounts, sSecretVars map[string]module.SecretT
 	for _, target := range sSecretVars {
 		if mSecrets != nil {
 			if _, ok := mSecrets[target.Ref]; !ok {
-				return fmt.Errorf("secret '%s' not defined", target)
+				return fmt.Errorf("secret '%s' not defined", target.Ref)
 			}
 		} else {
 			return errors.New("no secrets defined")
