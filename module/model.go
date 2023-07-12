@@ -120,8 +120,8 @@ type HostResource struct {
 }
 
 type SecretTarget struct {
-	Ref     string            `json:"ref"`
-	TypeOpt map[string]string `json:"type_opt"`
+	Ref  string  `json:"ref"`
+	Item *string `json:"item"`
 }
 
 type Secret struct {
