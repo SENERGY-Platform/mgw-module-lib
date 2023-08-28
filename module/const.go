@@ -78,3 +78,5 @@ var CPUArchMap = map[CPUArch]struct{}{
 	AARCH64: {},
 	ARM64V8: {},
 }
+
+const RefPlaceholder = "ref"
