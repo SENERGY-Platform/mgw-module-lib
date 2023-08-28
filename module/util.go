@@ -16,7 +16,10 @@
 
 package module
 
-import "github.com/SENERGY-Platform/mgw-module-lib/tsort"
+import (
+	"github.com/SENERGY-Platform/mgw-module-lib/tsort"
+	"strings"
+)
 
 func newConfigValue[T any](def *T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions, required bool) configValue {
 	cv := configValue{
@@ -138,4 +141,11 @@ func GetServiceStartOrder(services map[string]*Service) ([]string, error) {
 		nodes.Add(ref, service.RequiredSrv, service.RequiredBySrv)
 	}
 	return tsort.GetTopOrder(nodes)
+}
+
+func (t SrvRefTarget) FillTemplate(s string) string {
+	if t.Template != nil {
+		return strings.ReplaceAll(*t.Template, "{"+RefPlaceholder+"}", s)
+	}
+	return s
 }

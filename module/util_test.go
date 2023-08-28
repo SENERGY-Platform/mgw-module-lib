@@ -373,3 +373,27 @@ func TestGetServiceStartOrder(t *testing.T) {
 		t.Errorf("%v != %v", order, o)
 	}
 }
+
+func TestSrvRefTarget_FillTemplate(t *testing.T) {
+	str := "test"
+	target := SrvRefTarget{}
+	a := str
+	b := target.FillTemplate(str)
+	if a != b {
+		t.Errorf("%s != %s", a, b)
+	}
+	tmp := "http://{" + RefPlaceholder + "}/api"
+	target = SrvRefTarget{Template: &tmp}
+	a = "http://" + str + "/api"
+	b = target.FillTemplate(str)
+	if a != b {
+		t.Errorf("%s != %s", a, b)
+	}
+	tmp2 := "http://api"
+	target = SrvRefTarget{Template: &tmp2}
+	a = tmp2
+	b = target.FillTemplate(str)
+	if a != b {
+		t.Errorf("%s != %s", a, b)
+	}
+}
