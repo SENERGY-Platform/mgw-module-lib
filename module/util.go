@@ -149,3 +149,10 @@ func (t SrvRefTarget) FillTemplate(s string) string {
 	}
 	return s
 }
+
+func (t ExtDependencyTarget) FillTemplate(s string) string {
+	if t.Template != nil {
+		return strings.ReplaceAll(*t.Template, "{"+RefPlaceholder+"}", s)
+	}
+	return s
+}

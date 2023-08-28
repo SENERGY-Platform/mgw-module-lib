@@ -397,3 +397,27 @@ func TestSrvRefTarget_FillTemplate(t *testing.T) {
 		t.Errorf("%s != %s", a, b)
 	}
 }
+
+func TestExtDependencyTarget_FillTemplate(t *testing.T) {
+	str := "test"
+	target := ExtDependencyTarget{}
+	a := str
+	b := target.FillTemplate(str)
+	if a != b {
+		t.Errorf("%s != %s", a, b)
+	}
+	tmp := "http://{" + RefPlaceholder + "}/api"
+	target = ExtDependencyTarget{Template: &tmp}
+	a = "http://" + str + "/api"
+	b = target.FillTemplate(str)
+	if a != b {
+		t.Errorf("%s != %s", a, b)
+	}
+	tmp2 := "http://api"
+	target = ExtDependencyTarget{Template: &tmp2}
+	a = tmp2
+	b = target.FillTemplate(str)
+	if a != b {
+		t.Errorf("%s != %s", a, b)
+	}
+}

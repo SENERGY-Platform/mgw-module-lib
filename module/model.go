@@ -101,8 +101,9 @@ type Port struct {
 }
 
 type ExtDependencyTarget struct {
-	ID      string `json:"id"`
-	Service string `json:"service"`
+	ID       string  `json:"id"`
+	Service  string  `json:"service"`
+	Template *string `json:"template"`
 }
 
 type HostResTarget struct {
