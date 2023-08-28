@@ -211,11 +211,11 @@ func validateServiceExternalDependencies(sExtDependencies map[string]module.ExtD
 	return nil
 }
 
-func validateServiceReferences(sReferences map[string]string, mServices map[string]*module.Service) error {
-	for _, srvRef := range sReferences {
+func validateServiceReferences(sReferences map[string]module.SrvRefTarget, mServices map[string]*module.Service) error {
+	for _, target := range sReferences {
 		if mServices != nil {
-			if _, ok := mServices[srvRef]; !ok {
-				return fmt.Errorf("service '%s' not defined", srvRef)
+			if _, ok := mServices[target.Ref]; !ok {
+				return fmt.Errorf("service '%s' not defined", target.Ref)
 			}
 		} else {
 			return errors.New("no services defined")

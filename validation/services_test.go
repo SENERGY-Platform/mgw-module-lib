@@ -101,7 +101,7 @@ func TestValidateServices(t *testing.T) {
 	// ------------------------------
 	s = map[string]*module.Service{
 		"a": {
-			SrvReferences: map[string]string{"": ""},
+			SrvReferences: map[string]module.SrvRefTarget{"": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
@@ -173,7 +173,7 @@ func TestValidateServices(t *testing.T) {
 	// ------------------------------
 	s = map[string]*module.Service{
 		"a": {
-			SrvReferences: map[string]string{"test": ""},
+			SrvReferences: map[string]module.SrvRefTarget{"test": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
@@ -448,16 +448,16 @@ func TestValidateServiceExternalDependencies(t *testing.T) {
 
 func TestValidateServiceReferences(t *testing.T) {
 	str := "test"
-	var sReferences map[string]string
+	var sReferences map[string]module.SrvRefTarget
 	var mServices map[string]*module.Service
 	if err := validateServiceReferences(sReferences, mServices); err != nil {
 		t.Errorf("validateServiceReferences(%v, %v); err != nil", sReferences, mServices)
 	}
-	sReferences = make(map[string]string)
+	sReferences = make(map[string]module.SrvRefTarget)
 	if err := validateServiceReferences(sReferences, mServices); err != nil {
 		t.Errorf("validateServiceReferences(%v, %v); err != nil", sReferences, mServices)
 	}
-	sReferences["a"] = str
+	sReferences["a"] = module.SrvRefTarget{Ref: str}
 	if err := validateServiceReferences(sReferences, mServices); err == nil {
 		t.Errorf("validateServiceReferences(%v, %v); err == nil", sReferences, mServices)
 	}

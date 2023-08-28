@@ -59,7 +59,7 @@ type Service struct {
 	SecretMounts    map[string]SecretTarget        `json:"secret_mounts"`    // {mntPoint:SecretTarget}
 	SecretVars      map[string]SecretTarget        `json:"secret_vars"`      // {refVar:SecretTarget}
 	Configs         map[string]string              `json:"configs"`          // {refVar:ref}
-	SrvReferences   map[string]string              `json:"srv_references"`   // {refVar:ref}
+	SrvReferences   map[string]SrvRefTarget        `json:"srv_references"`   // {refVar:SrvRefTarget}
 	HttpEndpoints   map[string]HttpEndpoint        `json:"http_endpoints"`   // {externalPath:HttpEndpoint}
 	RequiredSrv     util.Set[string]               `json:"required_srv"`     // {ref}
 	RequiredBySrv   util.Set[string]               `json:"required_by_srv"`  // {ref}
@@ -127,6 +127,11 @@ type SecretTarget struct {
 type Secret struct {
 	Resource
 	Type string `json:"type"`
+}
+
+type SrvRefTarget struct {
+	Ref      string  `json:"ref"`
+	Template *string `json:"template"`
 }
 
 type Configs map[string]configValue
