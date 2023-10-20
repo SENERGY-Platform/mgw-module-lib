@@ -46,6 +46,8 @@ type Module struct {
 	Secrets        map[string]Secret       `json:"secrets"`        // {ref:Secret}
 	Configs        Configs                 `json:"configs"`        // {ref:ConfigValue}
 	Inputs         Inputs                  `json:"inputs"`
+	AuxServices    map[string]*AuxService  `json:"aux_services"` // {ref:AuxService}
+	AuxImgSrc      util.Set[string]        `json:"aux_img_src"`
 }
 
 type Service struct {
@@ -65,6 +67,17 @@ type Service struct {
 	RequiredBySrv   util.Set[string]               `json:"required_by_srv"`  // {ref}
 	ExtDependencies map[string]ExtDependencyTarget `json:"ext_dependencies"` // {refVar:ExtDependencyTarget}
 	Ports           []Port                         `json:"ports"`
+}
+
+type AuxService struct {
+	Name            string                         `json:"name"`
+	RunConfig       RunConfig                      `json:"run_config"`
+	BindMounts      map[string]BindMount           `json:"bind_mounts"`      // {mntPoint:BindMount}
+	Tmpfs           map[string]TmpfsMount          `json:"tmpfs"`            // {mntPoint:TmpfsMount}
+	Volumes         map[string]string              `json:"volumes"`          // {mntPoint:volName}
+	Configs         map[string]string              `json:"configs"`          // {refVar:ref}
+	SrvReferences   map[string]SrvRefTarget        `json:"srv_references"`   // {refVar:SrvRefTarget}
+	ExtDependencies map[string]ExtDependencyTarget `json:"ext_dependencies"` // {refVar:ExtDependencyTarget}
 }
 
 type RunConfig struct {
