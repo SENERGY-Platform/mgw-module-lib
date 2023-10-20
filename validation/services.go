@@ -96,6 +96,47 @@ func validateServices(mServices map[string]*module.Service, mVolumes map[string]
 	return nil
 }
 
+func validateAuxServices(auxServices map[string]*module.AuxService, mVolumes map[string]struct{}, mConfigs module.Configs, mDependencies map[string]string, mServices map[string]*module.Service) error {
+	for ref, service := range auxServices {
+		refVars := make(map[string]struct{})
+		mntPts := make(map[string]struct{})
+		if ref == "" {
+			return errors.New("empty service reference")
+		}
+		if err := validateMapKeys(service.BindMounts, mntPts); err != nil {
+			return fmt.Errorf("aux service '%s' invalid include mount point configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.Tmpfs, mntPts); err != nil {
+			return fmt.Errorf("aux service '%s' invalid tmpfs mount point configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.Volumes, mntPts); err != nil {
+			return fmt.Errorf("aux service '%s' invalid volume mount point configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.Configs, refVars); err != nil {
+			return fmt.Errorf("aux service '%s' invalid config reference variable configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.SrvReferences, refVars); err != nil {
+			return fmt.Errorf("aux service '%s' invalid service reference variable configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.ExtDependencies, refVars); err != nil {
+			return fmt.Errorf("aux service '%s' invalid external dependency reference variable configuration: %s", ref, err)
+		}
+		if err := validateServiceVolumes(service.Volumes, mVolumes); err != nil {
+			return fmt.Errorf("aux service '%s' invalid volume configuration: %s", ref, err)
+		}
+		if err := validateServiceConfigs(service.Configs, mConfigs); err != nil {
+			return fmt.Errorf("aux service '%s' invalid config configuration: %s", ref, err)
+		}
+		if err := validateServiceReferences(service.SrvReferences, mServices); err != nil {
+			return fmt.Errorf("aux service '%s' invalid reference configuration: %s", ref, err)
+		}
+		if err := validateServiceExternalDependencies(service.ExtDependencies, mDependencies); err != nil {
+			return fmt.Errorf("aux service '%s' invalid external dependency configuration: %s", ref, err)
+		}
+	}
+	return nil
+}
+
 func validateServiceVolumes(sVolumes map[string]string, mVolumes map[string]struct{}) error {
 	for _, volume := range sVolumes {
 		if mVolumes != nil {

@@ -221,6 +221,112 @@ func TestValidateServices(t *testing.T) {
 	}
 }
 
+func TestValidateAuxServices(t *testing.T) {
+	s := map[string]*module.AuxService{
+		"a": {},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err != nil {
+		t.Error("err != nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"": {},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"a": {
+			BindMounts: map[string]module.BindMount{"": {}},
+		},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"a": {
+			Tmpfs: map[string]module.TmpfsMount{"": {}},
+		},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"a": {
+			Volumes: map[string]string{"": ""},
+		},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"a": {
+			Configs: map[string]string{"": ""},
+		},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"a": {
+			SrvReferences: map[string]module.SrvRefTarget{"": {}},
+		},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"a": {
+			ExtDependencies: map[string]module.ExtDependencyTarget{"": {}},
+		},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"a": {
+			Volumes: map[string]string{"test": ""},
+		},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"a": {
+			Configs: map[string]string{"test": ""},
+		},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"a": {
+			SrvReferences: map[string]module.SrvRefTarget{"test": {}},
+		},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+	// ------------------------------
+	s = map[string]*module.AuxService{
+		"a": {
+			ExtDependencies: map[string]module.ExtDependencyTarget{"test": {}},
+		},
+	}
+	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
+		t.Error("err == nil")
+	}
+}
+
 func TestValidateServiceVolumes(t *testing.T) {
 	str := "test"
 	var sVolumes map[string]string

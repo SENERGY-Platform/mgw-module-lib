@@ -76,6 +76,12 @@ func Validate(m *module.Module) error {
 	if err := validateServices(m.Services, m.Volumes, m.HostResources, m.Secrets, m.Configs, m.Dependencies); err != nil {
 		return err
 	}
+	if err := validateAuxServices(m.AuxServices, m.Volumes, m.Configs, m.Dependencies, m.Services); err != nil {
+		return err
+	}
+	if err := validateAuxImgSrc(m.AuxImgSrc); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -148,6 +154,16 @@ func validateConfigs(mCs module.Configs, inputs map[string]module.Input) error {
 			if _, ok := inputs[ref]; !ok {
 				return fmt.Errorf("config '%s' is required but no default value or input defined", ref)
 			}
+		}
+	}
+	return nil
+}
+
+func validateAuxImgSrc(sources map[string]struct{}) error {
+	re := regexp.MustCompile(`^[a-zA-Z0-9\/_\.-]+(?:$|\*$)`)
+	for src := range sources {
+		if !re.MatchString(src) {
+			return fmt.Errorf("invalid aux service image source '%s'", src)
 		}
 	}
 	return nil
