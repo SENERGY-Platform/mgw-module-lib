@@ -203,7 +203,7 @@ func validateServiceHttpEndpoints(sHttpEndpoints map[string]module.HttpEndpoint,
 		if !isValidExtPath(extPath) {
 			return fmt.Errorf("invalid external path '%s'", extPath)
 		}
-		if !isValidPath(ept.Path) {
+		if ept.Path != "" && !isValidPath(ept.Path) {
 			return fmt.Errorf("invalid internal path '%s'", ept.Path)
 		}
 		if _, ok := extPaths[extPath]; ok {
