@@ -115,3 +115,40 @@ func TestIsValidPath(t *testing.T) {
 		}
 	}
 }
+
+func TestIsValidExtPath(t *testing.T) {
+	ok := []string{
+		"test",
+		"test/test",
+		"123",
+		"123/123",
+		"Test",
+		"Test/Test",
+		"test/123",
+		"Test/123",
+		"t1st",
+		"t1st/t2st",
+		"-_%",
+	}
+	notOk := []string{
+		"/",
+		"test/",
+		"test//test",
+		"/test/",
+		"/test/test/",
+		"//",
+		"//test",
+		"///test",
+		"test!§$%&/()=?",
+	}
+	for _, s := range ok {
+		if isValidExtPath(s) != true {
+			t.Errorf("isValidPath(\"%s\") != true", s)
+		}
+	}
+	for _, s := range notOk {
+		if isValidExtPath(s) != false {
+			t.Errorf("isValidPath(\"%s\") != false", s)
+		}
+	}
+}
