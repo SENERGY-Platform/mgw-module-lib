@@ -200,7 +200,7 @@ func validateServiceConfigs(sConfigs map[string]string, mConfigs module.Configs)
 
 func validateServiceHttpEndpoints(sHttpEndpoints map[string]module.HttpEndpoint, extPaths map[string]struct{}) error {
 	for extPath, ept := range sHttpEndpoints {
-		if !isValidPath(extPath) {
+		if !isValidExtPath(extPath) {
 			return fmt.Errorf("invalid external path '%s'", extPath)
 		}
 		if !isValidPath(ept.Path) {
