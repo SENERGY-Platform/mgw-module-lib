@@ -99,9 +99,9 @@ type TmpfsMount struct {
 }
 
 type HttpEndpoint struct {
-	Name string `json:"name"`
-	Port *int   `json:"port"`
-	Path string `json:"path"` // internal path
+	Name *string `json:"name"`
+	Port *int    `json:"port"`
+	Path *string `json:"path"` // internal path
 }
 
 type PortProtocol = string
