@@ -86,6 +86,7 @@ type RunConfig struct {
 	StopTimeout time.Duration `json:"stop_timeout"`
 	StopSignal  *string       `json:"stop_signal"`
 	PseudoTTY   bool          `json:"pseudo_tty"`
+	Command     []string      `json:"command"`
 }
 
 type BindMount struct {
