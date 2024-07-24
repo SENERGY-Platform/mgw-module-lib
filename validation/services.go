@@ -209,6 +209,13 @@ func validateServiceHttpEndpoints(sHttpEndpoints map[string]module.HttpEndpoint,
 		if _, ok := extPaths[extPath]; ok {
 			return fmt.Errorf("duplicate path '%s'", extPath)
 		}
+		mt := make(map[string]struct{})
+		for _, t := range ept.StringSub.MimeTypes {
+			if _, ok := mt[t]; ok {
+				return fmt.Errorf("duplicate mime type '%s'", t)
+			}
+			mt[t] = struct{}{}
+		}
 		extPaths[extPath] = struct{}{}
 	}
 	return nil

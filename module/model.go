@@ -100,9 +100,16 @@ type TmpfsMount struct {
 }
 
 type HttpEndpoint struct {
-	Name *string `json:"name"`
-	Port *int    `json:"port"`
-	Path *string `json:"path"` // internal path
+	Name      *string            `json:"name"`
+	Port      *int               `json:"port"`
+	Path      *string            `json:"path"` // internal path
+	StringSub HttpEndpointStrSub `json:"string_sub"`
+}
+
+type HttpEndpointStrSub struct {
+	ReplaceOnce bool              `json:"replace_once"`
+	MimeTypes   []string          `json:"mime_types"`
+	Filters     map[string]string `json:"filters"`
 }
 
 type PortProtocol = string
