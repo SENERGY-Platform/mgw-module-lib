@@ -100,16 +100,23 @@ type TmpfsMount struct {
 }
 
 type HttpEndpoint struct {
-	Name      *string            `json:"name"`
-	Port      *int               `json:"port"`
-	Path      *string            `json:"path"` // internal path
-	StringSub HttpEndpointStrSub `json:"string_sub"`
+	Name      *string               `json:"name"`
+	Port      *int                  `json:"port"`
+	Path      *string               `json:"path"` // internal path
+	ProxyConf HttpEndpointProxyConf `json:"proxy_conf"`
+	StringSub HttpEndpointStrSub    `json:"string_sub"`
 }
 
 type HttpEndpointStrSub struct {
 	ReplaceOnce bool              `json:"replace_once"`
 	MimeTypes   []string          `json:"mime_types"`
 	Filters     map[string]string `json:"filters"`
+}
+
+type HttpEndpointProxyConf struct {
+	Headers     map[string]string `json:"headers"`
+	WebSocket   bool              `json:"websocket"`
+	ReadTimeout time.Duration     `json:"read_timeout"`
 }
 
 type PortProtocol = string
