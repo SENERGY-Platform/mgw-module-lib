@@ -79,8 +79,12 @@ func TestValidateMapKeys(t *testing.T) {
 
 func TestIsValidPath(t *testing.T) {
 	ok := []string{
+		"",
+		"/",
 		"/test",
 		"/test/test",
+		"/test/",
+		"/test/test/",
 		"/123",
 		"/123/123",
 		"/Test",
@@ -92,12 +96,9 @@ func TestIsValidPath(t *testing.T) {
 		"/-_%",
 	}
 	notOk := []string{
-		"/",
 		"test",
 		"test/",
 		"test//test",
-		"/test/",
-		"/test/test/",
 		"//",
 		"//test",
 		"///test",
@@ -120,6 +121,8 @@ func TestIsValidExtPath(t *testing.T) {
 	ok := []string{
 		"test",
 		"test/test",
+		"test/",
+		"test/test/",
 		"123",
 		"123/123",
 		"Test",
@@ -132,7 +135,6 @@ func TestIsValidExtPath(t *testing.T) {
 	}
 	notOk := []string{
 		"/",
-		"test/",
 		"test//test",
 		"/test/",
 		"/test/test/",

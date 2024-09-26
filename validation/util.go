@@ -48,11 +48,11 @@ func isValidPath(s string) bool {
 	if s == "" {
 		return true
 	}
-	re := regexp.MustCompile(`^\/(?:[a-zA-Z0-9-_%]+)+(?:\/[a-zA-Z0-9-_%]+)*$`)
+	re := regexp.MustCompile(`^$|^\/(?:[a-zA-Z0-9-_%]+\/?)*$`)
 	return re.MatchString(s)
 }
 
 func isValidExtPath(s string) bool {
-	re := regexp.MustCompile(`^(?:[a-zA-Z0-9-_%]+)+(?:\/[a-zA-Z0-9-_%]+)*$`)
+	re := regexp.MustCompile(`^$|^(?:[a-zA-Z0-9-_%]+\/?)*$`)
 	return re.MatchString(s)
 }
