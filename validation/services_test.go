@@ -164,7 +164,7 @@ func TestValidateServices(t *testing.T) {
 	// ------------------------------
 	s = map[string]*module.Service{
 		"a": {
-			HttpEndpoints: map[string]module.HttpEndpoint{"": {}},
+			HttpEndpoints: map[string]module.HttpEndpoint{"///": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
