@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 InfAI (CC SES)
+ * Copyright 2025 InfAI (CC SES)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,13 @@ package validation
 import (
 	"errors"
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
-	"github.com/SENERGY-Platform/mgw-module-lib/validation/sem_ver"
+	"github.com/SENERGY-Platform/mgw-module-lib/model"
+	"github.com/SENERGY-Platform/mgw-module-lib/util/sem_ver"
+	"github.com/SENERGY-Platform/mgw-module-lib/validation/configs"
 	"regexp"
 )
 
-func Validate(m *module.Module) error {
+func Validate(m *model.Module) error {
 	if !isValidModuleID(m.ID) {
 		return fmt.Errorf("invalid module ID format '%s'", m.ID)
 	}
@@ -98,12 +99,12 @@ func validateModuleDependencies(dependencies map[string]string) error {
 }
 
 func isValidModuleType(s string) bool {
-	_, ok := module.ModuleTypeMap[s]
+	_, ok := model.ModuleTypeMap[s]
 	return ok
 }
 
 func isValidDeploymentType(s string) bool {
-	_, ok := module.DeploymentTypeMap[s]
+	_, ok := model.DeploymentTypeMap[s]
 	return ok
 }
 
@@ -113,11 +114,11 @@ func isValidModuleID(s string) bool {
 }
 
 func isValidCPUArch(s string) bool {
-	_, ok := module.CPUArchMap[s]
+	_, ok := model.CPUArchMap[s]
 	return ok
 }
 
-func validateResources(mRs map[string]module.HostResource, inputs map[string]module.Input) error {
+func validateResources(mRs map[string]model.HostResource, inputs map[string]model.Input) error {
 	for ref, r := range mRs {
 		if ref == "" {
 			return errors.New("empty resource reference")
@@ -131,7 +132,7 @@ func validateResources(mRs map[string]module.HostResource, inputs map[string]mod
 	return nil
 }
 
-func validateSecrets(mSs map[string]module.Secret, inputs map[string]module.Input) error {
+func validateSecrets(mSs map[string]model.Secret, inputs map[string]model.Input) error {
 	for ref, s := range mSs {
 		if ref == "" {
 			return errors.New("empty secret reference")
@@ -145,7 +146,7 @@ func validateSecrets(mSs map[string]module.Secret, inputs map[string]module.Inpu
 	return nil
 }
 
-func validateConfigs(mCs module.Configs, inputs map[string]module.Input) error {
+func validateConfigs(mCs model.Configs, inputs map[string]model.Input) error {
 	for ref, cv := range mCs {
 		if ref == "" {
 			return errors.New("empty config reference")

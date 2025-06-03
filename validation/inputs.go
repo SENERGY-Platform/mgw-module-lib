@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 InfAI (CC SES)
+ * Copyright 2025 InfAI (CC SES)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,10 @@ package validation
 import (
 	"errors"
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	"github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
-func validateInputsResources(inputs map[string]module.Input, mResources map[string]module.HostResource) error {
+func validateInputsResources(inputs map[string]model.Input, mResources map[string]model.HostResource) error {
 	for ref := range inputs {
 		if ref == "" {
 			return errors.New("invalid input reference")
@@ -38,7 +38,7 @@ func validateInputsResources(inputs map[string]module.Input, mResources map[stri
 	return nil
 }
 
-func validateInputsSecrets(inputs map[string]module.Input, mSecrets map[string]module.Secret) error {
+func validateInputsSecrets(inputs map[string]model.Input, mSecrets map[string]model.Secret) error {
 	for ref := range inputs {
 		if ref == "" {
 			return errors.New("invalid input reference")
@@ -54,7 +54,7 @@ func validateInputsSecrets(inputs map[string]module.Input, mSecrets map[string]m
 	return nil
 }
 
-func validateInputsConfigs(inputs map[string]module.Input, mConfigs module.Configs) error {
+func validateInputsConfigs(inputs map[string]model.Input, mConfigs model.Configs) error {
 	for ref := range inputs {
 		if ref == "" {
 			return errors.New("invalid input reference")
@@ -70,7 +70,7 @@ func validateInputsConfigs(inputs map[string]module.Input, mConfigs module.Confi
 	return nil
 }
 
-func validateInputsAndGroups(inputs map[string]module.Input, groups map[string]module.InputGroup) error {
+func validateInputsAndGroups(inputs map[string]model.Input, groups map[string]model.InputGroup) error {
 	for _, input := range inputs {
 		if input.Group != nil {
 			if groups == nil {
@@ -84,7 +84,7 @@ func validateInputsAndGroups(inputs map[string]module.Input, groups map[string]m
 	return nil
 }
 
-func validateInputGroups(groups map[string]module.InputGroup) error {
+func validateInputGroups(groups map[string]model.InputGroup) error {
 	for ref, group := range groups {
 		if ref == "" {
 			return errors.New("invalid input group reference")

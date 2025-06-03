@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 InfAI (CC SES)
+ * Copyright 2025 InfAI (CC SES)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,44 +17,44 @@
 package validation
 
 import (
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	"github.com/SENERGY-Platform/mgw-module-lib/model"
 	"testing"
 )
 
 func TestValidateServices(t *testing.T) {
-	s := map[string]*module.Service{
+	s := map[string]*model.Service{
 		"a": {},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"": {},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			BindMounts: map[string]module.BindMount{"": {}},
+			BindMounts: map[string]model.BindMount{"": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			Tmpfs: map[string]module.TmpfsMount{"": {}},
+			Tmpfs: map[string]model.TmpfsMount{"": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
 			Volumes: map[string]string{"": ""},
 		},
@@ -63,34 +63,34 @@ func TestValidateServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			HostResources: map[string]module.HostResTarget{"": {}},
+			HostResources: map[string]model.HostResTarget{"": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			SecretMounts: map[string]module.SecretTarget{"": {}},
+			SecretMounts: map[string]model.SecretTarget{"": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			SecretVars: map[string]module.SecretTarget{"": {}},
+			SecretVars: map[string]model.SecretTarget{"": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
 			Configs: map[string]string{"": ""},
 		},
@@ -99,25 +99,25 @@ func TestValidateServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			SrvReferences: map[string]module.SrvRefTarget{"": {}},
+			SrvReferences: map[string]model.SrvRefTarget{"": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			ExtDependencies: map[string]module.ExtDependencyTarget{"": {}},
+			ExtDependencies: map[string]model.ExtDependencyTarget{"": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
 			Volumes: map[string]string{"test": ""},
 		},
@@ -126,34 +126,34 @@ func TestValidateServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			HostResources: map[string]module.HostResTarget{"test": {}},
+			HostResources: map[string]model.HostResTarget{"test": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			SecretMounts: map[string]module.SecretTarget{"test": {}},
+			SecretMounts: map[string]model.SecretTarget{"test": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			SecretVars: map[string]module.SecretTarget{"test": {}},
+			SecretVars: map[string]model.SecretTarget{"test": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
 			Configs: map[string]string{"test": ""},
 		},
@@ -162,25 +162,25 @@ func TestValidateServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			HttpEndpoints: map[string]module.HttpEndpoint{"///": {}},
+			HttpEndpoints: map[string]model.HttpEndpoint{"///": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			SrvReferences: map[string]module.SrvRefTarget{"test": {}},
+			SrvReferences: map[string]model.SrvRefTarget{"test": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
 			RequiredSrv: map[string]struct{}{"": {}},
 		},
@@ -189,18 +189,18 @@ func TestValidateServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			ExtDependencies: map[string]module.ExtDependencyTarget{"test": {}},
+			ExtDependencies: map[string]model.ExtDependencyTarget{"test": {}},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
-			Ports: []module.Port{
+			Ports: []model.Port{
 				{},
 			},
 		},
@@ -209,7 +209,7 @@ func TestValidateServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.Service{
+	s = map[string]*model.Service{
 		"a": {
 			RequiredSrv: map[string]struct{}{
 				"a": {},
@@ -222,39 +222,39 @@ func TestValidateServices(t *testing.T) {
 }
 
 func TestValidateAuxServices(t *testing.T) {
-	s := map[string]*module.AuxService{
+	s := map[string]*model.AuxService{
 		"a": {},
 	}
 	if err := validateAuxServices(s, nil, nil, nil, nil); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"": {},
 	}
 	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"a": {
-			BindMounts: map[string]module.BindMount{"": {}},
+			BindMounts: map[string]model.BindMount{"": {}},
 		},
 	}
 	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"a": {
-			Tmpfs: map[string]module.TmpfsMount{"": {}},
+			Tmpfs: map[string]model.TmpfsMount{"": {}},
 		},
 	}
 	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"a": {
 			Volumes: map[string]string{"": ""},
 		},
@@ -263,7 +263,7 @@ func TestValidateAuxServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"a": {
 			Configs: map[string]string{"": ""},
 		},
@@ -272,25 +272,25 @@ func TestValidateAuxServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"a": {
-			SrvReferences: map[string]module.SrvRefTarget{"": {}},
+			SrvReferences: map[string]model.SrvRefTarget{"": {}},
 		},
 	}
 	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"a": {
-			ExtDependencies: map[string]module.ExtDependencyTarget{"": {}},
+			ExtDependencies: map[string]model.ExtDependencyTarget{"": {}},
 		},
 	}
 	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"a": {
 			Volumes: map[string]string{"test": ""},
 		},
@@ -299,7 +299,7 @@ func TestValidateAuxServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"a": {
 			Configs: map[string]string{"test": ""},
 		},
@@ -308,18 +308,18 @@ func TestValidateAuxServices(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"a": {
-			SrvReferences: map[string]module.SrvRefTarget{"test": {}},
+			SrvReferences: map[string]model.SrvRefTarget{"test": {}},
 		},
 	}
 	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	s = map[string]*module.AuxService{
+	s = map[string]*model.AuxService{
 		"a": {
-			ExtDependencies: map[string]module.ExtDependencyTarget{"test": {}},
+			ExtDependencies: map[string]model.ExtDependencyTarget{"test": {}},
 		},
 	}
 	if err := validateAuxServices(s, nil, nil, nil, nil); err == nil {
@@ -354,24 +354,24 @@ func TestValidateServiceVolumes(t *testing.T) {
 
 func TestValidateServiceResources(t *testing.T) {
 	str := "test"
-	var sResources map[string]module.HostResTarget
-	var mResources map[string]module.HostResource
+	var sResources map[string]model.HostResTarget
+	var mResources map[string]model.HostResource
 	if err := validateServiceResources(sResources, mResources); err != nil {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}
-	sResources = make(map[string]module.HostResTarget)
+	sResources = make(map[string]model.HostResTarget)
 	if err := validateServiceResources(sResources, mResources); err != nil {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}
-	sResources["a"] = module.HostResTarget{Ref: str}
+	sResources["a"] = model.HostResTarget{Ref: str}
 	if err := validateServiceResources(sResources, mResources); err == nil {
 		t.Errorf("validateServiceResources(%v, %v); err == nil", sResources, mResources)
 	}
-	mResources = make(map[string]module.HostResource)
+	mResources = make(map[string]model.HostResource)
 	if err := validateServiceResources(sResources, mResources); err == nil {
 		t.Errorf("validateServiceResources(%v, %v); err == nil", sResources, mResources)
 	}
-	mResources[str] = module.HostResource{}
+	mResources[str] = model.HostResource{}
 	if err := validateServiceResources(sResources, mResources); err != nil {
 		t.Errorf("validateServiceResources(%v, %v); err != nil", sResources, mResources)
 	}
@@ -379,30 +379,30 @@ func TestValidateServiceResources(t *testing.T) {
 
 func TestValidateServiceSecrets(t *testing.T) {
 	str := "test"
-	var sSecretMounts map[string]module.SecretTarget
-	var sSecretVars map[string]module.SecretTarget
-	var mSecrets map[string]module.Secret
+	var sSecretMounts map[string]model.SecretTarget
+	var sSecretVars map[string]model.SecretTarget
+	var mSecrets map[string]model.Secret
 	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err != nil {
 		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecretMounts, mSecrets)
 	}
-	sSecretMounts = make(map[string]module.SecretTarget)
-	sSecretVars = make(map[string]module.SecretTarget)
+	sSecretMounts = make(map[string]model.SecretTarget)
+	sSecretVars = make(map[string]model.SecretTarget)
 	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err != nil {
 		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecretMounts, mSecrets)
 	}
-	sSecretMounts["a"] = module.SecretTarget{Ref: str}
+	sSecretMounts["a"] = model.SecretTarget{Ref: str}
 	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err == nil {
 		t.Errorf("validateServiceSecrets(%v, %v); err == nil", sSecretMounts, mSecrets)
 	}
-	mSecrets = make(map[string]module.Secret)
+	mSecrets = make(map[string]model.Secret)
 	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err == nil {
 		t.Errorf("validateServiceSecrets(%v, %v); err == nil", sSecretMounts, mSecrets)
 	}
-	mSecrets[str] = module.Secret{}
+	mSecrets[str] = model.Secret{}
 	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err != nil {
 		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecretMounts, mSecrets)
 	}
-	sSecretVars["a"] = module.SecretTarget{Ref: str}
+	sSecretVars["a"] = model.SecretTarget{Ref: str}
 	if err := validateServiceSecrets(sSecretMounts, sSecretVars, mSecrets); err != nil {
 		t.Errorf("validateServiceSecrets(%v, %v); err != nil", sSecretMounts, mSecrets)
 	}
@@ -411,7 +411,7 @@ func TestValidateServiceSecrets(t *testing.T) {
 func TestValidateServiceConfigs(t *testing.T) {
 	str := "test"
 	var sConfigs map[string]string
-	var mConfigs module.Configs
+	var mConfigs model.Configs
 	if err := validateServiceConfigs(sConfigs, mConfigs); err != nil {
 		t.Errorf("validateServiceConfigs(%v, %v); err != nil", sConfigs, mConfigs)
 	}
@@ -423,7 +423,7 @@ func TestValidateServiceConfigs(t *testing.T) {
 	if err := validateServiceConfigs(sConfigs, mConfigs); err == nil {
 		t.Errorf("validateServiceConfigs(%v, %v); err == nil", sConfigs, mConfigs)
 	}
-	mConfigs = make(module.Configs)
+	mConfigs = make(model.Configs)
 	if err := validateServiceConfigs(sConfigs, mConfigs); err == nil {
 		t.Errorf("validateServiceConfigs(%v, %v); err == nil", sConfigs, mConfigs)
 	}
@@ -434,7 +434,7 @@ func TestValidateServiceConfigs(t *testing.T) {
 }
 
 func TestValidateServiceHttpEndpoints(t *testing.T) {
-	var sHttpEndpoints map[string]module.HttpEndpoint
+	var sHttpEndpoints map[string]model.HttpEndpoint
 	extPaths := make(map[string]struct{})
 	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err != nil {
 		t.Errorf("validateServiceHttpEndpoints(%v); err != nil", sHttpEndpoints)
@@ -442,7 +442,7 @@ func TestValidateServiceHttpEndpoints(t *testing.T) {
 	if len(extPaths) != 0 {
 		t.Error("len(extPaths) != 0")
 	}
-	sHttpEndpoints = make(map[string]module.HttpEndpoint)
+	sHttpEndpoints = make(map[string]model.HttpEndpoint)
 	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err != nil {
 		t.Errorf("validateServiceHttpEndpoints(%v); err != nil", sHttpEndpoints)
 	}
@@ -450,7 +450,7 @@ func TestValidateServiceHttpEndpoints(t *testing.T) {
 		t.Error("len(extPaths) != 0")
 	}
 	p1 := "/test"
-	sHttpEndpoints["test"] = module.HttpEndpoint{Path: &p1}
+	sHttpEndpoints["test"] = model.HttpEndpoint{Path: &p1}
 	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err != nil {
 		t.Errorf("validateServiceHttpEndpoints(%v); err != nil", sHttpEndpoints)
 	}
@@ -467,7 +467,7 @@ func TestValidateServiceHttpEndpoints(t *testing.T) {
 		t.Error("len(extPaths) != 1")
 	}
 	delete(sHttpEndpoints, "test")
-	sHttpEndpoints["/test"] = module.HttpEndpoint{Path: &p1}
+	sHttpEndpoints["/test"] = model.HttpEndpoint{Path: &p1}
 	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err == nil {
 		t.Errorf("validateServiceHttpEndpoints(%v); err == nil", sHttpEndpoints)
 	}
@@ -476,7 +476,7 @@ func TestValidateServiceHttpEndpoints(t *testing.T) {
 	}
 	delete(sHttpEndpoints, "test")
 	p2 := "test"
-	sHttpEndpoints["/test"] = module.HttpEndpoint{Path: &p2}
+	sHttpEndpoints["/test"] = model.HttpEndpoint{Path: &p2}
 	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err == nil {
 		t.Errorf("validateServiceHttpEndpoints(%v); err == nil", sHttpEndpoints)
 	}
@@ -489,7 +489,7 @@ func TestValidateServiceDependencies(t *testing.T) {
 	str := "test"
 	var requiredSrv map[string]struct{}
 	var requiredBySrv map[string]struct{}
-	var mServices map[string]*module.Service
+	var mServices map[string]*model.Service
 	if err := validateServiceDependencies(requiredSrv, requiredBySrv, mServices); err != nil {
 		t.Errorf("validateServiceDependencies(%v, %v, %v); err != nil", requiredSrv, requiredBySrv, mServices)
 	}
@@ -509,7 +509,7 @@ func TestValidateServiceDependencies(t *testing.T) {
 	}
 	requiredSrv[str] = struct{}{}
 	requiredBySrv = make(map[string]struct{})
-	mServices = make(map[string]*module.Service)
+	mServices = make(map[string]*model.Service)
 	if err := validateServiceDependencies(requiredSrv, requiredBySrv, mServices); err == nil {
 		t.Errorf("validateServiceDependencies(%v, %v, %v); err == nil", requiredSrv, requiredBySrv, mServices)
 	}
@@ -519,7 +519,7 @@ func TestValidateServiceDependencies(t *testing.T) {
 		t.Errorf("validateServiceDependencies(%v, %v, %v); err == nil", requiredSrv, requiredBySrv, mServices)
 	}
 	requiredSrv[str] = struct{}{}
-	mServices[str] = &module.Service{}
+	mServices[str] = &model.Service{}
 	if err := validateServiceDependencies(requiredSrv, requiredBySrv, mServices); err != nil {
 		t.Errorf("validateServiceDependencies(%v, %v, %v); err != nil", requiredSrv, requiredBySrv, mServices)
 	}
@@ -527,16 +527,16 @@ func TestValidateServiceDependencies(t *testing.T) {
 
 func TestValidateServiceExternalDependencies(t *testing.T) {
 	str := "test.test/test"
-	var sExtDependencies map[string]module.ExtDependencyTarget
+	var sExtDependencies map[string]model.ExtDependencyTarget
 	var mDependencies map[string]string
 	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err != nil {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
 	}
-	sExtDependencies = make(map[string]module.ExtDependencyTarget)
+	sExtDependencies = make(map[string]model.ExtDependencyTarget)
 	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err != nil {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
 	}
-	sExtDependencies["a"] = module.ExtDependencyTarget{ID: str, Service: "test"}
+	sExtDependencies["a"] = model.ExtDependencyTarget{ID: str, Service: "test"}
 	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err == nil {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err == nil", sExtDependencies, mDependencies)
 	}
@@ -548,7 +548,7 @@ func TestValidateServiceExternalDependencies(t *testing.T) {
 	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err != nil {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
 	}
-	sExtDependencies["b"] = module.ExtDependencyTarget{ID: str}
+	sExtDependencies["b"] = model.ExtDependencyTarget{ID: str}
 	if err := validateServiceExternalDependencies(sExtDependencies, mDependencies); err == nil {
 		t.Errorf("validateServiceExternalDependencies(%v, %v); err != nil", sExtDependencies, mDependencies)
 	}
@@ -556,38 +556,38 @@ func TestValidateServiceExternalDependencies(t *testing.T) {
 
 func TestValidateServiceReferences(t *testing.T) {
 	str := "test"
-	var sReferences map[string]module.SrvRefTarget
-	var mServices map[string]*module.Service
+	var sReferences map[string]model.SrvRefTarget
+	var mServices map[string]*model.Service
 	if err := validateServiceReferences(sReferences, mServices); err != nil {
 		t.Errorf("validateServiceReferences(%v, %v); err != nil", sReferences, mServices)
 	}
-	sReferences = make(map[string]module.SrvRefTarget)
+	sReferences = make(map[string]model.SrvRefTarget)
 	if err := validateServiceReferences(sReferences, mServices); err != nil {
 		t.Errorf("validateServiceReferences(%v, %v); err != nil", sReferences, mServices)
 	}
-	sReferences["a"] = module.SrvRefTarget{Ref: str}
+	sReferences["a"] = model.SrvRefTarget{Ref: str}
 	if err := validateServiceReferences(sReferences, mServices); err == nil {
 		t.Errorf("validateServiceReferences(%v, %v); err == nil", sReferences, mServices)
 	}
-	mServices = make(map[string]*module.Service)
+	mServices = make(map[string]*model.Service)
 	if err := validateServiceReferences(sReferences, mServices); err == nil {
 		t.Errorf("validateServiceReferences(%v, %v); err == nil", sReferences, mServices)
 	}
-	mServices[str] = &module.Service{}
+	mServices[str] = &model.Service{}
 	if err := validateServiceReferences(sReferences, mServices); err != nil {
 		t.Errorf("validateServiceReferences(%v, %v); err != nil", sReferences, mServices)
 	}
 }
 
 func TestValidateServicePorts(t *testing.T) {
-	var sPorts []module.Port
+	var sPorts []model.Port
 	hostPorts := make(map[string]struct{})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
 		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
 	}
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   80,
-		Protocol: module.TcpPort,
+		Protocol: model.TcpPort,
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
 		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
@@ -595,44 +595,44 @@ func TestValidateServicePorts(t *testing.T) {
 	if len(hostPorts) != 0 {
 		t.Error("len(hostPorts) != 0")
 	}
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   81,
-		Protocol: module.TcpPort,
+		Protocol: model.TcpPort,
 		Bindings: []uint{81},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
 		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
 	}
 	hostPorts = make(map[string]struct{})
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   82,
-		Protocol: module.TcpPort,
+		Protocol: model.TcpPort,
 		Bindings: []uint{82, 83},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
 		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
 	}
 	hostPorts = make(map[string]struct{})
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   80,
-		Protocol: module.UdpPort,
+		Protocol: model.UdpPort,
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
 		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
 	}
 	hostPorts = make(map[string]struct{})
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   81,
-		Protocol: module.UdpPort,
+		Protocol: model.UdpPort,
 		Bindings: []uint{81},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
 		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
 	}
 	hostPorts = make(map[string]struct{})
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   82,
-		Protocol: module.UdpPort,
+		Protocol: model.UdpPort,
 		Bindings: []uint{82, 83},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
@@ -643,7 +643,7 @@ func TestValidateServicePorts(t *testing.T) {
 	}
 	sPorts = nil
 	hostPorts = make(map[string]struct{})
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   80,
 		Protocol: "test",
 	})
@@ -654,13 +654,13 @@ func TestValidateServicePorts(t *testing.T) {
 		t.Error("len(hostPorts) != 0")
 	}
 	sPorts = nil
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   80,
-		Protocol: module.TcpPort,
+		Protocol: model.TcpPort,
 	})
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   80,
-		Protocol: module.TcpPort,
+		Protocol: model.TcpPort,
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err == nil {
 		t.Errorf("validateServicePorts(%v, %v); err == nil", sPorts, hostPorts)
@@ -670,14 +670,14 @@ func TestValidateServicePorts(t *testing.T) {
 	}
 	sPorts = nil
 	hostPorts = make(map[string]struct{})
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   81,
-		Protocol: module.TcpPort,
+		Protocol: model.TcpPort,
 		Bindings: []uint{81},
 	})
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   81,
-		Protocol: module.TcpPort,
+		Protocol: model.TcpPort,
 		Bindings: []uint{81},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err == nil {
@@ -687,14 +687,14 @@ func TestValidateServicePorts(t *testing.T) {
 		t.Error("len(hostPorts) != 1")
 	}
 	sPorts = nil
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   81,
-		Protocol: module.TcpPort,
+		Protocol: model.TcpPort,
 		Bindings: []uint{81},
 	})
-	sPorts = append(sPorts, module.Port{
+	sPorts = append(sPorts, model.Port{
 		Number:   82,
-		Protocol: module.TcpPort,
+		Protocol: model.TcpPort,
 		Bindings: []uint{81},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err == nil {

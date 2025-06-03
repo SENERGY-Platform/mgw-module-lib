@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package module
+package model
 
 import (
+	"encoding/json"
 	"reflect"
 	"testing"
 )
@@ -420,4 +421,29 @@ func TestExtDependencyTarget_FillTemplate(t *testing.T) {
 	if a != b {
 		t.Errorf("%s != %s", a, b)
 	}
+}
+
+func TestSet_UnmarshalJSON(t *testing.T) {
+	var b Set[string]
+	if err := json.Unmarshal([]byte("[\"test\"]"), &b); err != nil {
+		t.Error("err != nil")
+	}
+	a := Set[string]{"test": {}}
+	if reflect.DeepEqual(a, b) == false {
+		t.Errorf("%v != %v", a, b)
+	}
+	if err := json.Unmarshal([]byte("[1]"), &b); err == nil {
+		t.Error("err == nil")
+	}
+}
+
+func TestSet_MarshalJSON(t *testing.T) {
+	s := Set[string]{"test": {}}
+	a := "[\"test\"]"
+	if b, err := json.Marshal(s); err != nil {
+		t.Error("err != nil")
+	} else if a != string(b) {
+		t.Errorf("%s != %s", a, string(b))
+	}
+
 }

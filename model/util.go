@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package module
+package model
 
 import (
-	"github.com/SENERGY-Platform/mgw-module-lib/tsort"
+	"encoding/json"
+	tsort2 "github.com/SENERGY-Platform/mgw-module-lib/util/tsort"
 	"strings"
 )
 
@@ -136,11 +137,11 @@ func (v configValue) OptionsLen() (l int) {
 }
 
 func GetServiceStartOrder(services map[string]*Service) ([]string, error) {
-	nodes := make(tsort.Nodes)
+	nodes := make(tsort2.Nodes)
 	for ref, service := range services {
 		nodes.Add(ref, service.RequiredSrv, service.RequiredBySrv)
 	}
-	return tsort.GetTopOrder(nodes)
+	return tsort2.GetTopOrder(nodes)
 }
 
 func (t SrvRefTarget) FillTemplate(s string) string {
@@ -155,4 +156,27 @@ func (t ExtDependencyTarget) FillTemplate(s string) string {
 		return strings.ReplaceAll(*t.Template, "{"+RefPlaceholder+"}", s)
 	}
 	return s
+}
+
+type Set[T comparable] map[T]struct{}
+
+func (s *Set[T]) UnmarshalJSON(b []byte) error {
+	var sl []T
+	if err := json.Unmarshal(b, &sl); err != nil {
+		return err
+	}
+	set := make(Set[T])
+	for _, item := range sl {
+		set[item] = struct{}{}
+	}
+	*s = set
+	return nil
+}
+
+func (s Set[T]) MarshalJSON() ([]byte, error) {
+	var sl []T
+	for item := range s {
+		sl = append(sl, item)
+	}
+	return json.Marshal(sl)
 }

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package module
+package model
 
 import (
-	"github.com/SENERGY-Platform/mgw-module-lib/util"
 	"io/fs"
 	"time"
 )
@@ -32,22 +31,22 @@ type Module struct {
 	ID             string                  `json:"id"`
 	Name           string                  `json:"name"`
 	Description    string                  `json:"description"`
-	Tags           util.Set[string]        `json:"tags"`
+	Tags           Set[string]             `json:"tags"`
 	License        string                  `json:"license"`
 	Author         string                  `json:"author"`
 	Version        string                  `json:"version"`
 	Type           ModuleType              `json:"type"`
 	DeploymentType DeploymentType          `json:"deployment_type"`
-	Architectures  util.Set[CPUArch]       `json:"architectures"`
+	Architectures  Set[CPUArch]            `json:"architectures"`
 	Services       map[string]*Service     `json:"services"`       // {ref:Service}
-	Volumes        util.Set[string]        `json:"volumes"`        // {volName}
+	Volumes        Set[string]             `json:"volumes"`        // {volName}
 	Dependencies   map[string]string       `json:"dependencies"`   // {moduleID:moduleVersion}
 	HostResources  map[string]HostResource `json:"host_resources"` // {ref:{tag}}
 	Secrets        map[string]Secret       `json:"secrets"`        // {ref:Secret}
 	Configs        Configs                 `json:"configs"`        // {ref:ConfigValue}
 	Inputs         Inputs                  `json:"inputs"`
 	AuxServices    map[string]*AuxService  `json:"aux_services"` // {ref:AuxService}
-	AuxImgSrc      util.Set[string]        `json:"aux_img_src"`
+	AuxImgSrc      Set[string]             `json:"aux_img_src"`
 }
 
 type Service struct {
@@ -63,8 +62,8 @@ type Service struct {
 	Configs         map[string]string              `json:"configs"`          // {refVar:ref}
 	SrvReferences   map[string]SrvRefTarget        `json:"srv_references"`   // {refVar:SrvRefTarget}
 	HttpEndpoints   map[string]HttpEndpoint        `json:"http_endpoints"`   // {externalPath:HttpEndpoint}
-	RequiredSrv     util.Set[string]               `json:"required_srv"`     // {ref}
-	RequiredBySrv   util.Set[string]               `json:"required_by_srv"`  // {ref}
+	RequiredSrv     Set[string]                    `json:"required_srv"`     // {ref}
+	RequiredBySrv   Set[string]                    `json:"required_by_srv"`  // {ref}
 	ExtDependencies map[string]ExtDependencyTarget `json:"ext_dependencies"` // {refVar:ExtDependencyTarget}
 	Ports           []Port                         `json:"ports"`
 }
@@ -140,8 +139,8 @@ type HostResTarget struct {
 }
 
 type Resource struct {
-	Tags     util.Set[string] `json:"tags"`
-	Required bool             `json:"required"`
+	Tags     Set[string] `json:"tags"`
+	Required bool        `json:"required"`
 }
 
 type HostResource struct {

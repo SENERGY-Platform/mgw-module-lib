@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 InfAI (CC SES)
+ * Copyright 2025 InfAI (CC SES)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,27 +17,27 @@
 package validation
 
 import (
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
+	"github.com/SENERGY-Platform/mgw-module-lib/model"
 	"testing"
 )
 
 func TestValidate(t *testing.T) {
-	m := module.Module{
+	m := model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
 	}
 	if err := Validate(&m); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		Services: map[string]*module.Service{
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Services: map[string]*model.Service{
 			"a": {RequiredSrv: map[string]struct{}{"a": {}}},
 		},
 	}
@@ -45,14 +45,14 @@ func TestValidate(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID: "",
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:      "test.test/test",
 		Version: "",
 	}
@@ -60,7 +60,7 @@ func TestValidate(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:      "test.test/test",
 		Version: "v1.0.0",
 		Type:    "",
@@ -69,78 +69,78 @@ func TestValidate(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
+		Type:           model.AddOnModule,
 		DeploymentType: "",
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
 		Volumes:        map[string]struct{}{"": {}},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
 		Dependencies:   map[string]string{"": ""},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		HostResources:  map[string]module.HostResource{"": {}},
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		HostResources:  map[string]model.HostResource{"": {}},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		Secrets:        map[string]module.Secret{"": {}},
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Secrets:        map[string]model.Secret{"": {}},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		Configs:        module.Configs{"": {}},
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Configs:        model.Configs{"": {}},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		Inputs: module.Inputs{
-			Groups: map[string]module.InputGroup{"": {}},
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Inputs: model.Inputs{
+			Groups: map[string]model.InputGroup{"": {}},
 		},
 	}
 	if err := Validate(&m); err == nil {
@@ -148,78 +148,78 @@ func TestValidate(t *testing.T) {
 	}
 	// ------------------------------
 	g := ""
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		Inputs: module.Inputs{
-			Resources: map[string]module.Input{"test": {Group: &g}},
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Inputs: model.Inputs{
+			Resources: map[string]model.Input{"test": {Group: &g}},
 		},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		Inputs: module.Inputs{
-			Secrets: map[string]module.Input{"test": {Group: &g}},
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Inputs: model.Inputs{
+			Secrets: map[string]model.Input{"test": {Group: &g}},
 		},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		Inputs: module.Inputs{
-			Configs: map[string]module.Input{"test": {Group: &g}},
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Inputs: model.Inputs{
+			Configs: map[string]model.Input{"test": {Group: &g}},
 		},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		Inputs: module.Inputs{
-			Resources: map[string]module.Input{"": {}},
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Inputs: model.Inputs{
+			Resources: map[string]model.Input{"": {}},
 		},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		Inputs: module.Inputs{
-			Secrets: map[string]module.Input{"": {}},
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Inputs: model.Inputs{
+			Secrets: map[string]model.Input{"": {}},
 		},
 	}
 	if err := Validate(&m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	m = module.Module{
+	m = model.Module{
 		ID:             "test.test/test",
 		Version:        "v1.0.0",
-		Type:           module.AddOnModule,
-		DeploymentType: module.SingleDeployment,
-		Inputs: module.Inputs{
-			Configs: map[string]module.Input{"": {}},
+		Type:           model.AddOnModule,
+		DeploymentType: model.SingleDeployment,
+		Inputs: model.Inputs{
+			Configs: map[string]model.Input{"": {}},
 		},
 	}
 	if err := Validate(&m); err == nil {
@@ -278,8 +278,8 @@ func TestIsValidModuleID(t *testing.T) {
 }
 
 func TestIsValidModuleType(t *testing.T) {
-	if isValidModuleType(module.AddOnModule) != true {
-		t.Errorf("isValidModuleType(\"%s\") != true", module.AddOnModule)
+	if isValidModuleType(model.AddOnModule) != true {
+		t.Errorf("isValidModuleType(\"%s\") != true", model.AddOnModule)
 	}
 	if isValidModuleType("test") != false {
 		t.Error("isValidModuleType(\"test\") != false")
@@ -287,8 +287,8 @@ func TestIsValidModuleType(t *testing.T) {
 }
 
 func TestIsValidDeploymentType(t *testing.T) {
-	if isValidDeploymentType(module.SingleDeployment) != true {
-		t.Errorf("isValidDeploymentType(\"%s\") != true", module.SingleDeployment)
+	if isValidDeploymentType(model.SingleDeployment) != true {
+		t.Errorf("isValidDeploymentType(\"%s\") != true", model.SingleDeployment)
 	}
 	if isValidDeploymentType("test") != false {
 		t.Error("isValidDeploymentType(\"test\") != false")
@@ -296,8 +296,8 @@ func TestIsValidDeploymentType(t *testing.T) {
 }
 
 func TestIsValidCPUArch(t *testing.T) {
-	if isValidCPUArch(module.X86_64) != true {
-		t.Errorf("isValidCPUArch(\"%s\") != true", module.X86_64)
+	if isValidCPUArch(model.X86_64) != true {
+		t.Errorf("isValidCPUArch(\"%s\") != true", model.X86_64)
 	}
 	if isValidCPUArch("test") != false {
 		t.Error("isValidCPUArch(\"test\") != false")
@@ -305,40 +305,40 @@ func TestIsValidCPUArch(t *testing.T) {
 }
 
 func TestValidateConfigs(t *testing.T) {
-	var mCs module.Configs
-	var inputs map[string]module.Input
+	var mCs model.Configs
+	var inputs map[string]model.Input
 	if err := validateConfigs(mCs, inputs); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
 	str := "test"
-	mCs = make(module.Configs)
+	mCs = make(model.Configs)
 	mCs.SetString(str, nil, nil, false, "", nil, false)
 	if err := validateConfigs(mCs, inputs); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	mCs = make(module.Configs)
+	mCs = make(model.Configs)
 	mCs.SetString("", nil, nil, false, "", nil, false)
 	if err := validateConfigs(mCs, inputs); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	mCs = make(module.Configs)
+	mCs = make(model.Configs)
 	mCs.SetString(str, nil, nil, false, "", nil, true)
 	if err := validateConfigs(mCs, inputs); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	mCs = make(module.Configs)
+	mCs = make(model.Configs)
 	mCs.SetString(str, &str, nil, false, "", nil, true)
 	if err := validateConfigs(mCs, inputs); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	mCs = make(module.Configs)
-	inputs = make(map[string]module.Input)
-	inputs[str] = module.Input{}
+	mCs = make(model.Configs)
+	inputs = make(map[string]model.Input)
+	inputs[str] = model.Input{}
 	mCs.SetString(str, nil, nil, false, "", nil, true)
 	if err := validateConfigs(mCs, inputs); err != nil {
 		t.Error("err != nil")
@@ -346,16 +346,16 @@ func TestValidateConfigs(t *testing.T) {
 }
 
 func TestValidateResources(t *testing.T) {
-	var mRs map[string]module.HostResource
-	var inputs map[string]module.Input
+	var mRs map[string]model.HostResource
+	var inputs map[string]model.Input
 	if err := validateResources(mRs, inputs); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
 	str := "test"
-	mRs = make(map[string]module.HostResource)
-	mRs[str] = module.HostResource{
-		Resource: module.Resource{
+	mRs = make(map[string]model.HostResource)
+	mRs[str] = model.HostResource{
+		Resource: model.Resource{
 			Tags:     nil,
 			Required: false,
 		},
@@ -364,8 +364,8 @@ func TestValidateResources(t *testing.T) {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	mRs[str] = module.HostResource{
-		Resource: module.Resource{
+	mRs[str] = model.HostResource{
+		Resource: model.Resource{
 			Tags:     map[string]struct{}{"": {}},
 			Required: true,
 		},
@@ -374,16 +374,16 @@ func TestValidateResources(t *testing.T) {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	mRs = map[string]module.HostResource{
+	mRs = map[string]model.HostResource{
 		"": {},
 	}
 	if err := validateResources(mRs, inputs); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	mRs = map[string]module.HostResource{
+	mRs = map[string]model.HostResource{
 		str: {
-			Resource: module.Resource{
+			Resource: model.Resource{
 				Tags:     nil,
 				Required: true,
 			},
@@ -393,10 +393,10 @@ func TestValidateResources(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	inputs = make(map[string]module.Input)
-	inputs[str] = module.Input{}
-	mRs[str] = module.HostResource{
-		Resource: module.Resource{
+	inputs = make(map[string]model.Input)
+	inputs[str] = model.Input{}
+	mRs[str] = model.HostResource{
+		Resource: model.Resource{
 			Tags:     nil,
 			Required: true,
 		},
@@ -407,16 +407,16 @@ func TestValidateResources(t *testing.T) {
 }
 
 func TestValidateSecrets(t *testing.T) {
-	var mSs map[string]module.Secret
-	var inputs map[string]module.Input
+	var mSs map[string]model.Secret
+	var inputs map[string]model.Input
 	if err := validateSecrets(mSs, inputs); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
 	str := "test"
-	mSs = make(map[string]module.Secret)
-	mSs[str] = module.Secret{
-		Resource: module.Resource{
+	mSs = make(map[string]model.Secret)
+	mSs[str] = model.Secret{
+		Resource: model.Resource{
 			Tags:     nil,
 			Required: false,
 		},
@@ -425,8 +425,8 @@ func TestValidateSecrets(t *testing.T) {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	mSs[str] = module.Secret{
-		Resource: module.Resource{
+	mSs[str] = model.Secret{
+		Resource: model.Resource{
 			Tags:     map[string]struct{}{"": {}},
 			Required: true,
 		},
@@ -435,16 +435,16 @@ func TestValidateSecrets(t *testing.T) {
 		t.Error("err != nil")
 	}
 	// ------------------------------
-	mSs = map[string]module.Secret{
+	mSs = map[string]model.Secret{
 		"": {},
 	}
 	if err := validateSecrets(mSs, inputs); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	mSs = map[string]module.Secret{
+	mSs = map[string]model.Secret{
 		str: {
-			Resource: module.Resource{
+			Resource: model.Resource{
 				Tags:     nil,
 				Required: true,
 			},
@@ -454,10 +454,10 @@ func TestValidateSecrets(t *testing.T) {
 		t.Error("err == nil")
 	}
 	// ------------------------------
-	inputs = make(map[string]module.Input)
-	inputs[str] = module.Input{}
-	mSs[str] = module.Secret{
-		Resource: module.Resource{
+	inputs = make(map[string]model.Input)
+	inputs[str] = model.Input{}
+	mSs[str] = model.Secret{
+		Resource: model.Resource{
 			Tags:     nil,
 			Required: true,
 		},

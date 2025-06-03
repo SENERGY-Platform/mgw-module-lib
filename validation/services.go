@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 InfAI (CC SES)
+ * Copyright 2025 InfAI (CC SES)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,14 @@ package validation
 import (
 	"errors"
 	"fmt"
-	"github.com/SENERGY-Platform/mgw-module-lib/module"
-	"github.com/SENERGY-Platform/mgw-module-lib/tsort"
+	"github.com/SENERGY-Platform/mgw-module-lib/model"
+	tsort2 "github.com/SENERGY-Platform/mgw-module-lib/util/tsort"
 )
 
-func validateServices(mServices map[string]*module.Service, mVolumes map[string]struct{}, mResources map[string]module.HostResource, mSecrets map[string]module.Secret, mConfigs module.Configs, mDependencies map[string]string) error {
+func validateServices(mServices map[string]*model.Service, mVolumes map[string]struct{}, mResources map[string]model.HostResource, mSecrets map[string]model.Secret, mConfigs model.Configs, mDependencies map[string]string) error {
 	extPaths := make(map[string]struct{})
 	hostPorts := make(map[string]struct{})
-	nodes := make(tsort.Nodes)
+	nodes := make(tsort2.Nodes)
 	for ref, service := range mServices {
 		refVars := make(map[string]struct{})
 		mntPts := make(map[string]struct{})
@@ -89,14 +89,14 @@ func validateServices(mServices map[string]*module.Service, mVolumes map[string]
 		}
 		nodes.Add(ref, service.RequiredSrv, service.RequiredBySrv)
 	}
-	_, err := tsort.GetTopOrder(nodes)
+	_, err := tsort2.GetTopOrder(nodes)
 	if err != nil {
 		return fmt.Errorf("invalid service startup configuration: %s", err)
 	}
 	return nil
 }
 
-func validateAuxServices(auxServices map[string]*module.AuxService, mVolumes map[string]struct{}, mConfigs module.Configs, mDependencies map[string]string, mServices map[string]*module.Service) error {
+func validateAuxServices(auxServices map[string]*model.AuxService, mVolumes map[string]struct{}, mConfigs model.Configs, mDependencies map[string]string, mServices map[string]*model.Service) error {
 	for ref, service := range auxServices {
 		refVars := make(map[string]struct{})
 		mntPts := make(map[string]struct{})
@@ -150,7 +150,7 @@ func validateServiceVolumes(sVolumes map[string]string, mVolumes map[string]stru
 	return nil
 }
 
-func validateServiceResources(sResources map[string]module.HostResTarget, mResources map[string]module.HostResource) error {
+func validateServiceResources(sResources map[string]model.HostResTarget, mResources map[string]model.HostResource) error {
 	for _, target := range sResources {
 		if mResources != nil {
 			if _, ok := mResources[target.Ref]; !ok {
@@ -163,7 +163,7 @@ func validateServiceResources(sResources map[string]module.HostResTarget, mResou
 	return nil
 }
 
-func validateServiceSecrets(sSecretMounts, sSecretVars map[string]module.SecretTarget, mSecrets map[string]module.Secret) error {
+func validateServiceSecrets(sSecretMounts, sSecretVars map[string]model.SecretTarget, mSecrets map[string]model.Secret) error {
 	for _, target := range sSecretMounts {
 		if mSecrets != nil {
 			if _, ok := mSecrets[target.Ref]; !ok {
@@ -185,7 +185,7 @@ func validateServiceSecrets(sSecretMounts, sSecretVars map[string]module.SecretT
 	return nil
 }
 
-func validateServiceConfigs(sConfigs map[string]string, mConfigs module.Configs) error {
+func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) error {
 	for _, confRef := range sConfigs {
 		if mConfigs != nil {
 			if _, ok := mConfigs[confRef]; !ok {
@@ -198,7 +198,7 @@ func validateServiceConfigs(sConfigs map[string]string, mConfigs module.Configs)
 	return nil
 }
 
-func validateServiceHttpEndpoints(sHttpEndpoints map[string]module.HttpEndpoint, extPaths map[string]struct{}) error {
+func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint, extPaths map[string]struct{}) error {
 	for extPath, ept := range sHttpEndpoints {
 		if !isValidExtPath(extPath) {
 			return fmt.Errorf("invalid external path '%s'", extPath)
@@ -221,7 +221,7 @@ func validateServiceHttpEndpoints(sHttpEndpoints map[string]module.HttpEndpoint,
 	return nil
 }
 
-func validateServiceDependencies(requiredSrv map[string]struct{}, requiredBySrv map[string]struct{}, mServices map[string]*module.Service) error {
+func validateServiceDependencies(requiredSrv map[string]struct{}, requiredBySrv map[string]struct{}, mServices map[string]*model.Service) error {
 	for srvRef := range requiredSrv {
 		if mServices != nil {
 			if _, ok := mServices[srvRef]; !ok {
@@ -243,7 +243,7 @@ func validateServiceDependencies(requiredSrv map[string]struct{}, requiredBySrv 
 	return nil
 }
 
-func validateServiceExternalDependencies(sExtDependencies map[string]module.ExtDependencyTarget, mDependencies map[string]string) error {
+func validateServiceExternalDependencies(sExtDependencies map[string]model.ExtDependencyTarget, mDependencies map[string]string) error {
 	for _, target := range sExtDependencies {
 		if target.Service == "" {
 			return errors.New("empty service reference")
@@ -259,7 +259,7 @@ func validateServiceExternalDependencies(sExtDependencies map[string]module.ExtD
 	return nil
 }
 
-func validateServiceReferences(sReferences map[string]module.SrvRefTarget, mServices map[string]*module.Service) error {
+func validateServiceReferences(sReferences map[string]model.SrvRefTarget, mServices map[string]*model.Service) error {
 	for _, target := range sReferences {
 		if mServices != nil {
 			if _, ok := mServices[target.Ref]; !ok {
@@ -272,14 +272,14 @@ func validateServiceReferences(sReferences map[string]module.SrvRefTarget, mServ
 	return nil
 }
 
-func genPortKey(n uint, p module.PortProtocol) string {
+func genPortKey(n uint, p model.PortProtocol) string {
 	return fmt.Sprintf("%d%s", n, p)
 }
 
-func validateServicePorts(sPorts []module.Port, hostPorts map[string]struct{}) error {
+func validateServicePorts(sPorts []model.Port, hostPorts map[string]struct{}) error {
 	expPorts := make(map[string]struct{})
 	for _, port := range sPorts {
-		if _, ok := module.PortProtocolMap[port.Protocol]; !ok {
+		if _, ok := model.PortProtocolMap[port.Protocol]; !ok {
 			return fmt.Errorf("invalid protocol '%s'", port.Protocol)
 		}
 		pKey := genPortKey(port.Number, port.Protocol)
