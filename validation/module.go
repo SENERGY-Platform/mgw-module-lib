@@ -53,6 +53,9 @@ func Validate(m *model.Module) error {
 	if err := validateConfigs(m.Configs, m.Inputs.Configs); err != nil {
 		return fmt.Errorf("invalid config configuration: %s", err)
 	}
+	if err := validateConfigTypeOptions(m.Configs, m.Inputs.Configs); err != nil {
+		return fmt.Errorf("invalid config type options configuration: %s", err)
+	}
 	if err := validateInputGroups(m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
 	}
@@ -165,6 +168,20 @@ func validateAuxImgSrc(sources map[string]struct{}) error {
 	for src := range sources {
 		if !re.MatchString(src) {
 			return fmt.Errorf("invalid aux service image source '%s'", src)
+		}
+	}
+	return nil
+}
+
+func validateConfigTypeOptions(mCs model.Configs, inputs map[string]model.Input) error {
+	for ref, cv := range mCs {
+		if _, ok := inputs[ref]; ok {
+			if err := configs.ValidateBase(cv.Type, cv.TypeOpt, cv.DataType); err != nil {
+				return err
+			}
+			if err := configs.ValidateTypeOptions(cv.Type, cv.TypeOpt); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
