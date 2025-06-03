@@ -1,0 +1,63 @@
+{
+  "data_type": [
+    "string"
+  ],
+  "options": {
+    "regex": {
+      "data_type": [
+        "string"
+      ]
+    },
+    "min_len": {
+      "data_type": [
+        "int"
+      ]
+    },
+    "max_len": {
+      "data_type": [
+        "int"
+      ]
+    }
+  },
+  "validators": [
+    {
+      "name": "regex",
+      "parameter": {
+        "string": {
+          "ref": "value"
+        },
+        "pattern": {
+          "ref": "options.regex"
+        }
+      }
+    },
+    {
+      "name": "text_len_compare",
+      "parameter": {
+        "string": {
+          "ref": "value"
+        },
+        "length": {
+          "ref": "options.min_len"
+        },
+        "operator": {
+          "value": ">="
+        }
+      }
+    },
+    {
+      "name": "text_len_compare",
+      "parameter": {
+        "string": {
+          "ref": "value"
+        },
+        "length": {
+          "ref": "options.max_len"
+        },
+        "operator": {
+          "value": "<="
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "data_type": [
+    "int",
+    "float"
+  ],
+  "options": {
+    "min": {
+      "inherit": true
+    },
+    "max": {
+      "inherit": true
+    },
+    "step": {
+      "inherit": true
+    }
+  },
+  "validators": [
+    {
+      "name": "number_compare",
+      "parameter": {
+        "a": {
+          "ref": "value"
+        },
+        "b": {
+          "ref": "options.min"
+        },
+        "operator": {
+          "value": ">="
+        }
+      }
+    },
+    {
+      "name": "number_compare",
+      "parameter": {
+        "a": {
+          "ref": "value"
+        },
+        "b": {
+          "ref": "options.max"
+        },
+        "operator": {
+          "value": "<="
+        }
+      }
+    },
+    {
+      "name": "number_compare",
+      "parameter": {
+        "a": {
+          "ref": "options.min"
+        },
+        "b": {
+          "ref": "options.max"
+        },
+        "operator": {
+          "value": "<"
+        }
+      }
+    }
+  ]
+}
