@@ -50,22 +50,23 @@ type Module struct {
 }
 
 type Service struct {
-	Name            string                         `json:"name"`
-	Image           string                         `json:"image"`
-	RunConfig       RunConfig                      `json:"run_config"`
-	BindMounts      map[string]BindMount           `json:"bind_mounts"`      // {mntPoint:BindMount}
-	Tmpfs           map[string]TmpfsMount          `json:"tmpfs"`            // {mntPoint:TmpfsMount}
-	Volumes         map[string]string              `json:"volumes"`          // {mntPoint:volName}
-	HostResources   map[string]HostResTarget       `json:"host_resources"`   // {mntPoint:HostResTarget}
-	SecretMounts    map[string]SecretTarget        `json:"secret_mounts"`    // {mntPoint:SecretTarget}
-	SecretVars      map[string]SecretTarget        `json:"secret_vars"`      // {refVar:SecretTarget}
-	Configs         map[string]string              `json:"configs"`          // {refVar:ref}
-	SrvReferences   map[string]SrvRefTarget        `json:"srv_references"`   // {refVar:SrvRefTarget}
-	HttpEndpoints   map[string]HttpEndpoint        `json:"http_endpoints"`   // {externalPath:HttpEndpoint}
-	RequiredSrv     Set[string]                    `json:"required_srv"`     // {ref}
-	RequiredBySrv   Set[string]                    `json:"required_by_srv"`  // {ref}
-	ExtDependencies map[string]ExtDependencyTarget `json:"ext_dependencies"` // {refVar:ExtDependencyTarget}
-	Ports           []Port                         `json:"ports"`
+	Name              string                         `json:"name"`
+	Image             string                         `json:"image"`
+	RunConfig         RunConfig                      `json:"run_config"`
+	BindMounts        map[string]BindMount           `json:"bind_mounts"`      // {mntPoint:BindMount}
+	Tmpfs             map[string]TmpfsMount          `json:"tmpfs"`            // {mntPoint:TmpfsMount}
+	Volumes           map[string]string              `json:"volumes"`          // {mntPoint:volName}
+	HostResources     map[string]HostResTarget       `json:"host_resources"`   // {mntPoint:HostResTarget}
+	SecretMounts      map[string]SecretTarget        `json:"secret_mounts"`    // {mntPoint:SecretTarget}
+	SecretVars        map[string]SecretTarget        `json:"secret_vars"`      // {refVar:SecretTarget}
+	Configs           map[string]string              `json:"configs"`          // {refVar:ref}
+	SrvReferences     map[string]SrvRefTarget        `json:"srv_references"`   // {refVar:SrvRefTarget}
+	HttpEndpoints     map[string]HttpEndpoint        `json:"http_endpoints"`   // {externalPath:HttpEndpoint}
+	RequiredSrv       Set[string]                    `json:"required_srv"`     // {ref}
+	RequiredBySrv     Set[string]                    `json:"required_by_srv"`  // {ref}
+	ExtDependencies   map[string]ExtDependencyTarget `json:"ext_dependencies"` // {refVar:ExtDependencyTarget}
+	Ports             []Port                         `json:"ports"`
+	DeviceCGroupRules []string                       `json:"device_cgroup_rules"`
 }
 
 type AuxService struct {
