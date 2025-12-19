@@ -18,11 +18,12 @@ package configs
 
 import (
 	"errors"
+	"reflect"
+	"testing"
+
 	"github.com/SENERGY-Platform/mgw-module-lib/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/validation/configs/definitions"
 	"github.com/SENERGY-Platform/mgw-module-lib/validation/configs/validators"
-	"reflect"
-	"testing"
 )
 
 func TestGenVltOptParams(t *testing.T) {
@@ -434,13 +435,7 @@ func TestVltBase(t *testing.T) {
 }
 
 func TestVltValInOpt(t *testing.T) {
-	if _, err := ValidateValueInOptions[int](nil, nil); err == nil {
-		t.Error("err == nil")
-	}
 	if _, err := ValidateValueInOptions[int](1, nil); err == nil {
-		t.Error("err == nil")
-	}
-	if _, err := ValidateValueInOptions[int](nil, 1); err == nil {
 		t.Error("err == nil")
 	}
 	if ok, err := ValidateValueInOptions[int](1, []int{}); err != nil {

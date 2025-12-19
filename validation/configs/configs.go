@@ -49,14 +49,10 @@ func ValidateValue(cType string, cTypeOpts model.ConfigTypeOptions, value any) e
 	return vltValue(cDef.Validators, cTypeOpts, validators.Validators, value)
 }
 
-func ValidateValueSlice[T any](cType string, cTypeOpts model.ConfigTypeOptions, validators map[string]validators.Validator, value any) error {
+func ValidateValueSlice[T any](cType string, cTypeOpts model.ConfigTypeOptions, validators map[string]validators.Validator, valSl []T) error {
 	cDef, ok := definitions.Definitions[cType]
 	if !ok {
 		return fmt.Errorf("config type '%s' not defined", cType)
-	}
-	valSl, ok := value.([]T)
-	if !ok {
-		return fmt.Errorf("invlaid data type: %T != %T", value, *new(T))
 	}
 	for _, val := range valSl {
 		if err := vltValue(cDef.Validators, cTypeOpts, validators, val); err != nil {
@@ -66,11 +62,7 @@ func ValidateValueSlice[T any](cType string, cTypeOpts model.ConfigTypeOptions, 
 	return nil
 }
 
-func ValidateValueInOptions[T comparable](val any, opt any) (bool, error) {
-	v, ok := val.(T)
-	if !ok {
-		return false, fmt.Errorf("invalid data type '%T'", val)
-	}
+func ValidateValueInOptions[T comparable](v T, opt any) (bool, error) {
 	o, ok := opt.([]T)
 	if !ok {
 		return false, fmt.Errorf("invalid data type '%T'", opt)
@@ -83,11 +75,7 @@ func ValidateValueInOptions[T comparable](val any, opt any) (bool, error) {
 	return false, nil
 }
 
-func ValidateValueSliceInOptions[T comparable](val any, opt any) (bool, error) {
-	vSl, ok := val.([]T)
-	if !ok {
-		return false, fmt.Errorf("invalid data type '%T'", val)
-	}
+func ValidateValueSliceInOptions[T comparable](vSl []T, opt any) (bool, error) {
 	o, ok := opt.([]T)
 	if !ok {
 		return false, fmt.Errorf("invalid data type '%T'", opt)
