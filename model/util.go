@@ -18,12 +18,13 @@ package model
 
 import (
 	"encoding/json"
-	tsort2 "github.com/SENERGY-Platform/mgw-module-lib/util/tsort"
 	"strings"
+
+	"github.com/SENERGY-Platform/mgw-module-lib/util/tsort"
 )
 
-func newConfigValue[T any](def *T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions, required bool) configValue {
-	cv := configValue{
+func newConfigValue[T any](def *T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions, required bool) ConfigValue {
+	cv := ConfigValue{
 		OptExt:   optExt,
 		Type:     cType,
 		DataType: dType,
@@ -41,8 +42,8 @@ func newConfigValue[T any](def *T, opt []T, dType DataType, optExt bool, cType s
 	return cv
 }
 
-func newConfigValueSlice[T any](def []T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string, required bool) configValue {
-	cv := configValue{
+func newConfigValueSlice[T any](def []T, opt []T, dType DataType, optExt bool, cType string, cTypeOpt ConfigTypeOptions, delimiter string, required bool) ConfigValue {
+	cv := ConfigValue{
 		OptExt:    optExt,
 		Type:      cType,
 		DataType:  dType,
@@ -95,34 +96,34 @@ func (c Configs) SetFloat64Slice(ref string, def []float64, opt []float64, optEx
 }
 
 func (o ConfigTypeOptions) SetString(ref string, val string) {
-	o[ref] = configTypeOption{
+	o[ref] = ConfigTypeOption{
 		Value:    val,
 		DataType: StringType,
 	}
 }
 
 func (o ConfigTypeOptions) SetBool(ref string, val bool) {
-	o[ref] = configTypeOption{
+	o[ref] = ConfigTypeOption{
 		Value:    val,
 		DataType: BoolType,
 	}
 }
 
 func (o ConfigTypeOptions) SetInt64(ref string, val int64) {
-	o[ref] = configTypeOption{
+	o[ref] = ConfigTypeOption{
 		Value:    val,
 		DataType: Int64Type,
 	}
 }
 
 func (o ConfigTypeOptions) SetFloat64(ref string, val float64) {
-	o[ref] = configTypeOption{
+	o[ref] = ConfigTypeOption{
 		Value:    val,
 		DataType: Float64Type,
 	}
 }
 
-func (v configValue) OptionsLen() (l int) {
+func (v ConfigValue) OptionsLen() (l int) {
 	switch o := v.Options.(type) {
 	case []string:
 		l = len(o)
@@ -137,11 +138,11 @@ func (v configValue) OptionsLen() (l int) {
 }
 
 func GetServiceStartOrder(services map[string]*Service) ([]string, error) {
-	nodes := make(tsort2.Nodes)
+	nodes := make(tsort.Nodes)
 	for ref, service := range services {
 		nodes.Add(ref, service.RequiredSrv, service.RequiredBySrv)
 	}
-	return tsort2.GetTopOrder(nodes)
+	return tsort.GetTopOrder(nodes)
 }
 
 func (t SrvRefTarget) FillTemplate(s string) string {

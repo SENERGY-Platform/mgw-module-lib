@@ -163,9 +163,9 @@ type SrvRefTarget struct {
 	Template *string `json:"template"`
 }
 
-type Configs map[string]configValue
+type Configs map[string]ConfigValue
 
-type configValue struct {
+type ConfigValue struct {
 	Default   any               `json:"default"`
 	Options   any               `json:"options"`
 	OptExt    bool              `json:"opt_ext"`
@@ -177,11 +177,11 @@ type configValue struct {
 	Required  bool              `json:"required"`
 }
 
-type ConfigTypeOptions map[string]configTypeOption
+type ConfigTypeOptions map[string]ConfigTypeOption
 
 type DataType = string
 
-type configTypeOption struct {
+type ConfigTypeOption struct {
 	Value    any      `json:"value"`
 	DataType DataType `json:"data_type"`
 }
