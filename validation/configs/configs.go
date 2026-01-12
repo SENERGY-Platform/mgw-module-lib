@@ -49,13 +49,13 @@ func ValidateValue(cType string, cTypeOpts model.ConfigTypeOptions, value any) e
 	return vltValue(cDef.Validators, cTypeOpts, validators.Validators, value)
 }
 
-func ValidateValueSlice[T any](cType string, cTypeOpts model.ConfigTypeOptions, validators map[string]validators.Validator, valSl []T) error {
+func ValidateValueSlice[T any](cType string, cTypeOpts model.ConfigTypeOptions, valSl []T) error {
 	cDef, ok := definitions.Definitions[cType]
 	if !ok {
 		return fmt.Errorf("config type '%s' not defined", cType)
 	}
 	for _, val := range valSl {
-		if err := vltValue(cDef.Validators, cTypeOpts, validators, val); err != nil {
+		if err := vltValue(cDef.Validators, cTypeOpts, validators.Validators, val); err != nil {
 			return err
 		}
 	}
