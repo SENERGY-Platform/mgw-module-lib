@@ -19,6 +19,7 @@ package validation
 import (
 	"errors"
 	"fmt"
+
 	"github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
@@ -65,6 +66,38 @@ func validateInputsConfigs(inputs map[string]model.Input, mConfigs model.Configs
 			}
 		} else {
 			return errors.New("no configs defined")
+		}
+	}
+	return nil
+}
+
+func validateInputsFiles(inputs map[string]model.Input, mFiles map[string]string) error {
+	for ref := range inputs {
+		if ref == "" {
+			return errors.New("invalid input reference")
+		}
+		if mFiles != nil {
+			if _, ok := mFiles[ref]; !ok {
+				return fmt.Errorf("file '%s' not defined", ref)
+			}
+		} else {
+			return errors.New("no files defined")
+		}
+	}
+	return nil
+}
+
+func validateInputsFileGroups(inputs map[string]model.Input, mFileGroups map[string]struct{}) error {
+	for ref := range inputs {
+		if ref == "" {
+			return errors.New("invalid input reference")
+		}
+		if mFileGroups != nil {
+			if _, ok := mFileGroups[ref]; !ok {
+				return fmt.Errorf("file group '%s' not defined", ref)
+			}
+		} else {
+			return errors.New("no file groups defined")
 		}
 	}
 	return nil

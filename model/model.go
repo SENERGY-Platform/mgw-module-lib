@@ -43,6 +43,8 @@ type Module struct {
 	Dependencies   map[string]string       `json:"dependencies"`   // {moduleID:moduleVersion}
 	HostResources  map[string]HostResource `json:"host_resources"` // {ref:{tag}}
 	Secrets        map[string]Secret       `json:"secrets"`        // {ref:Secret}
+	Files          map[string]string       `json:"files"`          // {ref:optionalSourcePath}
+	FileGroups     Set[string]             `json:"file_groups"`    // {ref}
 	Configs        Configs                 `json:"configs"`        // {ref:ConfigValue}
 	Inputs         Inputs                  `json:"inputs"`
 	AuxServices    map[string]*AuxService  `json:"aux_services"` // {ref:AuxService}
@@ -59,6 +61,8 @@ type Service struct {
 	HostResources     map[string]HostResTarget       `json:"host_resources"`   // {mntPoint:HostResTarget}
 	SecretMounts      map[string]SecretTarget        `json:"secret_mounts"`    // {mntPoint:SecretTarget}
 	SecretVars        map[string]SecretTarget        `json:"secret_vars"`      // {refVar:SecretTarget}
+	Files             map[string]FileTarget          `json:"files"`            // {mntPoint:FileTarget}
+	FileGroups        map[string]string              `json:"file_groups"`      // {basePath:ref}
 	Configs           map[string]string              `json:"configs"`          // {refVar:ref}
 	SrvReferences     map[string]SrvRefTarget        `json:"srv_references"`   // {refVar:SrvRefTarget}
 	HttpEndpoints     map[string]HttpEndpoint        `json:"http_endpoints"`   // {externalPath:HttpEndpoint}
@@ -199,8 +203,15 @@ type InputGroup struct {
 }
 
 type Inputs struct {
-	Resources map[string]Input      `json:"resources"` // {ref:Input}
-	Secrets   map[string]Input      `json:"secrets"`   // {ref:Input}
-	Configs   map[string]Input      `json:"configs"`   // {ref:Input}
-	Groups    map[string]InputGroup `json:"groups"`    // {ref:InputGroup}
+	Resources  map[string]Input      `json:"resources"`   // {ref:Input}
+	Secrets    map[string]Input      `json:"secrets"`     // {ref:Input}
+	Configs    map[string]Input      `json:"configs"`     // {ref:Input}
+	Files      map[string]Input      `json:"files"`       // {ref:Input}
+	FileGroups map[string]Input      `json:"file_groups"` // {ref:Input}
+	Groups     map[string]InputGroup `json:"groups"`      // {ref:InputGroup}
+}
+
+type FileTarget struct {
+	Ref      string `json:"ref"`
+	ReadOnly bool   `json:"read_only"`
 }

@@ -19,10 +19,11 @@ package validation
 import (
 	"errors"
 	"fmt"
+	"regexp"
+
 	"github.com/SENERGY-Platform/mgw-module-lib/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/util/sem_ver"
 	"github.com/SENERGY-Platform/mgw-module-lib/validation/configs"
-	"regexp"
 )
 
 func Validate(m *model.Module) error {
@@ -56,6 +57,12 @@ func Validate(m *model.Module) error {
 	if err := validateConfigTypeOptions(m.Configs, m.Inputs.Configs); err != nil {
 		return fmt.Errorf("invalid config type options configuration: %s", err)
 	}
+	if err := validateFiles(m.Files, m.Inputs.Files); err != nil {
+		return fmt.Errorf("invalid file configuration: %s", err)
+	}
+	if err := validateFileGroups(m.FileGroups, m.Inputs.FileGroups); err != nil {
+		return fmt.Errorf("invalid file group configuration: %s", err)
+	}
 	if err := validateInputGroups(m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
 	}
@@ -68,6 +75,12 @@ func Validate(m *model.Module) error {
 	if err := validateInputsAndGroups(m.Inputs.Configs, m.Inputs.Groups); err != nil {
 		return fmt.Errorf("invalid input group configuration: %s", err)
 	}
+	if err := validateInputsAndGroups(m.Inputs.Files, m.Inputs.Groups); err != nil {
+		return fmt.Errorf("invalid input group configuration: %s", err)
+	}
+	if err := validateInputsAndGroups(m.Inputs.FileGroups, m.Inputs.Groups); err != nil {
+		return fmt.Errorf("invalid input group configuration: %s", err)
+	}
 	if err := validateInputsResources(m.Inputs.Resources, m.HostResources); err != nil {
 		return fmt.Errorf("invalid input configuration: %s", err)
 	}
@@ -77,7 +90,13 @@ func Validate(m *model.Module) error {
 	if err := validateInputsConfigs(m.Inputs.Configs, m.Configs); err != nil {
 		return fmt.Errorf("invalid input configuration: %s", err)
 	}
-	if err := validateServices(m.Services, m.Volumes, m.HostResources, m.Secrets, m.Configs, m.Dependencies); err != nil {
+	if err := validateInputsFiles(m.Inputs.Files, m.Files); err != nil {
+		return fmt.Errorf("invalid input configuration: %s", err)
+	}
+	if err := validateInputsFileGroups(m.Inputs.FileGroups, m.FileGroups); err != nil {
+		return fmt.Errorf("invalid input configuration: %s", err)
+	}
+	if err := validateServices(m.Services, m.Volumes, m.HostResources, m.Secrets, m.Configs, m.Dependencies, m.Files, m.FileGroups); err != nil {
 		return err
 	}
 	if err := validateAuxServices(m.AuxServices, m.Volumes, m.Configs, m.Dependencies, m.Services); err != nil {
@@ -158,6 +177,30 @@ func validateConfigs(mCs model.Configs, inputs map[string]model.Input) error {
 			if _, ok := inputs[ref]; !ok {
 				return fmt.Errorf("config '%s' is required but no default value or input defined", ref)
 			}
+		}
+	}
+	return nil
+}
+
+func validateFiles(mFs map[string]string, inputs map[string]model.Input) error {
+	for ref := range mFs {
+		if ref == "" {
+			return errors.New("empty file reference")
+		}
+		if _, ok := inputs[ref]; !ok {
+			return fmt.Errorf("file '%s' no input defined", ref)
+		}
+	}
+	return nil
+}
+
+func validateFileGroups(mFs map[string]struct{}, inputs map[string]model.Input) error {
+	for ref := range mFs {
+		if ref == "" {
+			return errors.New("empty file group reference")
+		}
+		if _, ok := inputs[ref]; !ok {
+			return fmt.Errorf("file group '%s' no input defined", ref)
 		}
 	}
 	return nil

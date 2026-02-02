@@ -19,11 +19,21 @@ package validation
 import (
 	"errors"
 	"fmt"
+
 	"github.com/SENERGY-Platform/mgw-module-lib/model"
 	tsort2 "github.com/SENERGY-Platform/mgw-module-lib/util/tsort"
 )
 
-func validateServices(mServices map[string]*model.Service, mVolumes map[string]struct{}, mResources map[string]model.HostResource, mSecrets map[string]model.Secret, mConfigs model.Configs, mDependencies map[string]string) error {
+func validateServices(
+	mServices map[string]*model.Service,
+	mVolumes map[string]struct{},
+	mResources map[string]model.HostResource,
+	mSecrets map[string]model.Secret,
+	mConfigs model.Configs,
+	mDependencies map[string]string,
+	mFiles map[string]string,
+	mFileGroups map[string]struct{},
+) error {
 	extPaths := make(map[string]struct{})
 	hostPorts := make(map[string]struct{})
 	nodes := make(tsort2.Nodes)
@@ -48,6 +58,12 @@ func validateServices(mServices map[string]*model.Service, mVolumes map[string]s
 		if err := validateMapKeys(service.SecretMounts, mntPts); err != nil {
 			return fmt.Errorf("service '%s' invalid secret mount point configuration: %s", ref, err)
 		}
+		if err := validateMapKeys(service.Files, mntPts); err != nil {
+			return fmt.Errorf("service '%s' invalid file mount point configuration: %s", ref, err)
+		}
+		if err := validateMapKeys(service.FileGroups, mntPts); err != nil {
+			return fmt.Errorf("service '%s' invalid file group mount point configuration: %s", ref, err)
+		}
 		if err := validateMapKeys(service.SecretVars, refVars); err != nil {
 			return fmt.Errorf("service '%s' invalid secret reference variable configuration: %s", ref, err)
 		}
@@ -68,6 +84,12 @@ func validateServices(mServices map[string]*model.Service, mVolumes map[string]s
 		}
 		if err := validateServiceSecrets(service.SecretMounts, service.SecretVars, mSecrets); err != nil {
 			return fmt.Errorf("service '%s' invalid secret configuration: %s", ref, err)
+		}
+		if err := validateServiceFiles(service.Files, mFiles); err != nil {
+			return fmt.Errorf("service '%s' invalid file configuration: %s", ref, err)
+		}
+		if err := validateServiceFileGroups(service.FileGroups, mFileGroups); err != nil {
+			return fmt.Errorf("service '%s' invalid file configuration: %s", ref, err)
 		}
 		if err := validateServiceConfigs(service.Configs, mConfigs); err != nil {
 			return fmt.Errorf("service '%s' invalid config configuration: %s", ref, err)
@@ -193,6 +215,32 @@ func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) 
 			}
 		} else {
 			return errors.New("no configs defined")
+		}
+	}
+	return nil
+}
+
+func validateServiceFiles(sFiles map[string]model.FileTarget, mFiles map[string]string) error {
+	for _, target := range sFiles {
+		if mFiles != nil {
+			if _, ok := mFiles[target.Ref]; !ok {
+				return fmt.Errorf("file '%s' not defined", target.Ref)
+			}
+		} else {
+			return errors.New("no files defined")
+		}
+	}
+	return nil
+}
+
+func validateServiceFileGroups(sFileGroups map[string]string, mFileGroups map[string]struct{}) error {
+	for _, ref := range sFileGroups {
+		if mFileGroups != nil {
+			if _, ok := mFileGroups[ref]; !ok {
+				return fmt.Errorf("file group '%s' not defined", ref)
+			}
+		} else {
+			return errors.New("no file groups defined")
 		}
 	}
 	return nil
