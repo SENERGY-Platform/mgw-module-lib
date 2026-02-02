@@ -38,16 +38,16 @@ type Module struct {
 	Type           ModuleType              `json:"type"`
 	DeploymentType DeploymentType          `json:"deployment_type"`
 	Architectures  Set[CPUArch]            `json:"architectures"`
-	Services       map[string]*Service     `json:"services"`       // {ref:Service}
+	Services       map[string]Service      `json:"services"`       // {ref:Service}
 	Volumes        Set[string]             `json:"volumes"`        // {volName}
 	Dependencies   map[string]string       `json:"dependencies"`   // {moduleID:moduleVersion}
-	HostResources  map[string]HostResource `json:"host_resources"` // {ref:{tag}}
+	HostResources  map[string]HostResource `json:"host_resources"` // {ref:HostResource}
 	Secrets        map[string]Secret       `json:"secrets"`        // {ref:Secret}
 	Files          map[string]string       `json:"files"`          // {ref:optionalSourcePath}
 	FileGroups     Set[string]             `json:"file_groups"`    // {ref}
 	Configs        Configs                 `json:"configs"`        // {ref:ConfigValue}
 	Inputs         Inputs                  `json:"inputs"`
-	AuxServices    map[string]*AuxService  `json:"aux_services"` // {ref:AuxService}
+	AuxServices    map[string]AuxService   `json:"aux_services"` // {ref:AuxService}
 	AuxImgSrc      Set[string]             `json:"aux_img_src"`
 }
 

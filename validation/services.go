@@ -25,7 +25,7 @@ import (
 )
 
 func validateServices(
-	mServices map[string]*model.Service,
+	mServices map[string]model.Service,
 	mVolumes map[string]struct{},
 	mResources map[string]model.HostResource,
 	mSecrets map[string]model.Secret,
@@ -118,7 +118,7 @@ func validateServices(
 	return nil
 }
 
-func validateAuxServices(auxServices map[string]*model.AuxService, mVolumes map[string]struct{}, mConfigs model.Configs, mDependencies map[string]string, mServices map[string]*model.Service) error {
+func validateAuxServices(auxServices map[string]model.AuxService, mVolumes map[string]struct{}, mConfigs model.Configs, mDependencies map[string]string, mServices map[string]model.Service) error {
 	for ref, service := range auxServices {
 		refVars := make(map[string]struct{})
 		mntPts := make(map[string]struct{})
@@ -269,7 +269,7 @@ func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint, 
 	return nil
 }
 
-func validateServiceDependencies(requiredSrv map[string]struct{}, requiredBySrv map[string]struct{}, mServices map[string]*model.Service) error {
+func validateServiceDependencies(requiredSrv map[string]struct{}, requiredBySrv map[string]struct{}, mServices map[string]model.Service) error {
 	for srvRef := range requiredSrv {
 		if mServices != nil {
 			if _, ok := mServices[srvRef]; !ok {
@@ -307,7 +307,7 @@ func validateServiceExternalDependencies(sExtDependencies map[string]model.ExtDe
 	return nil
 }
 
-func validateServiceReferences(sReferences map[string]model.SrvRefTarget, mServices map[string]*model.Service) error {
+func validateServiceReferences(sReferences map[string]model.SrvRefTarget, mServices map[string]model.Service) error {
 	for _, target := range sReferences {
 		if mServices != nil {
 			if _, ok := mServices[target.Ref]; !ok {

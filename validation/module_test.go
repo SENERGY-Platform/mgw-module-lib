@@ -17,8 +17,9 @@
 package validation
 
 import (
-	"github.com/SENERGY-Platform/mgw-module-lib/model"
 	"testing"
+
+	"github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
 func TestValidate(t *testing.T) {
@@ -37,7 +38,7 @@ func TestValidate(t *testing.T) {
 		Version:        "v1.0.0",
 		Type:           model.AddOnModule,
 		DeploymentType: model.SingleDeployment,
-		Services: map[string]*model.Service{
+		Services: map[string]model.Service{
 			"a": {RequiredSrv: map[string]struct{}{"a": {}}},
 		},
 	}
