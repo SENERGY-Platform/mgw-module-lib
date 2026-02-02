@@ -469,7 +469,7 @@ func TestValidateServiceHttpEndpoints(t *testing.T) {
 		t.Error("len(extPaths) != 0")
 	}
 	p1 := "/test"
-	sHttpEndpoints["test"] = model.HttpEndpoint{Path: &p1}
+	sHttpEndpoints["test"] = model.HttpEndpoint{Path: p1}
 	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err != nil {
 		t.Errorf("validateServiceHttpEndpoints(%v); err != nil", sHttpEndpoints)
 	}
@@ -486,7 +486,7 @@ func TestValidateServiceHttpEndpoints(t *testing.T) {
 		t.Error("len(extPaths) != 1")
 	}
 	delete(sHttpEndpoints, "test")
-	sHttpEndpoints["/test"] = model.HttpEndpoint{Path: &p1}
+	sHttpEndpoints["/test"] = model.HttpEndpoint{Path: p1}
 	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err == nil {
 		t.Errorf("validateServiceHttpEndpoints(%v); err == nil", sHttpEndpoints)
 	}
@@ -495,7 +495,7 @@ func TestValidateServiceHttpEndpoints(t *testing.T) {
 	}
 	delete(sHttpEndpoints, "test")
 	p2 := "test"
-	sHttpEndpoints["/test"] = model.HttpEndpoint{Path: &p2}
+	sHttpEndpoints["/test"] = model.HttpEndpoint{Path: p2}
 	if err := validateServiceHttpEndpoints(sHttpEndpoints, extPaths); err == nil {
 		t.Errorf("validateServiceHttpEndpoints(%v); err == nil", sHttpEndpoints)
 	}

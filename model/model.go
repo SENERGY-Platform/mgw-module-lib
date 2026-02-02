@@ -88,7 +88,7 @@ type RunConfig struct {
 	MaxRetries  uint          `json:"max_retries"`
 	RunOnce     bool          `json:"run_once"`
 	StopTimeout time.Duration `json:"stop_timeout"`
-	StopSignal  *string       `json:"stop_signal"`
+	StopSignal  string        `json:"stop_signal"`
 	PseudoTTY   bool          `json:"pseudo_tty"`
 	Command     []string      `json:"command"`
 }
@@ -104,9 +104,9 @@ type TmpfsMount struct {
 }
 
 type HttpEndpoint struct {
-	Name      *string               `json:"name"`
-	Port      *int                  `json:"port"`
-	Path      *string               `json:"path"` // internal path
+	Name      string                `json:"name"`
+	Port      int                   `json:"port"`
+	Path      string                `json:"path"` // internal path
 	ProxyConf HttpEndpointProxyConf `json:"proxy_conf"`
 	StringSub HttpEndpointStrSub    `json:"string_sub"`
 }
@@ -126,16 +126,16 @@ type HttpEndpointProxyConf struct {
 type PortProtocol = string
 
 type Port struct {
-	Name     *string      `json:"name"`
+	Name     string       `json:"name"`
 	Number   uint         `json:"number"`
 	Protocol PortProtocol `json:"protocol"`
 	Bindings []uint       `json:"bindings"`
 }
 
 type ExtDependencyTarget struct {
-	ID       string  `json:"id"`
-	Service  string  `json:"service"`
-	Template *string `json:"template"`
+	ID       string `json:"id"`
+	Service  string `json:"service"`
+	Template string `json:"template"`
 }
 
 type HostResTarget struct {
@@ -153,8 +153,8 @@ type HostResource struct {
 }
 
 type SecretTarget struct {
-	Ref  string  `json:"ref"`
-	Item *string `json:"item"`
+	Ref  string `json:"ref"`
+	Item string `json:"item"`
 }
 
 type Secret struct {
@@ -163,8 +163,8 @@ type Secret struct {
 }
 
 type SrvRefTarget struct {
-	Ref      string  `json:"ref"`
-	Template *string `json:"template"`
+	Ref      string `json:"ref"`
+	Template string `json:"template"`
 }
 
 type Configs map[string]ConfigValue
@@ -191,15 +191,15 @@ type ConfigTypeOption struct {
 }
 
 type Input struct {
-	Name        string  `json:"name"`
-	Description *string `json:"description"`
-	Group       *string `json:"group"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Group       string `json:"group"`
 }
 
 type InputGroup struct {
-	Name        string  `json:"name"`
-	Description *string `json:"description"`
-	Group       *string `json:"group"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Group       string `json:"group"`
 }
 
 type Inputs struct {

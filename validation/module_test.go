@@ -155,7 +155,7 @@ func TestValidate(t *testing.T) {
 		Type:           model.AddOnModule,
 		DeploymentType: model.SingleDeployment,
 		Inputs: model.Inputs{
-			Resources: map[string]model.Input{"test": {Group: &g}},
+			Resources: map[string]model.Input{"test": {Group: g}},
 		},
 	}
 	if err := Validate(&m); err == nil {
@@ -168,7 +168,7 @@ func TestValidate(t *testing.T) {
 		Type:           model.AddOnModule,
 		DeploymentType: model.SingleDeployment,
 		Inputs: model.Inputs{
-			Secrets: map[string]model.Input{"test": {Group: &g}},
+			Secrets: map[string]model.Input{"test": {Group: g}},
 		},
 	}
 	if err := Validate(&m); err == nil {
@@ -181,7 +181,7 @@ func TestValidate(t *testing.T) {
 		Type:           model.AddOnModule,
 		DeploymentType: model.SingleDeployment,
 		Inputs: model.Inputs{
-			Configs: map[string]model.Input{"test": {Group: &g}},
+			Configs: map[string]model.Input{"test": {Group: g}},
 		},
 	}
 	if err := Validate(&m); err == nil {

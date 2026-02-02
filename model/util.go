@@ -146,15 +146,15 @@ func GetServiceStartOrder(services map[string]*Service) ([]string, error) {
 }
 
 func (t SrvRefTarget) FillTemplate(s string) string {
-	if t.Template != nil {
-		return strings.ReplaceAll(*t.Template, "{"+RefPlaceholder+"}", s)
+	if t.Template != "" {
+		return strings.ReplaceAll(t.Template, "{"+RefPlaceholder+"}", s)
 	}
 	return s
 }
 
 func (t ExtDependencyTarget) FillTemplate(s string) string {
-	if t.Template != nil {
-		return strings.ReplaceAll(*t.Template, "{"+RefPlaceholder+"}", s)
+	if t.Template != "" {
+		return strings.ReplaceAll(t.Template, "{"+RefPlaceholder+"}", s)
 	}
 	return s
 }

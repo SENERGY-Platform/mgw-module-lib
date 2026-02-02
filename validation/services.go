@@ -160,87 +160,77 @@ func validateAuxServices(auxServices map[string]model.AuxService, mVolumes map[s
 }
 
 func validateServiceVolumes(sVolumes map[string]string, mVolumes map[string]struct{}) error {
+	if len(sVolumes) > 0 && len(mVolumes) == 0 {
+		return errors.New("no volumes defined")
+	}
 	for _, volume := range sVolumes {
-		if mVolumes != nil {
-			if _, ok := mVolumes[volume]; !ok {
-				return fmt.Errorf("volume '%s' not defined", volume)
-			}
-		} else {
-			return errors.New("no volumes defined")
+		if _, ok := mVolumes[volume]; !ok {
+			return fmt.Errorf("volume '%s' not defined", volume)
 		}
 	}
 	return nil
 }
 
 func validateServiceResources(sResources map[string]model.HostResTarget, mResources map[string]model.HostResource) error {
+	if len(sResources) > 0 && len(mResources) == 0 {
+		return errors.New("no resources defined")
+	}
 	for _, target := range sResources {
-		if mResources != nil {
-			if _, ok := mResources[target.Ref]; !ok {
-				return fmt.Errorf("resource '%s' not defined", target.Ref)
-			}
-		} else {
-			return errors.New("no resources defined")
+		if _, ok := mResources[target.Ref]; !ok {
+			return fmt.Errorf("resource '%s' not defined", target.Ref)
 		}
 	}
 	return nil
 }
 
 func validateServiceSecrets(sSecretMounts, sSecretVars map[string]model.SecretTarget, mSecrets map[string]model.Secret) error {
+	if len(sSecretMounts)+len(sSecretVars) > 0 && len(mSecrets) == 0 {
+		return errors.New("no secrets defined")
+	}
 	for _, target := range sSecretMounts {
-		if mSecrets != nil {
-			if _, ok := mSecrets[target.Ref]; !ok {
-				return fmt.Errorf("secret '%s' not defined", target.Ref)
-			}
-		} else {
-			return errors.New("no secrets defined")
+		if _, ok := mSecrets[target.Ref]; !ok {
+			return fmt.Errorf("secret '%s' not defined", target.Ref)
 		}
 	}
 	for _, target := range sSecretVars {
-		if mSecrets != nil {
-			if _, ok := mSecrets[target.Ref]; !ok {
-				return fmt.Errorf("secret '%s' not defined", target.Ref)
-			}
-		} else {
-			return errors.New("no secrets defined")
+		if _, ok := mSecrets[target.Ref]; !ok {
+			return fmt.Errorf("secret '%s' not defined", target.Ref)
 		}
 	}
 	return nil
 }
 
 func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) error {
+	if len(sConfigs) > 0 && len(mConfigs) == 0 {
+		return errors.New("no configs defined")
+	}
 	for _, confRef := range sConfigs {
-		if mConfigs != nil {
-			if _, ok := mConfigs[confRef]; !ok {
-				return fmt.Errorf("config '%s' not defined", confRef)
-			}
-		} else {
-			return errors.New("no configs defined")
+		if _, ok := mConfigs[confRef]; !ok {
+			return fmt.Errorf("config '%s' not defined", confRef)
 		}
 	}
 	return nil
 }
 
 func validateServiceFiles(sFiles map[string]model.FileTarget, mFiles map[string]string) error {
+	if len(sFiles) > 0 && len(mFiles) == 0 {
+		return errors.New("no files defined")
+	}
 	for _, target := range sFiles {
-		if mFiles != nil {
-			if _, ok := mFiles[target.Ref]; !ok {
-				return fmt.Errorf("file '%s' not defined", target.Ref)
-			}
-		} else {
-			return errors.New("no files defined")
+		if _, ok := mFiles[target.Ref]; !ok {
+			return fmt.Errorf("file '%s' not defined", target.Ref)
 		}
 	}
 	return nil
 }
 
 func validateServiceFileGroups(sFileGroups map[string]string, mFileGroups map[string]struct{}) error {
+	if len(sFileGroups) > 0 && len(mFileGroups) == 0 {
+		return errors.New("no file groups defined")
+	}
 	for _, ref := range sFileGroups {
-		if mFileGroups != nil {
-			if _, ok := mFileGroups[ref]; !ok {
-				return fmt.Errorf("file group '%s' not defined", ref)
-			}
-		} else {
-			return errors.New("no file groups defined")
+		if _, ok := mFileGroups[ref]; !ok {
+			return fmt.Errorf("file group '%s' not defined", ref)
 		}
 	}
 	return nil
@@ -251,8 +241,8 @@ func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint, 
 		if !isValidExtPath(extPath) {
 			return fmt.Errorf("invalid external path '%s'", extPath)
 		}
-		if ept.Path != nil && !isValidPath(*ept.Path) {
-			return fmt.Errorf("invalid internal path '%s'", *ept.Path)
+		if ept.Path != "" && !isValidPath(ept.Path) {
+			return fmt.Errorf("invalid internal path '%s'", ept.Path)
 		}
 		if _, ok := extPaths[extPath]; ok {
 			return fmt.Errorf("duplicate path '%s'", extPath)
@@ -270,51 +260,44 @@ func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint, 
 }
 
 func validateServiceDependencies(requiredSrv map[string]struct{}, requiredBySrv map[string]struct{}, mServices map[string]model.Service) error {
+	if len(requiredSrv)+len(requiredBySrv) > 0 && len(mServices) == 0 {
+		return errors.New("no services defined")
+	}
 	for srvRef := range requiredSrv {
-		if mServices != nil {
-			if _, ok := mServices[srvRef]; !ok {
-				return fmt.Errorf("service '%s' not defined", srvRef)
-			}
-		} else {
-			return errors.New("no services defined")
+		if _, ok := mServices[srvRef]; !ok {
+			return fmt.Errorf("service '%s' not defined", srvRef)
 		}
 	}
 	for srvRef := range requiredBySrv {
-		if mServices != nil {
-			if _, ok := mServices[srvRef]; !ok {
-				return fmt.Errorf("service '%s' not defined", srvRef)
-			}
-		} else {
-			return errors.New("no services defined")
+		if _, ok := mServices[srvRef]; !ok {
+			return fmt.Errorf("service '%s' not defined", srvRef)
 		}
 	}
 	return nil
 }
 
 func validateServiceExternalDependencies(sExtDependencies map[string]model.ExtDependencyTarget, mDependencies map[string]string) error {
+	if len(sExtDependencies) > 0 && len(mDependencies) == 0 {
+		return errors.New("no module dependencies defined")
+	}
 	for _, target := range sExtDependencies {
 		if target.Service == "" {
 			return errors.New("empty service reference")
 		}
-		if mDependencies != nil {
-			if _, ok := mDependencies[target.ID]; !ok {
-				return fmt.Errorf("module dependency '%s' not defined", target.ID)
-			}
-		} else {
-			return errors.New("no module dependencies defined")
+		if _, ok := mDependencies[target.ID]; !ok {
+			return fmt.Errorf("module dependency '%s' not defined", target.ID)
 		}
 	}
 	return nil
 }
 
 func validateServiceReferences(sReferences map[string]model.SrvRefTarget, mServices map[string]model.Service) error {
+	if len(sReferences) > 0 && len(mServices) == 0 {
+		return errors.New("no services defined")
+	}
 	for _, target := range sReferences {
-		if mServices != nil {
-			if _, ok := mServices[target.Ref]; !ok {
-				return fmt.Errorf("service '%s' not defined", target.Ref)
-			}
-		} else {
-			return errors.New("no services defined")
+		if _, ok := mServices[target.Ref]; !ok {
+			return fmt.Errorf("service '%s' not defined", target.Ref)
 		}
 	}
 	return nil

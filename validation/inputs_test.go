@@ -17,8 +17,9 @@
 package validation
 
 import (
-	"github.com/SENERGY-Platform/mgw-module-lib/model"
 	"testing"
+
+	"github.com/SENERGY-Platform/mgw-module-lib/model"
 )
 
 func TestValidateInputsResources(t *testing.T) {
@@ -123,7 +124,7 @@ func TestValidateInputsAndGroups(t *testing.T) {
 	if err := validateInputsAndGroups(inputs, groups); err != nil {
 		t.Errorf("validateInputsAndGroups(%v, %v); err != nil", inputs, groups)
 	}
-	inputs["b"] = model.Input{Group: &str}
+	inputs["b"] = model.Input{Group: str}
 	if err := validateInputsAndGroups(inputs, groups); err == nil {
 		t.Errorf("validateInputsAndGroups(%v, %v); err == nil", inputs, groups)
 	}
@@ -152,16 +153,16 @@ func TestValidateInputGroups(t *testing.T) {
 	if err := validateInputGroups(groups); err != nil {
 		t.Errorf("validateInputGroups(%v); err != nil", groups)
 	}
-	groups["b"] = model.InputGroup{Group: &str1}
+	groups["b"] = model.InputGroup{Group: str1}
 	if err := validateInputGroups(groups); err != nil {
 		t.Errorf("validateInputGroups(%v); err != nil", groups)
 	}
-	groups["c"] = model.InputGroup{Group: &str2}
+	groups["c"] = model.InputGroup{Group: str2}
 	if err := validateInputGroups(groups); err == nil {
 		t.Errorf("validateInputGroups(%v); err == nil", groups)
 	}
 	delete(groups, "c")
-	groups[str2] = model.InputGroup{Group: &str2}
+	groups[str2] = model.InputGroup{Group: str2}
 	if err := validateInputGroups(groups); err == nil {
 		t.Errorf("validateInputGroups(%v); err == nil", groups)
 	}

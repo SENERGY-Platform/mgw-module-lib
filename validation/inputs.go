@@ -24,80 +24,75 @@ import (
 )
 
 func validateInputsResources(inputs map[string]model.Input, mResources map[string]model.HostResource) error {
+	if len(inputs) > 0 && len(mResources) == 0 {
+		return errors.New("no resources defined")
+	}
 	for ref := range inputs {
 		if ref == "" {
 			return errors.New("invalid input reference")
 		}
-		if mResources != nil {
-			if _, ok := mResources[ref]; !ok {
-				return fmt.Errorf("resource '%s' not defined", ref)
-			}
-		} else {
-			return errors.New("no resources defined")
+		if _, ok := mResources[ref]; !ok {
+			return fmt.Errorf("resource '%s' not defined", ref)
 		}
 	}
 	return nil
 }
 
 func validateInputsSecrets(inputs map[string]model.Input, mSecrets map[string]model.Secret) error {
+	if len(inputs) > 0 && len(mSecrets) == 0 {
+		return errors.New("no secrets defined")
+	}
 	for ref := range inputs {
 		if ref == "" {
 			return errors.New("invalid input reference")
 		}
-		if mSecrets != nil {
-			if _, ok := mSecrets[ref]; !ok {
-				return fmt.Errorf("secret '%s' not defined", ref)
-			}
-		} else {
-			return errors.New("no secrets defined")
+		if _, ok := mSecrets[ref]; !ok {
+			return fmt.Errorf("secret '%s' not defined", ref)
 		}
 	}
 	return nil
 }
 
 func validateInputsConfigs(inputs map[string]model.Input, mConfigs model.Configs) error {
+	if len(inputs) > 0 && len(mConfigs) == 0 {
+		return errors.New("no configs defined")
+	}
 	for ref := range inputs {
 		if ref == "" {
 			return errors.New("invalid input reference")
 		}
-		if mConfigs != nil {
-			if _, ok := mConfigs[ref]; !ok {
-				return fmt.Errorf("config '%s' not defined", ref)
-			}
-		} else {
-			return errors.New("no configs defined")
+		if _, ok := mConfigs[ref]; !ok {
+			return fmt.Errorf("config '%s' not defined", ref)
 		}
 	}
 	return nil
 }
 
 func validateInputsFiles(inputs map[string]model.Input, mFiles map[string]string) error {
+	if len(inputs) > 0 && len(mFiles) == 0 {
+		return errors.New("no files defined")
+	}
 	for ref := range inputs {
 		if ref == "" {
 			return errors.New("invalid input reference")
 		}
-		if mFiles != nil {
-			if _, ok := mFiles[ref]; !ok {
-				return fmt.Errorf("file '%s' not defined", ref)
-			}
-		} else {
-			return errors.New("no files defined")
+		if _, ok := mFiles[ref]; !ok {
+			return fmt.Errorf("file '%s' not defined", ref)
 		}
 	}
 	return nil
 }
 
 func validateInputsFileGroups(inputs map[string]model.Input, mFileGroups map[string]struct{}) error {
+	if len(inputs) > 0 && len(mFileGroups) == 0 {
+		return errors.New("no file groups defined")
+	}
 	for ref := range inputs {
 		if ref == "" {
 			return errors.New("invalid input reference")
 		}
-		if mFileGroups != nil {
-			if _, ok := mFileGroups[ref]; !ok {
-				return fmt.Errorf("file group '%s' not defined", ref)
-			}
-		} else {
-			return errors.New("no file groups defined")
+		if _, ok := mFileGroups[ref]; !ok {
+			return fmt.Errorf("file group '%s' not defined", ref)
 		}
 	}
 	return nil
@@ -105,12 +100,12 @@ func validateInputsFileGroups(inputs map[string]model.Input, mFileGroups map[str
 
 func validateInputsAndGroups(inputs map[string]model.Input, groups map[string]model.InputGroup) error {
 	for _, input := range inputs {
-		if input.Group != nil {
-			if groups == nil {
+		if input.Group != "" {
+			if len(groups) == 0 {
 				return errors.New("no input groups defined")
 			}
-			if _, ok := groups[*input.Group]; !ok {
-				return fmt.Errorf("input group '%s' not defined", *input.Group)
+			if _, ok := groups[input.Group]; !ok {
+				return fmt.Errorf("input group '%s' not defined", input.Group)
 			}
 		}
 	}
@@ -122,12 +117,12 @@ func validateInputGroups(groups map[string]model.InputGroup) error {
 		if ref == "" {
 			return errors.New("invalid input group reference")
 		}
-		if group.Group != nil {
-			if g, ok := groups[*group.Group]; !ok {
-				return fmt.Errorf("input group '%s' not defined", *group.Group)
+		if group.Group != "" {
+			if g, ok := groups[group.Group]; !ok {
+				return fmt.Errorf("input group '%s' not defined", group.Group)
 			} else {
-				if g.Group != nil && *g.Group == *group.Group {
-					return fmt.Errorf("input group '%s' reference cycle", *group.Group)
+				if g.Group != "" && g.Group == group.Group {
+					return fmt.Errorf("input group '%s' reference cycle", group.Group)
 				}
 			}
 		}
