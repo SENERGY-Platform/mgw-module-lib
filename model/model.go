@@ -85,7 +85,7 @@ type AuxService struct {
 }
 
 type RunConfig struct {
-	MaxRetries  uint          `json:"max_retries"`
+	MaxRetries  int           `json:"max_retries"`
 	RunOnce     bool          `json:"run_once"`
 	StopTimeout time.Duration `json:"stop_timeout"`
 	StopSignal  string        `json:"stop_signal"`
@@ -99,7 +99,7 @@ type BindMount struct {
 }
 
 type TmpfsMount struct {
-	Size uint64      `json:"size"`
+	Size int64       `json:"size"`
 	Mode fs.FileMode `json:"mode"`
 }
 
@@ -127,9 +127,9 @@ type PortProtocol = string
 
 type Port struct {
 	Name     string       `json:"name"`
-	Number   uint         `json:"number"`
+	Number   int          `json:"number"`
 	Protocol PortProtocol `json:"protocol"`
-	Bindings []uint       `json:"bindings"`
+	Bindings []int        `json:"bindings"`
 }
 
 type ExtDependencyTarget struct {

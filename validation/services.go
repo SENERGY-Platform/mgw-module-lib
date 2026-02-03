@@ -303,7 +303,7 @@ func validateServiceReferences(sReferences map[string]model.SrvRefTarget, mServi
 	return nil
 }
 
-func genPortKey(n uint, p model.PortProtocol) string {
+func genPortKey(n int, p model.PortProtocol) string {
 	return fmt.Sprintf("%d%s", n, p)
 }
 

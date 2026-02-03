@@ -617,7 +617,7 @@ func TestValidateServicePorts(t *testing.T) {
 	sPorts = append(sPorts, model.Port{
 		Number:   81,
 		Protocol: model.TcpPort,
-		Bindings: []uint{81},
+		Bindings: []int{81},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
 		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
@@ -626,7 +626,7 @@ func TestValidateServicePorts(t *testing.T) {
 	sPorts = append(sPorts, model.Port{
 		Number:   82,
 		Protocol: model.TcpPort,
-		Bindings: []uint{82, 83},
+		Bindings: []int{82, 83},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
 		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
@@ -643,7 +643,7 @@ func TestValidateServicePorts(t *testing.T) {
 	sPorts = append(sPorts, model.Port{
 		Number:   81,
 		Protocol: model.UdpPort,
-		Bindings: []uint{81},
+		Bindings: []int{81},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
 		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
@@ -652,7 +652,7 @@ func TestValidateServicePorts(t *testing.T) {
 	sPorts = append(sPorts, model.Port{
 		Number:   82,
 		Protocol: model.UdpPort,
-		Bindings: []uint{82, 83},
+		Bindings: []int{82, 83},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err != nil {
 		t.Errorf("validateServicePorts(%v, %v); err != nil", sPorts, hostPorts)
@@ -692,12 +692,12 @@ func TestValidateServicePorts(t *testing.T) {
 	sPorts = append(sPorts, model.Port{
 		Number:   81,
 		Protocol: model.TcpPort,
-		Bindings: []uint{81},
+		Bindings: []int{81},
 	})
 	sPorts = append(sPorts, model.Port{
 		Number:   81,
 		Protocol: model.TcpPort,
-		Bindings: []uint{81},
+		Bindings: []int{81},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err == nil {
 		t.Errorf("validateServicePorts(%v, %v); err == nil", sPorts, hostPorts)
@@ -709,12 +709,12 @@ func TestValidateServicePorts(t *testing.T) {
 	sPorts = append(sPorts, model.Port{
 		Number:   81,
 		Protocol: model.TcpPort,
-		Bindings: []uint{81},
+		Bindings: []int{81},
 	})
 	sPorts = append(sPorts, model.Port{
 		Number:   82,
 		Protocol: model.TcpPort,
-		Bindings: []uint{81},
+		Bindings: []int{81},
 	})
 	if err := validateServicePorts(sPorts, hostPorts); err == nil {
 		t.Errorf("validateServicePorts(%v, %v); err == nil", sPorts, hostPorts)
