@@ -223,7 +223,7 @@ func TestValidateServices(t *testing.T) {
 	// ------------------------------
 	s = map[string]model.Service{
 		"a": {
-			Files: map[string]model.FileTarget{"test": {}},
+			Files: map[string]string{"test": ""},
 		},
 	}
 	if err := validateServices(s, nil, nil, nil, nil, nil, nil, nil); err == nil {

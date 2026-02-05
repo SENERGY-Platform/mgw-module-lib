@@ -46,9 +46,9 @@ type Module struct {
 	Files          map[string]string       `json:"files"`          // {ref:optionalSourcePath}
 	FileGroups     Set[string]             `json:"file_groups"`    // {ref}
 	Configs        Configs                 `json:"configs"`        // {ref:ConfigValue}
-	Inputs         Inputs                  `json:"inputs"`
-	AuxServices    map[string]AuxService   `json:"aux_services"` // {ref:AuxService}
+	AuxServices    map[string]AuxService   `json:"aux_services"`   // {ref:AuxService}
 	AuxImgSrc      Set[string]             `json:"aux_img_src"`
+	Inputs         Inputs                  `json:"inputs"`
 }
 
 type Service struct {
@@ -61,7 +61,7 @@ type Service struct {
 	HostResources     map[string]HostResTarget       `json:"host_resources"`   // {mntPoint:HostResTarget}
 	SecretMounts      map[string]SecretTarget        `json:"secret_mounts"`    // {mntPoint:SecretTarget}
 	SecretVars        map[string]SecretTarget        `json:"secret_vars"`      // {refVar:SecretTarget}
-	Files             map[string]FileTarget          `json:"files"`            // {mntPoint:FileTarget}
+	Files             map[string]string              `json:"files"`            // {mntPoint:ref}
 	FileGroups        map[string]string              `json:"file_groups"`      // {basePath:ref}
 	Configs           map[string]string              `json:"configs"`          // {refVar:ref}
 	SrvReferences     map[string]SrvRefTarget        `json:"srv_references"`   // {refVar:SrvRefTarget}
@@ -209,9 +209,4 @@ type Inputs struct {
 	Files      map[string]Input      `json:"files"`       // {ref:Input}
 	FileGroups map[string]Input      `json:"file_groups"` // {ref:Input}
 	Groups     map[string]InputGroup `json:"groups"`      // {ref:InputGroup}
-}
-
-type FileTarget struct {
-	Ref      string `json:"ref"`
-	ReadOnly bool   `json:"read_only"`
 }

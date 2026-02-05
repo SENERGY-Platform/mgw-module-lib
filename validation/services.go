@@ -212,13 +212,13 @@ func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) 
 	return nil
 }
 
-func validateServiceFiles(sFiles map[string]model.FileTarget, mFiles map[string]string) error {
+func validateServiceFiles(sFiles map[string]string, mFiles map[string]string) error {
 	if len(sFiles) > 0 && len(mFiles) == 0 {
 		return errors.New("no files defined")
 	}
-	for _, target := range sFiles {
-		if _, ok := mFiles[target.Ref]; !ok {
-			return fmt.Errorf("file '%s' not defined", target.Ref)
+	for _, ref := range sFiles {
+		if _, ok := mFiles[ref]; !ok {
+			return fmt.Errorf("file '%s' not defined", ref)
 		}
 	}
 	return nil
