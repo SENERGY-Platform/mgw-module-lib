@@ -43,7 +43,7 @@ type Module struct {
 	Dependencies   map[string]string       `json:"dependencies"`   // {moduleID:moduleVersion}
 	HostResources  map[string]HostResource `json:"host_resources"` // {ref:HostResource}
 	Secrets        map[string]Secret       `json:"secrets"`        // {ref:Secret}
-	Files          map[string]string       `json:"files"`          // {ref:optionalSourcePath}
+	Files          map[string]File         `json:"files"`          // {ref:File}
 	FileGroups     Set[string]             `json:"file_groups"`    // {ref}
 	Configs        Configs                 `json:"configs"`        // {ref:ConfigValue}
 	AuxServices    map[string]AuxService   `json:"aux_services"`   // {ref:AuxService}
@@ -160,6 +160,11 @@ type SecretTarget struct {
 type Secret struct {
 	Resource
 	Type string `json:"type"`
+}
+
+type File struct {
+	Source   string `json:"source"` // optional source path
+	Required bool   `json:"required"`
 }
 
 type SrvRefTarget struct {

@@ -182,7 +182,7 @@ func validateConfigs(mCs model.Configs, inputs map[string]model.Input) error {
 	return nil
 }
 
-func validateFiles(mFs map[string]string, inputs map[string]model.Input) error {
+func validateFiles(mFs map[string]model.File, inputs map[string]model.Input) error {
 	for ref := range mFs {
 		if ref == "" {
 			return errors.New("empty file reference")

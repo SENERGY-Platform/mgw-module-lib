@@ -31,7 +31,7 @@ func validateServices(
 	mSecrets map[string]model.Secret,
 	mConfigs model.Configs,
 	mDependencies map[string]string,
-	mFiles map[string]string,
+	mFiles map[string]model.File,
 	mFileGroups map[string]struct{},
 ) error {
 	extPaths := make(map[string]struct{})
@@ -212,7 +212,7 @@ func validateServiceConfigs(sConfigs map[string]string, mConfigs model.Configs) 
 	return nil
 }
 
-func validateServiceFiles(sFiles map[string]string, mFiles map[string]string) error {
+func validateServiceFiles(sFiles map[string]string, mFiles map[string]model.File) error {
 	if len(sFiles) > 0 && len(mFiles) == 0 {
 		return errors.New("no files defined")
 	}

@@ -68,7 +68,7 @@ func validateInputsConfigs(inputs map[string]model.Input, mConfigs model.Configs
 	return nil
 }
 
-func validateInputsFiles(inputs map[string]model.Input, mFiles map[string]string) error {
+func validateInputsFiles(inputs map[string]model.Input, mFiles map[string]model.File) error {
 	if len(inputs) > 0 && len(mFiles) == 0 {
 		return errors.New("no files defined")
 	}
