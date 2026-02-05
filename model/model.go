@@ -164,6 +164,7 @@ type Secret struct {
 
 type File struct {
 	Source   string `json:"source"` // optional source path
+	Type     string `json:"type"`
 	Required bool   `json:"required"`
 }
 
