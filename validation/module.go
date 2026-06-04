@@ -26,7 +26,7 @@ import (
 	"github.com/SENERGY-Platform/mgw-module-lib/validation/configs"
 )
 
-func Validate(m *model.Module) error {
+func Validate(m model.Module) error {
 	if !isValidModuleID(m.ID) {
 		return fmt.Errorf("invalid module ID format '%s'", m.ID)
 	}

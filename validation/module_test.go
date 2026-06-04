@@ -29,7 +29,7 @@ func TestValidate(t *testing.T) {
 		Type:           model.AddOnModule,
 		DeploymentType: model.SingleDeployment,
 	}
-	if err := Validate(&m); err != nil {
+	if err := Validate(m); err != nil {
 		t.Error("err != nil")
 	}
 	// ------------------------------
@@ -42,14 +42,14 @@ func TestValidate(t *testing.T) {
 			"a": {RequiredSrv: map[string]struct{}{"a": {}}},
 		},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
 	m = model.Module{
 		ID: "",
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -57,7 +57,7 @@ func TestValidate(t *testing.T) {
 		ID:      "test.test/test",
 		Version: "",
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -66,7 +66,7 @@ func TestValidate(t *testing.T) {
 		Version: "v1.0.0",
 		Type:    "",
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -76,7 +76,7 @@ func TestValidate(t *testing.T) {
 		Type:           model.AddOnModule,
 		DeploymentType: "",
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -87,7 +87,7 @@ func TestValidate(t *testing.T) {
 		DeploymentType: model.SingleDeployment,
 		Volumes:        map[string]struct{}{"": {}},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -98,7 +98,7 @@ func TestValidate(t *testing.T) {
 		DeploymentType: model.SingleDeployment,
 		Dependencies:   map[string]string{"": ""},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -109,7 +109,7 @@ func TestValidate(t *testing.T) {
 		DeploymentType: model.SingleDeployment,
 		HostResources:  map[string]model.HostResource{"": {}},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -120,7 +120,7 @@ func TestValidate(t *testing.T) {
 		DeploymentType: model.SingleDeployment,
 		Secrets:        map[string]model.Secret{"": {}},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -131,7 +131,7 @@ func TestValidate(t *testing.T) {
 		DeploymentType: model.SingleDeployment,
 		Configs:        model.Configs{"": {}},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -144,7 +144,7 @@ func TestValidate(t *testing.T) {
 			Groups: map[string]model.InputGroup{"": {}},
 		},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -158,7 +158,7 @@ func TestValidate(t *testing.T) {
 			Resources: map[string]model.Input{"test": {Group: g}},
 		},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -171,7 +171,7 @@ func TestValidate(t *testing.T) {
 			Secrets: map[string]model.Input{"test": {Group: g}},
 		},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -184,7 +184,7 @@ func TestValidate(t *testing.T) {
 			Configs: map[string]model.Input{"test": {Group: g}},
 		},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -197,7 +197,7 @@ func TestValidate(t *testing.T) {
 			Resources: map[string]model.Input{"": {}},
 		},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -210,7 +210,7 @@ func TestValidate(t *testing.T) {
 			Secrets: map[string]model.Input{"": {}},
 		},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
@@ -223,7 +223,7 @@ func TestValidate(t *testing.T) {
 			Configs: map[string]model.Input{"": {}},
 		},
 	}
-	if err := Validate(&m); err == nil {
+	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 }
