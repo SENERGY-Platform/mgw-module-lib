@@ -23,7 +23,6 @@ import (
 
 	"github.com/SENERGY-Platform/mgw-module-lib/model"
 	"github.com/SENERGY-Platform/mgw-module-lib/util/sem_ver"
-	"github.com/SENERGY-Platform/mgw-module-lib/validation/configs"
 )
 
 func Validate(m model.Module) error {
@@ -218,10 +217,10 @@ func validateAuxImgSrc(sources map[string]struct{}) error {
 func validateConfigTypeOptions(mCs model.Configs, inputs map[string]model.Input) error {
 	for ref, cv := range mCs {
 		if _, ok := inputs[ref]; ok {
-			if err := configs.ValidateBase(cv.Type, cv.TypeOpt, cv.DataType); err != nil {
+			if err := validateTypeOptionsBase(cv.Type, cv.TypeOpt, cv.DataType); err != nil {
 				return err
 			}
-			if err := configs.ValidateTypeOptions(cv.Type, cv.TypeOpt); err != nil {
+			if err := validateTypeOptions(cv.Type, cv.TypeOpt); err != nil {
 				return err
 			}
 		}
