@@ -46,7 +46,7 @@ func ValidateValueSlice[T any](cType string, cTypeOpts model.ConfigTypeOptions, 
 	return nil
 }
 
-func ValidateValueInOptions[T comparable](v T, opt any) (bool, error) {
+func CheckValueInOptions[T comparable](v T, opt any) (bool, error) {
 	o, ok := opt.([]T)
 	if !ok {
 		return false, fmt.Errorf("invalid data type '%T'", opt)
@@ -59,7 +59,7 @@ func ValidateValueInOptions[T comparable](v T, opt any) (bool, error) {
 	return false, nil
 }
 
-func ValidateValueSliceInOptions[T comparable](vSl []T, opt any) (bool, error) {
+func CheckValueSliceInOptions[T comparable](vSl []T, opt any) (bool, error) {
 	o, ok := opt.([]T)
 	if !ok {
 		return false, fmt.Errorf("invalid data type '%T'", opt)

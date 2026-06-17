@@ -170,15 +170,15 @@ func TestVltValue(t *testing.T) {
 }
 
 func TestVltValInOpt(t *testing.T) {
-	if _, err := ValidateValueInOptions[int](1, nil); err == nil {
+	if _, err := CheckValueInOptions[int](1, nil); err == nil {
 		t.Error("err == nil")
 	}
-	if ok, err := ValidateValueInOptions[int](1, []int{}); err != nil {
+	if ok, err := CheckValueInOptions[int](1, []int{}); err != nil {
 		t.Error("err == nil")
 	} else if ok == true {
 		t.Error("ok == true")
 	}
-	if ok, err := ValidateValueInOptions[int](1, []int{1}); err != nil {
+	if ok, err := CheckValueInOptions[int](1, []int{1}); err != nil {
 		t.Error("err == nil")
 	} else if ok == false {
 		t.Error("ok == false")
@@ -186,18 +186,18 @@ func TestVltValInOpt(t *testing.T) {
 }
 
 func TestVltValSlInOpt(t *testing.T) {
-	if _, err := ValidateValueSliceInOptions[int](nil, nil); err == nil {
+	if _, err := CheckValueSliceInOptions[int](nil, nil); err == nil {
 		t.Error("err == nil")
 	}
-	if _, err := ValidateValueSliceInOptions[int]([]int{}, nil); err == nil {
+	if _, err := CheckValueSliceInOptions[int]([]int{}, nil); err == nil {
 		t.Error("err == nil")
 	}
-	if ok, err := ValidateValueSliceInOptions[int]([]int{1}, []int{}); err != nil {
+	if ok, err := CheckValueSliceInOptions[int]([]int{1}, []int{}); err != nil {
 		t.Error("err != nil")
 	} else if ok == true {
 		t.Error("ok == true")
 	}
-	if ok, err := ValidateValueSliceInOptions[int]([]int{1}, []int{1}); err != nil {
+	if ok, err := CheckValueSliceInOptions[int]([]int{1}, []int{1}); err != nil {
 		t.Error("err != nil")
 	} else if ok == false {
 		t.Error("ok == false")
