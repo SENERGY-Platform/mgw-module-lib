@@ -32,12 +32,6 @@ func Validate(m model.Module) error {
 	if !sem_ver.IsValidSemVer(m.Version) {
 		return fmt.Errorf("invalid version format '%s'", m.Version)
 	}
-	if !isValidModuleType(m.Type) {
-		return fmt.Errorf("invalid module type '%s'", m.Type)
-	}
-	if !isValidDeploymentType(m.DeploymentType) {
-		return fmt.Errorf("invlaid deployment type '%s'", m.DeploymentType)
-	}
 	if !validateKeyNotEmptyString(m.Volumes) {
 		return errors.New("empty volume name")
 	}
@@ -117,16 +111,6 @@ func validateModuleDependencies(dependencies map[string]string) error {
 		}
 	}
 	return nil
-}
-
-func isValidModuleType(s string) bool {
-	_, ok := model.ModuleTypeMap[s]
-	return ok
-}
-
-func isValidDeploymentType(s string) bool {
-	_, ok := model.DeploymentTypeMap[s]
-	return ok
 }
 
 func isValidModuleID(s string) bool {

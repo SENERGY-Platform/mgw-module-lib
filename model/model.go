@@ -21,34 +21,28 @@ import (
 	"time"
 )
 
-type ModuleType = string
-
-type DeploymentType = string
-
 type CPUArch = string
 
 type Module struct {
-	ID             string                  `json:"id"`
-	Name           string                  `json:"name"`
-	Description    string                  `json:"description"`
-	Tags           Set[string]             `json:"tags"`
-	License        string                  `json:"license"`
-	Author         string                  `json:"author"`
-	Version        string                  `json:"version"`
-	Type           ModuleType              `json:"type"`
-	DeploymentType DeploymentType          `json:"deployment_type"`
-	Architectures  Set[CPUArch]            `json:"architectures"`
-	Services       map[string]Service      `json:"services"`       // {ref:Service}
-	Volumes        Set[string]             `json:"volumes"`        // {volName}
-	Dependencies   map[string]string       `json:"dependencies"`   // {moduleID:moduleVersion}
-	HostResources  map[string]HostResource `json:"host_resources"` // {ref:HostResource}
-	Secrets        map[string]Secret       `json:"secrets"`        // {ref:Secret}
-	Files          map[string]File         `json:"files"`          // {ref:File}
-	FileGroups     Set[string]             `json:"file_groups"`    // {ref}
-	Configs        Configs                 `json:"configs"`        // {ref:ConfigValue}
-	AuxServices    map[string]AuxService   `json:"aux_services"`   // {ref:AuxService}
-	AuxImgSrc      Set[string]             `json:"aux_img_src"`
-	Inputs         Inputs                  `json:"inputs"`
+	ID            string                  `json:"id"`
+	Name          string                  `json:"name"`
+	Description   string                  `json:"description"`
+	Tags          Set[string]             `json:"tags"`
+	License       string                  `json:"license"`
+	Author        string                  `json:"author"`
+	Version       string                  `json:"version"`
+	Architectures Set[CPUArch]            `json:"architectures"`
+	Services      map[string]Service      `json:"services"`       // {ref:Service}
+	Volumes       Set[string]             `json:"volumes"`        // {volName}
+	Dependencies  map[string]string       `json:"dependencies"`   // {moduleID:moduleVersion}
+	HostResources map[string]HostResource `json:"host_resources"` // {ref:HostResource}
+	Secrets       map[string]Secret       `json:"secrets"`        // {ref:Secret}
+	Files         map[string]File         `json:"files"`          // {ref:File}
+	FileGroups    Set[string]             `json:"file_groups"`    // {ref}
+	Configs       Configs                 `json:"configs"`        // {ref:ConfigValue}
+	AuxServices   map[string]AuxService   `json:"aux_services"`   // {ref:AuxService}
+	AuxImgSrc     Set[string]             `json:"aux_img_src"`
+	Inputs        Inputs                  `json:"inputs"`
 }
 
 type Service struct {
@@ -66,8 +60,6 @@ type Service struct {
 	Configs           map[string]string              `json:"configs"`          // {refVar:ref}
 	SrvReferences     map[string]SrvRefTarget        `json:"srv_references"`   // {refVar:SrvRefTarget}
 	HttpEndpoints     map[string]HttpEndpoint        `json:"http_endpoints"`   // {externalPath:HttpEndpoint}
-	RequiredSrv       Set[string]                    `json:"required_srv"`     // {ref}
-	RequiredBySrv     Set[string]                    `json:"required_by_srv"`  // {ref}
 	ExtDependencies   map[string]ExtDependencyTarget `json:"ext_dependencies"` // {refVar:ExtDependencyTarget}
 	Ports             []Port                         `json:"ports"`
 	DeviceCGroupRules []string                       `json:"device_cgroup_rules"`

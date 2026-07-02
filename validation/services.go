@@ -21,7 +21,6 @@ import (
 	"fmt"
 
 	"github.com/SENERGY-Platform/mgw-module-lib/model"
-	tsort2 "github.com/SENERGY-Platform/mgw-module-lib/util/tsort"
 )
 
 func validateServices(
@@ -36,7 +35,6 @@ func validateServices(
 ) error {
 	extPaths := make(map[string]struct{})
 	hostPorts := make(map[string]struct{})
-	nodes := make(tsort2.Nodes)
 	for ref, service := range mServices {
 		refVars := make(map[string]struct{})
 		mntPts := make(map[string]struct{})
@@ -100,20 +98,12 @@ func validateServices(
 		if err := validateServiceReferences(service.SrvReferences, mServices); err != nil {
 			return fmt.Errorf("service '%s' invalid reference configuration: %s", ref, err)
 		}
-		if err := validateServiceDependencies(service.RequiredSrv, service.RequiredBySrv, mServices); err != nil {
-			return fmt.Errorf("service '%s' invalid dependency configuration: %s", ref, err)
-		}
 		if err := validateServiceExternalDependencies(service.ExtDependencies, mDependencies); err != nil {
 			return fmt.Errorf("service '%s' invalid external dependency configuration: %s", ref, err)
 		}
 		if err := validateServicePorts(service.Ports, hostPorts); err != nil {
 			return fmt.Errorf("service '%s' invalid port mapping configuration: %s", ref, err)
 		}
-		nodes.Add(ref, service.RequiredSrv, service.RequiredBySrv)
-	}
-	_, err := tsort2.GetTopOrder(nodes)
-	if err != nil {
-		return fmt.Errorf("invalid service startup configuration: %s", err)
 	}
 	return nil
 }
@@ -255,23 +245,6 @@ func validateServiceHttpEndpoints(sHttpEndpoints map[string]model.HttpEndpoint, 
 			mt[t] = struct{}{}
 		}
 		extPaths[extPath] = struct{}{}
-	}
-	return nil
-}
-
-func validateServiceDependencies(requiredSrv map[string]struct{}, requiredBySrv map[string]struct{}, mServices map[string]model.Service) error {
-	if len(requiredSrv)+len(requiredBySrv) > 0 && len(mServices) == 0 {
-		return errors.New("no services defined")
-	}
-	for srvRef := range requiredSrv {
-		if _, ok := mServices[srvRef]; !ok {
-			return fmt.Errorf("service '%s' not defined", srvRef)
-		}
-	}
-	for srvRef := range requiredBySrv {
-		if _, ok := mServices[srvRef]; !ok {
-			return fmt.Errorf("service '%s' not defined", srvRef)
-		}
 	}
 	return nil
 }

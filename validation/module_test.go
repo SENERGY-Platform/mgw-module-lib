@@ -24,26 +24,11 @@ import (
 
 func TestValidate(t *testing.T) {
 	m := model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
+		ID:      "test.test/test",
+		Version: "v1.0.0",
 	}
 	if err := Validate(m); err != nil {
 		t.Error("err != nil")
-	}
-	// ------------------------------
-	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
-		Services: map[string]model.Service{
-			"a": {RequiredSrv: map[string]struct{}{"a": {}}},
-		},
-	}
-	if err := Validate(m); err == nil {
-		t.Error("err == nil")
 	}
 	// ------------------------------
 	m = model.Module{
@@ -64,82 +49,51 @@ func TestValidate(t *testing.T) {
 	m = model.Module{
 		ID:      "test.test/test",
 		Version: "v1.0.0",
-		Type:    "",
+		Volumes: map[string]struct{}{"": {}},
 	}
 	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: "",
+		ID:           "test.test/test",
+		Version:      "v1.0.0",
+		Dependencies: map[string]string{"": ""},
 	}
 	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
-		Volumes:        map[string]struct{}{"": {}},
+		ID:            "test.test/test",
+		Version:       "v1.0.0",
+		HostResources: map[string]model.HostResource{"": {}},
 	}
 	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
-		Dependencies:   map[string]string{"": ""},
+		ID:      "test.test/test",
+		Version: "v1.0.0",
+		Secrets: map[string]model.Secret{"": {}},
 	}
 	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
-		HostResources:  map[string]model.HostResource{"": {}},
+		ID:      "test.test/test",
+		Version: "v1.0.0",
+		Configs: model.Configs{"": {}},
 	}
 	if err := Validate(m); err == nil {
 		t.Error("err == nil")
 	}
 	// ------------------------------
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
-		Secrets:        map[string]model.Secret{"": {}},
-	}
-	if err := Validate(m); err == nil {
-		t.Error("err == nil")
-	}
-	// ------------------------------
-	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
-		Configs:        model.Configs{"": {}},
-	}
-	if err := Validate(m); err == nil {
-		t.Error("err == nil")
-	}
-	// ------------------------------
-	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
+		ID:      "test.test/test",
+		Version: "v1.0.0",
 		Inputs: model.Inputs{
 			Groups: map[string]model.InputGroup{"": {}},
 		},
@@ -150,10 +104,8 @@ func TestValidate(t *testing.T) {
 	// ------------------------------
 	g := ""
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
+		ID:      "test.test/test",
+		Version: "v1.0.0",
 		Inputs: model.Inputs{
 			Resources: map[string]model.Input{"test": {Group: g}},
 		},
@@ -163,10 +115,8 @@ func TestValidate(t *testing.T) {
 	}
 	// ------------------------------
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
+		ID:      "test.test/test",
+		Version: "v1.0.0",
 		Inputs: model.Inputs{
 			Secrets: map[string]model.Input{"test": {Group: g}},
 		},
@@ -176,10 +126,8 @@ func TestValidate(t *testing.T) {
 	}
 	// ------------------------------
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
+		ID:      "test.test/test",
+		Version: "v1.0.0",
 		Inputs: model.Inputs{
 			Configs: map[string]model.Input{"test": {Group: g}},
 		},
@@ -189,10 +137,8 @@ func TestValidate(t *testing.T) {
 	}
 	// ------------------------------
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
+		ID:      "test.test/test",
+		Version: "v1.0.0",
 		Inputs: model.Inputs{
 			Resources: map[string]model.Input{"": {}},
 		},
@@ -202,10 +148,8 @@ func TestValidate(t *testing.T) {
 	}
 	// ------------------------------
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
+		ID:      "test.test/test",
+		Version: "v1.0.0",
 		Inputs: model.Inputs{
 			Secrets: map[string]model.Input{"": {}},
 		},
@@ -215,10 +159,8 @@ func TestValidate(t *testing.T) {
 	}
 	// ------------------------------
 	m = model.Module{
-		ID:             "test.test/test",
-		Version:        "v1.0.0",
-		Type:           model.AddOnModule,
-		DeploymentType: model.SingleDeployment,
+		ID:      "test.test/test",
+		Version: "v1.0.0",
 		Inputs: model.Inputs{
 			Configs: map[string]model.Input{"": {}},
 		},
@@ -243,24 +185,6 @@ func TestValidateModuleDependencies(t *testing.T) {
 		t.Errorf("validateModuleDependencies(%v); err == nil", d)
 	}
 	delete(d, "test.test/test")
-}
-
-func TestIsValidModuleType(t *testing.T) {
-	if isValidModuleType(model.AddOnModule) != true {
-		t.Errorf("isValidModuleType(\"%s\") != true", model.AddOnModule)
-	}
-	if isValidModuleType("test") != false {
-		t.Error("isValidModuleType(\"test\") != false")
-	}
-}
-
-func TestIsValidDeploymentType(t *testing.T) {
-	if isValidDeploymentType(model.SingleDeployment) != true {
-		t.Errorf("isValidDeploymentType(\"%s\") != true", model.SingleDeployment)
-	}
-	if isValidDeploymentType("test") != false {
-		t.Error("isValidDeploymentType(\"test\") != false")
-	}
 }
 
 func TestIsValidCPUArch(t *testing.T) {

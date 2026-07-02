@@ -17,26 +17,6 @@
 package model
 
 const (
-	AddOnModule           ModuleType = "add-on"
-	DeviceConnectorModule ModuleType = "device-connector"
-)
-
-var ModuleTypeMap = map[ModuleType]struct{}{
-	AddOnModule:           {},
-	DeviceConnectorModule: {},
-}
-
-const (
-	SingleDeployment   DeploymentType = "single"
-	MultipleDeployment DeploymentType = "multiple"
-)
-
-var DeploymentTypeMap = map[DeploymentType]struct{}{
-	SingleDeployment:   {},
-	MultipleDeployment: {},
-}
-
-const (
 	TcpPort PortProtocol = "tcp"
 	UdpPort PortProtocol = "udp"
 )
